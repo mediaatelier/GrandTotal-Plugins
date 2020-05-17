@@ -6,14 +6,11 @@
 	
 	create records using insertRecord(entityType) and return them as an array
 	
-	NOTE: this type of plugin is running synchronously 
+	NOTE: this type of plugin is running synchronously. Avoid calls to remote servers.
 
 */
 
 paste();
-
-
-
 
 function paste()
 {
@@ -85,7 +82,6 @@ function getNotes(item)
 			template = templateReplace(template,run["string"]);
 			result += template;
 		}
-		
 	}
 	return result;
 }
