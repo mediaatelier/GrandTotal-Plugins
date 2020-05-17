@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.paymoimporter</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>API key</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Round to</string>
+			<key>name</key>
+			<string>roundTo</string>
+			<key>buttonlabel</key>
+			<string>Minutes</string>
+			<key>type</key>
+			<string>integer</string>
+			<key>default</key>
+			<real>1</real>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2015 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your paymo token to allow access to your data. You can generate the token in your paymo profile.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>

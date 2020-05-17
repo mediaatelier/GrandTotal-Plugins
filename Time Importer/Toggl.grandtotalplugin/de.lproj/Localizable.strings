@@ -1,0 +1,6 @@
+"Your toggl token" = "Toggl-Token";
+"Your hourly rate" = "Stundensatz";
+"Profile" = "Profil";
+"Ignore rates from toggl" = "Stundensätze von Toggl ignorieren";
+"Enter your toggl token to allow access to your data. You can find the token in your toggl profile." = "Den Toggl-Token eingeben, um Zugriff auf die Daten zu erlauben. Den Token findet man in seinem Toggl-Profil.";
+"Set rate" = "Bitte in den GrandTotal/Einstellungen/Zeiterfassung einen Stundensatz festlegen.";

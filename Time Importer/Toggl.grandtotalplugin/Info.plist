@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.pdf</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.togglimporter</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Your toggl token</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Profile</string>
+			<key>url</key>
+			<string>https://toggl.com/app/profile</string>
+			<key>type</key>
+			<string>link</string>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2018 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>2.0</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your toggl token to allow access to your data. You can find the token in your toggl profile.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
