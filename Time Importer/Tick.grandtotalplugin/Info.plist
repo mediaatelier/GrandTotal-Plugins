@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.tickimporter</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>API Token</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Subscription ID</string>
+			<key>name</key>
+			<string>subscriptionID</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Rate/h</string>
+			<key>name</key>
+			<string>rate</string>
+			<key>type</key>
+			<string>number</string>
+		</dict>
+		
+		
+		
+	</array>
+	<key>copyright</key>
+	<string>© 2015 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>4.0.1</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your tick token and subscription id to allow access to your data. You can obtain both values in your tick users settings.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>

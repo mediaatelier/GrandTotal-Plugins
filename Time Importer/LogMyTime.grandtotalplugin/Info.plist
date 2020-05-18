@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.tiff</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.logmytime</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>API Key</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+			<dict>
+			<key>label</key>
+			<string>Settings</string>
+			<key>url</key>
+			<string>https://dynamic.logmytime.de/Verwaltung/Benutzerprofil</string>
+			<key>type</key>
+			<string>link</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Rates</string>
+			<key>url</key>
+			<string>https://dynamic.logmytime.de/HourlyRates</string>
+			<key>type</key>
+			<string>link</string>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2015 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your LogMyTime API Key to allow access to your data. You can find the key in your LogMyTime settings.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>

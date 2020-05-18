@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.tiff</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.spiketime</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Spike API Key</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Load more than 6 months (slower)</string>
+			<key>name</key>
+			<string>loadAll</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2015-2019 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.1.4</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your SpikeTime API Key to allow access to your data. You can find the key in your SpikeTime settings.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
