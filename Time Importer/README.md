@@ -2,20 +2,20 @@
 ### Import items to be invoiced from a third party application or service
 
 Loading httpContents
-loadURL(method,url,headers);
+`loadURL(method,url,headers);`
 
 Logging to the Console
-log(value);
+`log(value);`
 
 Base64
-base64Encode(string);
+`base64Encode(string);`
 
 Expected result is a JSON representation of an array.
 
-[
+`[
 {"startDate":"2015-05-24T17:49:27+02:00","client":"Client A","project":"My Project","minutes":120,"notes":"HTML Coding","user":"me","cost":200,"uid":"com.toggle.233283908"},
 {"startDate":"2015-05-24T16:58:00+02:00","client":"Client B","project":"Other Project","minutes":10,"notes":"Fixing bugs","user":"me","cost":16.666666666666664,"uid":"com.toggle.233275239"}
-]
+]`
 
 Make *sure* the uid you provide is not just a plain integer and globally unique. Prepend an identifier for your application if needed. Eg: com.myservice.1
 
