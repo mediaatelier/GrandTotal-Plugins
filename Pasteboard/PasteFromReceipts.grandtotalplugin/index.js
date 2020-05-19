@@ -21,7 +21,7 @@ function paste()
 	items = root.items;
 	
 	var itemGroups = fetchRecords("ItemGroup"); /// get item groups from GrandTotal
-	var useGrossPrices = query().record().valueForKey("useGrossPrices");  /// get this from the invoice
+	var useGrossPrices = query().record().valueForKey("useGrossPrices");  /// get this from the invoice the item is pasted into
 	
 	for (index in items)
 	{
