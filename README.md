@@ -1,5 +1,5 @@
 # GrandTotal Plugins
-Javascript based plugins to extend GrandTotal
+Javascript based plugins to extend the [GrandTotal](https://www.mediaatelier.com/GrandTotal6) invoicing application.
 ### How it works
 Download one of the samples and create your own plugin by customizing the plist and the js file.
 Plugins can be installed by double clicking them and are located in ~/Library/Application Support/com.mediaatelier.GrandTotal3/Plugins/
