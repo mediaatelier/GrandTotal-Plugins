@@ -80,10 +80,30 @@ function timedEntries()
 		return "Check your settings, please";
 	}
 	
+	
 	var aUserID = aArray["id"];
 	var aWorkspaceID = aArray["activeWorkspace"];
-	var aWorkspaceName = aArray["name"];
 	
+	var aWorkspaces = httpGetJSON("https://api.clockify.me/api/v1/workspaces/");
+	var aWorkspaceName = "";
+	var aWorkspaceHourlyRate = 0;
+	
+	
+	for (aWorkspaceIndex in aWorkspaces)
+	{
+		var aWorkspace = aWorkspaces[aWorkspaceIndex];
+		
+		if (aWorkspace["id"] == aWorkspaceID)
+		{
+			aWorkspaceName = aWorkspace["name"];
+			if (aWorkspace["hourlyRate"])
+			{
+				aWorkspaceHourlyRate = aWorkspace["hourlyRate"]["amount"];
+			}
+		}
+	}
+
+
 	
 	var page = 1;
 	var aUserLookup = {};
@@ -203,7 +223,12 @@ function timedEntries()
 				{
 					aProjectName = aProject["name"];
 					aClientName = aProject["clientName"];
-					if (aProject["hourlyRate"]) {
+					if(aProject['billable'] == 1 && aProject["hourlyRate"]["amount"] == 0)
+					{
+						aRate = aWorkspaceHourlyRate / 100;
+					}
+					else
+					{
 						aRate = aProject["hourlyRate"]["amount"] / 100;
 					}
 				}
@@ -266,7 +291,7 @@ function timedEntries()
 				if (aNotes) {
 					aItem["notes"] = aNotes;
 				}
-				aItem["user"] = aUserName;
+				aItem["user"] =  aUserName + "("+ aWorkspaceName +")";
 
 				result.push(aItem);
 			}
