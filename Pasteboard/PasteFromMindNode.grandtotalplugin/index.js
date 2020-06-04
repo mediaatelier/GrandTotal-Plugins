@@ -73,7 +73,7 @@ function paste()
 
 function isNote(string)
 {
-	if (string.length > 1)
+	if (string.length > 0)
 	{
 		if (string.charAt(0) == " ")
 		{
