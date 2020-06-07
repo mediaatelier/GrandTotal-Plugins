@@ -40,7 +40,7 @@
 	<key>copyright</key>
 	<string>© 2019-2020 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your clockify api key to allow access to your data. You can find the token in your clockify profile.</string>
 	<key>GrandTotalMinimumVersion</key>
