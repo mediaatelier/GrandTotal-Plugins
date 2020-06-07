@@ -223,13 +223,18 @@ function timedEntries()
 				{
 					aProjectName = aProject["name"];
 					aClientName = aProject["clientName"];
-					if(aProject['billable'] == 1 && aProject["hourlyRate"]["amount"] == 0)
+					aProjectRate = 0;
+					if (aProject["hourlyRate"])
+					{
+						aProjectRate =  aProject["hourlyRate"]["amount"];
+					}
+					if(aProject['billable'] == 1 && aProjectRate == 0)
 					{
 						aRate = aWorkspaceHourlyRate / 100;
 					}
 					else
 					{
-						aRate = aProject["hourlyRate"]["amount"] / 100;
+						aRate = aProjectRate / 100;
 					}
 				}
 		
