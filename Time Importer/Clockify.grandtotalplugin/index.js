@@ -270,7 +270,7 @@ function timedEntries()
 					aMinutes += aDurations["M"];
 				}
 				if (aDurations["S"]) {
-					if (aDurations["S"] > 29)
+					if (aDurations["S"] > 0)
 					{
 						aMinutes += 1;
 					}
