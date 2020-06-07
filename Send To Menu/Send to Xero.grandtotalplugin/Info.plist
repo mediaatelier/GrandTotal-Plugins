@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.sendto.XERO</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>4</integer>
+	<key>SendToMenu</key>
+	<dict>
+		<key>ApplicationFileExtension</key>
+		<string>csv</string>
+		<key>ApplicationMinimumVersion</key>
+		<string>1.0</string>
+		<key>ApplicationName</key>
+		<string>Xero</string>
+		<key>AskForFile</key>
+		<true/>
+		<key>ApplicationFileName</key>
+		<string>Xero Invoices.csv</string>
+	</dict>
+	<key>copyright</key>
+	<string>© 2018 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>sendtomenu</string>
+	</array>
+</dict>
+</plist>
