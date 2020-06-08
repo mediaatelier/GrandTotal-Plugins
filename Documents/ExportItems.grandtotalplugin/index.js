@@ -27,8 +27,6 @@ function exportItems()
 		fillAttributeOfItemIntoLine("cost",aItem,aTableItem);
 		aTable.push(aTableItem);
 	}
-	
-	
 	writeCSVToURL(aTable,aURL);
 }
 
