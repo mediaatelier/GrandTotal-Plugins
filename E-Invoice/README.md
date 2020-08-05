@@ -9,9 +9,10 @@ result["files"] = [{
 		"content" : contents,
 		"name" : "Filename.xml"
 	}];
-return result;```
-
+return result;
+```
 valid destinations:
-
+```
 pdf (The file is embedded in the PDF)
 mail (The file is attached alongside the PDFx)
+```
