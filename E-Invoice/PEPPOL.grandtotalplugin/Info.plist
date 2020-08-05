@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.grandtotal.e-invoice.PEPPOL</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.1</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Supplier ID</string>
+			<key>type</key>
+			<string>string</string>
+			<key>name</key>
+			<string>supplierID</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>More about PEPPOL</string>
+			<key>type</key>
+			<string>link</string>
+			<key>url</key>
+			<string>https://peppol.eu</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Info for Plugin</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>4</integer>
+	<key>copyright</key>
+	<string>© 2017 Stefan Fürst</string>
+	<key>syncedPreferences</key>
+	<true/>
+	<key>types</key>
+	<array>
+		<string>e-invoice</string>
+	</array>
+</dict>
+</plist>

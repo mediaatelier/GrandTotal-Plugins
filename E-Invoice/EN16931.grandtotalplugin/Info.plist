@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.grandtotal.e-invoice.EN16931</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>More about EN16931</string>
+			<key>type</key>
+			<string>link</string>
+			<key>url</key>
+			<string>http://www.ferd-net.de/</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Info for Plugin</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>4</integer>
+	<key>copyright</key>
+	<string>© 2019 Stefan Fürst</string>
+	<key>syncedPreferences</key>
+	<true/>
+	<key>types</key>
+	<array>
+		<string>e-invoice</string>
+	</array>
+</dict>
+</plist>
