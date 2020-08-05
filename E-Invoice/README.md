@@ -3,13 +3,13 @@
 Installed in the client settings.
 The plugins needs to return an array of files. 
 
-var result = {};
+```var result = {};
 result["files"] = [{
 		"destination" : "mail",
 		"content" : contents,
 		"name" : "Filename.xml"
 	}];
-return result;
+return result;```
 
 valid destinations:
 
