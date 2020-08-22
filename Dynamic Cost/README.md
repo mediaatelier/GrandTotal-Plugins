@@ -1,6 +1,6 @@
 ## GrandTotal Dynamic Cost Plugins
 
-Installed in the the Dynamic Cost item of GrandTotal 7 or newer
+Installed in the Dynamic Cost item of GrandTotal 7 or newer
 
 Methods
 
