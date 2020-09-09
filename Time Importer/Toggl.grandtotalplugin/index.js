@@ -150,6 +150,18 @@ function timedEntries()
 				}
 			
 				aItemResult["cost"] = cost;
+				
+				
+				aMinutes = aItemResult["minutes"];
+				if (aMinutes > 0 && roundTo > 0)
+				{
+					aRate = aItemResult["cost"] / (aMinutes / 60);
+					aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
+					aItemResult["minutes"] = aMinutes;
+					aItemResult["cost"] =  aMinutes / 60 * aRate;
+				}
+				
+				
 				aItemResult["uid"] = "com.toggle." + aItems[aEntry]["id"];
 			
 				if (aItems[aEntry]["is_billable"] == 1 || aPremium == 0)
