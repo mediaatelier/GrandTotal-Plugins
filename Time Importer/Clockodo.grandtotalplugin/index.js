@@ -192,7 +192,7 @@ function timedEntries()
 				aItemResult["cost"] = (aItemResult["minutes"] / 60) * aRate;
 			}
 		}
-
+		aItemResult["url"] = "https://my.clockodo.com/en/entries/editentry?id=" + aEntry["id"];
 		if (aEntry["billable"] == 1)
 		{
 			result.push(aItemResult);
