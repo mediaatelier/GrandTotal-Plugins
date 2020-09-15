@@ -109,7 +109,10 @@ function timedEntries()
 	
 	var aCustomers = httpGetJSON( urlForEndPoint("customers"));
 	aCustomers = aCustomers["customers"];
-	
+	if (!aCustomers)
+	{
+		return "Check your settings, please";
+	}
 	var aProjects = {};
 
 	for (aIndex in aCustomers)
@@ -126,10 +129,7 @@ function timedEntries()
 		}
 	}
 	var aEntries = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString);
-	if (!aEntries)
-	{
-		return "Check your settings, please";
-	}
+	
 	aEntries = aEntries["entries"];
 	
 	//log(aEntries);
