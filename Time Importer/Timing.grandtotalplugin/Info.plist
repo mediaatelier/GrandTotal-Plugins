@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.Timing2.grandtotalimporter</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Path contains</string>
+			<key>type</key>
+			<string>string</string>
+			<key>name</key>
+			<string>filterString</string>
+			<key>defaultValue</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Round to</string>
+			<key>name</key>
+			<string>roundTo</string>
+			<key>buttonlabel</key>
+			<string>Minutes</string>
+			<key>type</key>
+			<string>integer</string>
+			<key>default</key>
+			<real>1</real>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>More about Timing</string>
+			<key>url</key>
+			<string>https://timingapp.com/?ref=grandtotal</string>
+			<key>type</key>
+			<string>link</string>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2018-2019 Timing</string>
+	<key>CFBundleVersion</key>
+	<string>1.3</string>
+	<key>GlobalsInfo</key>
+	<string>Info for Plugin</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>5</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
