@@ -14,7 +14,7 @@ Expected result is a JSON representation of an array.
 
 `[
 {"startDate":"2015-05-24T17:49:27+02:00","client":"Client A","project":"My Project","minutes":120,"notes":"HTML Coding","user":"me","cost":200,"uid":"com.toggle.233283908"},
-{"startDate":"2015-05-24T16:58:00+02:00","client":"Client B","project":"Other Project","minutes":10,"notes":"Fixing bugs","user":"me","cost":16.666666666666664,"uid":"com.toggle.233275239"}
+{"startDate":"2015-05-24T16:58:00+02:00","client":"Client B","project":"Other Project","minutes":10,"notes":"Fixing bugs","user":"me","cost":16.666666666666664,"uid":"com.toggle.233275239","url":"https://linktotheentry"}
 ]`
 
 Make *sure* the uid you provide is not just a plain integer and globally unique. Prepend an identifier for your application if needed. Eg: com.myservice.1
@@ -27,4 +27,6 @@ To see how to add global variables (Settings) look at the Info.plist of the samp
 
 Keep in mind that for security reasons passwords are stored in the keychain and
 you will have to enter them again after modifying your code.
+
+The provided url will be opened when double clicking the the entry in GrandTotal 7 and newer. Supply a deep link to the exact entry when possible.
 
