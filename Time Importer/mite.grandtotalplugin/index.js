@@ -64,7 +64,7 @@ function timedEntries()
 	
 	for (var i = 0; i < aArray.length; i++) 
 	{
-		aEntry = aArray[i]["time_entry"]
+		aEntry = aArray[i]["time_entry"];
 		var aItemResult = {};
 		aItemResult["client"] =  aEntry["customer_name"];
 		aItemResult["project"] =  aEntry["project_name"];
@@ -77,7 +77,8 @@ function timedEntries()
 		aItemResult["notes"] = aEntry["note"];
 		aItemResult["unit"] = "h";
 		aItemResult["startDate"] = aEntry["date_at"] + "T00:00:00";
-		
+		var datePart = aEntry["date_at"].replace(/-/g,"/");
+		aItemResult["url"] = "https://"+ accountName + ".mite.yo.lk/daily#"+ datePart +"?open=time_entry_"+  aEntry["id"];
 		if (aEntry["billable"] > 0 && aEntry["locked"] == 0) {
 			result.push(aItemResult);
 		}
