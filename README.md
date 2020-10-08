@@ -3,7 +3,7 @@ Javascript based plugins to extend the [GrandTotal](https://www.mediaatelier.com
 ### How it works
 Download one of the samples and create your own plugin by customizing the plist and the js file.
 Plugins can be installed by double clicking them and are located in ~/Library/Application Support/com.mediaatelier.GrandTotal3/Plugins/
-Once installed, you can edit the JavaScript file in place. Changes ob the .plist file require a restart of GrandTotal.
+Once installed, you can edit the JavaScript file in place. Changes on the .plist file require a restart of GrandTotal.
 ### Localiz(s)ing
 Localization is done the standard way using a strings file in the corresponding .lproj folder.
 ### Things you should know
