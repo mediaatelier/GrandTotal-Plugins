@@ -128,15 +128,6 @@ function createFile()
 								_content: document["sender"]["IBAN"]
 							}
 						]
-					},
-					{
-						_name: 'ram:PayeeSpecifiedCreditorFinancialInstitution',
-						_content: [
-							{
-								_name: 'ram:BICID',
-								_content: document["sender"]["BIC"]
-							}
-						]
 					}
 				]
 			}
@@ -150,10 +141,6 @@ function createFile()
 	var paymentTerms = {
 		_name: 'ram:SpecifiedTradePaymentTerms',
 		_content: [
-			{
-				_name : 'ram:Description',
-				_content: document["conditions"]
-			},
 			{
 				_name : 'ram:DueDateDateTime',
 				_content: makeDateTime(document["dateDue"])
@@ -178,22 +165,18 @@ function createFile()
  		_content : [
  			{
  				_name: 'ram:LineTotalAmount',
- 				_attrs: {currencyID: document["currency"]},
  				_content: document["netAsString"]
  			},
  			{
  				_name: 'ram:ChargeTotalAmount',
- 				_attrs: {currencyID: document["currency"]},
  				_content: 0
  			},
  			{
  				_name: 'ram:AllowanceTotalAmount',
- 				_attrs: {currencyID: document["currency"]},
  				_content: 0
  			},
  			{
  				_name: 'ram:TaxBasisTotalAmount',
- 				_attrs: {currencyID: document["currency"]},
  				_content: document["taxedNetAsString"]
  			},
  			{
@@ -203,12 +186,10 @@ function createFile()
  			},
  			{
  				_name: 'ram:GrandTotalAmount',
- 				_attrs: {currencyID: document["currency"]},
  				_content: document["grossAsString"]
  			},
  			{
  				_name: 'ram:DuePayableAmount',
- 				_attrs: {currencyID: document["currency"]},
  				_content: document["grossAsString"]
  			}
  		]
@@ -315,11 +296,6 @@ function appendTradeItems(document,theArray)
 						{
 							_name: 'ram:Name',
 							_content: aItem["name"]
-						},
-						,
-						{
-							_name: 'ram:Description',
-							_content: aItem["notes"]
 						}
 					]
 				},
@@ -388,7 +364,6 @@ function appendTradeItems(document,theArray)
 							_content: [
 								{
 									_name: 'ram:LineTotalAmount',
-									_attrs: {currencyID: document["currency"]},
 									_content: aItem["netAsString"]
 								}
 							]
@@ -413,7 +388,6 @@ function makeTaxes(input)
 			_content : [
 				{
 					_name: 'ram:CalculatedAmount',
-					_attrs: {currencyID: aItem["currency"]},
 					_content: aItem["taxAsString"]
 				},
 				{
@@ -422,7 +396,6 @@ function makeTaxes(input)
 				},
 				{
 					_name: 'ram:BasisAmount',
-					_attrs: {currencyID: aItem["currency"]},
 					_content: aItem["netAsString"]
 				},
 				{
