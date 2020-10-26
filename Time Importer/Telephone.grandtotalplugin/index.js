@@ -49,6 +49,7 @@ function timedEntries()
 	{
 		return localize("Set rate");
 	}
+	var numberLookup = {};
 	var dir = NSHomeDirectory + "/Library/Containers/com.tlphn.Telephone/Data/Library/Application\ Support/com.tlphn.Telephone/CallHistories/";
 	var files = contentsOfDirectory(dir);
 	var result = [];
@@ -62,7 +63,15 @@ function timedEntries()
 			item = items[i];
 			var call = {};
 			call["startDate"] = item["date"];
-			call["client"] = item["user"];
+			if (numberLookup[item["user"]])
+			{
+				call["client"] = numberLookup[item["user"]];
+			}
+			else
+			{
+				call["client"] = findContactByNumber(item["user"]);
+				numberLookup[item["user"]] = call["client"];
+			}
 			aMinutes = item["duration"] / 60;
 			call["minutes"] = aMinutes;
 
@@ -73,6 +82,15 @@ function timedEntries()
 			}
 			call["cost"] = defaultRate * call["minutes"] / 60;
 			call["uid"] = "com.tlphn.Telephone." + item["date"].getTime();
+			if (item["incoming"])
+			{
+				call["category"] = localize("Incoming Call");
+			}
+			else
+			{
+				call["category"] = localize("Outgoing Call");
+
+			}
 			result.push(call);
 		}
 

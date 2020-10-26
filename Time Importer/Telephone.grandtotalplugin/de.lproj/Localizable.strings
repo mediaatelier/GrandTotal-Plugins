@@ -3,3 +3,6 @@
 "Set rate" = "Bitte in den GrandTotal/Einstellungen/Zeiterfassung einen Stundensatz festlegen";
 "Round to" = "Runden auf";
 "Minutes" = "Minuten";
+"Incoming Call" = "Eingehender Anruf";
+"Outgoing Call" = "Ausgehender Anruf";
+"Info for Plugin" = "Berechnet Anrufe, die mit Telephone getätigt wurden";
