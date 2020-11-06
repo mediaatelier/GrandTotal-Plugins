@@ -237,6 +237,18 @@ function timedEntries()
 						aRate = aProjectRate / 100;
 					}
 				}
+				
+				// check for a custom rate here
+				
+				for (aMembershipIndex in aUser["memberships"])
+				{
+					var aMembership = aUser["memberships"][aMembershipIndex];
+				 	if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"])
+				 	{
+				 		aMembershipRate =  aMembership["hourlyRate"]["amount"]
+				 		aRate = aMembershipRate / 100;
+				 	}
+				}
 		
 				aTask = null;
 				aTaskID = aEntry["taskId"];
@@ -275,6 +287,9 @@ function timedEntries()
 						aMinutes += 1;
 					}
 				}
+				
+				
+			
 		
 				aItem["uid"] = aEntryID;
 				aItem["project"] = aProjectName;
@@ -297,7 +312,7 @@ function timedEntries()
 					aItem["notes"] = aNotes;
 				}
 				aItem["user"] =  aUserName + "("+ aWorkspaceName +")";
-
+				page = 12;
 				result.push(aItem);
 			}
 			page ++;
