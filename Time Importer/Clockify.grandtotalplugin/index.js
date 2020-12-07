@@ -196,7 +196,7 @@ function timedEntries()
 		do 
 		{
 	
-			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/user/"+aUserID+"/time-entries/?page="+page);
+			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/user/"+aUserID+"/time-entries/?page-size=200&is-active=true&page="+page);
 			for(aEntriesIndex in aEntries)
 			{
 				aItem = {};
