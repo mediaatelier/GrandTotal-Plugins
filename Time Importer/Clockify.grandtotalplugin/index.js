@@ -312,7 +312,6 @@ function timedEntries()
 					aItem["notes"] = aNotes;
 				}
 				aItem["user"] =  aUserName + "("+ aWorkspaceName +")";
-				page = 12;
 				result.push(aItem);
 			}
 			page ++;
