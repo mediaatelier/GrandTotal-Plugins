@@ -22,7 +22,7 @@
 	<key>GlobalsInfo</key>
 	<string>Enter your Everhour token to allow access to your data. You can find the token in your Everhour settings.</string>
 	<key>GrandTotalMinimumVersion</key>
-	<integer>5</integer>
+	<integer>6</integer>
 	<key>copyright</key>
 	<string>© 2020 Stefan Fürst</string>
 	<key>types</key>
