@@ -116,7 +116,6 @@ function timedEntries()
 	for(aIndex in aEntries)
 	{
 		var aEntry = aEntries[aIndex];
-
 		var aID = aEntry["id"];
 		var aItem = {};
 		aItem["uid"] = "com.everhour." + aID;
@@ -157,6 +156,7 @@ function timedEntries()
 		aItem["category"] = aEntry["task"]["name"];
 		aItem["cost"] = aRate / 100 * aEntry["time"] / 3600; 
 		aItem["notes"] = aEntry["comment"];
+		aItem["url"] = "https://app.everhour.com/#/time(view:" + aEntry["task"]["id"] + ")";
 
 		result.push(aItem);
 	}
