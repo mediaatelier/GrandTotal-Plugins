@@ -30,14 +30,7 @@
 	
 */
 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
-};
-
-
+timedEntries();
 
 
 function urlForEndPoint(theEndPoint)
@@ -45,9 +38,6 @@ function urlForEndPoint(theEndPoint)
 	return "https://api.harvestapp.com/api/v2/" + theEndPoint;
 }
 
-
-
-timedEntries();
 
 function httpGetJSON(theUrl)
 {
@@ -62,43 +52,13 @@ function httpGetJSON(theUrl)
 }
 
 
-
-
-function createLookup(array)
-{
-	var result = {};
-	for(aIndex in array)
-	{
-		aEntry = array[aIndex];
-		aID = aEntry["id"];
-		result[aID] = aEntry;
-	}
-	return result;
-}
-
-
-
 function timedEntries()
 {
-	var aEndDate = new Date();
-	var aEndDateString = aEndDate.yyyymmdd();
-	var aStartDate = new Date();
-	aStartDate.setDate(aEndDate.getDate() - 180);
-	var aStartDateString = aStartDate.yyyymmdd();
-	
-	
-		
 	var aEntries = httpGetJSON(urlForEndPoint("time_entries"));
 	if (!aEntries)
 	{
 		return "Check your settings, please";
 	}
-	
-	
-
-	
-	//log(aEntriesArray);
-	//return;
 	
 	var result = [];
 	
@@ -118,7 +78,6 @@ function timedEntries()
 			{
 				continue;
 			}
-		
 			aItem["client"] = aEntry["client"]["name"];
 			aItem["project"] = aEntry["project"]["name"];
 			aItem["user"] = aEntry["user"]["name"];
@@ -139,7 +98,5 @@ function timedEntries()
 		}
 	} while (aNextpage && aEntries.length < 1000);
 	
-
 	return result;
-
 }
