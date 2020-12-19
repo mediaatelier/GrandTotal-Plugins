@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.harvestImporter</string>
+	<key>CFBundleVersion</key>
+	<string>2</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Account ID</string>
+			<key>name</key>
+			<string>accountID</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Token</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>More</string>
+			<key>url</key>
+			<string>https://id.getharvest.com/oauth2/access_tokens/new</string>
+			<key>type</key>
+			<string>link</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Enter your Harvest account ID and token to allow access to your data.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>6</integer>
+	<key>copyright</key>
+	<string>© 2020 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
