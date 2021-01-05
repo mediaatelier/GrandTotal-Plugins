@@ -50,13 +50,13 @@ function timedEntries()
 		return localize("Set rate");
 	}
 	var numberLookup = {};
-	var dir = NSHomeDirectory + "/Library/Containers/com.tlphn.Telephone/Data/Library/Application\ Support/com.tlphn.Telephone/CallHistories/";
-	var files = contentsOfDirectory(dir);
+	var dir = grandtotal.fileManager.homeDirectory + "/Library/Containers/com.tlphn.Telephone/Data/Library/Application\ Support/com.tlphn.Telephone/CallHistories/";
+	var files = grandtotal.fileManager.contentsOfDirectory(dir);
 	var result = [];
 	for (f in files)
 	{
 		var path = files[f];
-		var items = contentsOfPlist(path);
+		var items = grandtotal.fileManager.contentsOfPlistFile(path);
 			
 		for (i in items)
 		{
@@ -69,7 +69,7 @@ function timedEntries()
 			}
 			else
 			{
-				call["client"] = findContactByNumber(item["user"]);
+				call["client"] = grandtotal.addressBook.findContactByNumber(item["user"]);
 				numberLookup[item["user"]] = call["client"];
 			}
 			aMinutes = item["duration"] / 60;
