@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Create Invoice</title>
+	<style>
+		body {margin: 20px; font-family: "Helvetica"; font-size: 12px;}
+		a:hover {color:gray};
+		a:visited {color:black};
+		a:active {color:blue};
+	</style>
+	<script>
+	
+		function createInvoice() 
+		{
+  			var aClient = grandtotal.insertRecord("Client");
+			aClient.setValue("firstName","Joe");
+			aClient.setValue("lastName","Doe");
+			var aInvoice = grandtotal.insertRecord("Invoice");
+			aInvoice.setValue("parentDocument",aClient);
+			var aCost = grandtotal.insertRecord("Cost");
+			aCost.setValue("parent",aInvoice);
+			aCost.setValue("quantity",3);
+			aCost.setValue("unitPrice",99);
+			aCost.setValue("name","Three Items");
+			aCost.setValue("notes","with a lousy description");
+			aInvoice.performSelectorNamed("showItem:");
+		}
+		
+	</script>
+</head>
+<body>
+	<a href='#' onclick='createInvoice()'>Click here to create an invoice</a>
+</body>
+</html>

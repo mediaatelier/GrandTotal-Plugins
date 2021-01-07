@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>CFBundleIdentifier</key>
+<string>com.mediaatelier.grandtotal.plugin.overview.createInvoice</string> 
+<key>CFBundleVersion</key>
+<string>1.0</string> 
+<key>GrandTotal3Ready</key>
+<true/> 
+<key>copyright</key>
+<string>© 2020 Your Name</string>
+<key>types</key>
+<array>
+<string>overview</string>
+</array>
+</dict>
+</plist>
