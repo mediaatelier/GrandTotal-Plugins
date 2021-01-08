@@ -236,13 +236,20 @@ function timedEntries()
 					{
 						aRate = aProjectRate / 100;
 					}
+					
+					
 				}
-				
-				// check for a custom rate here
 				
 				for (aMembershipIndex in aUser["memberships"])
 				{
 					var aMembership = aUser["memberships"][aMembershipIndex];
+
+					if (aMembership["membershipType"] == "WORKSPACE" && aRate == 0 && aMembership["hourlyRate"])
+					{
+						aMembershipRate =  aMembership["hourlyRate"]["amount"]
+				 		aRate = aMembershipRate / 100;
+					}
+					
 				 	if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"])
 				 	{
 				 		aMembershipRate =  aMembership["hourlyRate"]["amount"]
@@ -287,6 +294,7 @@ function timedEntries()
 						aMinutes += 1;
 					}
 				}
+				
 				
 				
 			
