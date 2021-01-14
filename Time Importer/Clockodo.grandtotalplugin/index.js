@@ -72,7 +72,7 @@ function httpGetJSON(theUrl)
 {
 	
 
-	header = {"X-ClockodoApiUser":email,"X-ClockodoApiKey":token};
+	header = {"X-ClockodoApiUser":email,"X-ClockodoApiKey":token, "X-Clockodo-External-Application": "GrandTotal;info@mediaatelier.com"};
 	string = loadURL("GET",theUrl,header);
 	
 
