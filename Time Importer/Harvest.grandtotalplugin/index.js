@@ -59,7 +59,10 @@ function timedEntries()
 	{
 		return "Check your settings, please";
 	}
-	
+	if (aEntries["grandtotal_error"])
+	{
+		return "Check your settings, please";
+	}
 	var result = [];
 	
 	do {

@@ -611,10 +611,6 @@ function makeTradeParty(party,name,id)
 					},
 					{
 						_name: 'ram:LineOne',
-						_content: personname
-					},
-					{
-						_name: 'ram:LineTwo',
 						_content: party["street"]
 					},
 					{
