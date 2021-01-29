@@ -280,6 +280,33 @@ function createFile()
  	
  	supplyChainTradeSettlement["_content"].push(taxes);
  	
+ 	
+ 	var period = document["period"];
+ 	{
+		var rangeStart = period["start"];
+		var rangeEnd = period["end"];
+
+		var billingSpecifiedPeriod = {
+			_name: 'ram:BillingSpecifiedPeriod',
+			_content: [
+				{
+					_name : 'ram:StartDateTime',
+					_content: makeDateTime(rangeStart)
+				},
+				{
+					_name : 'ram:EndDateTime',
+					_content: makeDateTime(rangeEnd)
+				}
+			]
+		}	
+	
+		if (rangeStart && rangeEnd)
+		{
+			supplyChainTradeSettlement["_content"].push(billingSpecifiedPeriod);
+		}
+	}
+
+ 	
 	var paymentTerms = {
 		_name: 'ram:SpecifiedTradePaymentTerms',
 		_content: [
