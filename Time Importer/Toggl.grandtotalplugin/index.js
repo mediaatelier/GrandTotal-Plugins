@@ -59,7 +59,7 @@ function timedEntries()
 	var aEndDate = new Date();
 	var aEndDateString = aEndDate.yyyymmdd();
 	var aStartDate = new Date();
-	aStartDate.setDate(aEndDate.getDate() - 300);
+	aStartDate.setDate(aEndDate.getDate() - 365);
 	var aStartDateString = aStartDate.yyyymmdd();
 
 
