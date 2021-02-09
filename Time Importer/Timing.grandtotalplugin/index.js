@@ -101,6 +101,7 @@ function timedEntries()
  			if (projectComponents.length == 1)
  			{
  				lineitem["project"] = projectComponents[0];
+ 			 	lineitem["client"] = localize("Move project '%' in a folder named after your client").replace("%",lineitem["project"]);
  			}
  			else
  			{
