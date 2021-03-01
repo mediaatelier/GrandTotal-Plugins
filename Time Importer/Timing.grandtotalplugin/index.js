@@ -80,11 +80,12 @@ function timedEntries()
 				var projectComponent = rawProjectComponents[index];
 				// Matches numbers in parentheses with zero or one dot at the end of the string.
 				// Group 1 is with parentheses, group 2 without.
-				var matches = projectComponent.match(/.+\s(\((\d+\.?\d*)\))$/);
+				var matches = projectComponent.match(/.+\s(\((\d+[\,\.]?\d*)\))$/);
 				
 				if (matches)
 				{
-					rate = parseFloat(matches[2]);
+					rate = matches[2].replace(",",".");
+					rate = parseFloat(rate);
 					projectComponent = projectComponent.replace(matches[1],"").trim();
 				}
 				projectComponents.push(projectComponent);
