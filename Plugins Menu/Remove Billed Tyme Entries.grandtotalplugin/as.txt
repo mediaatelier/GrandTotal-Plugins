@@ -1,0 +1,13 @@
+tell application "Tyme"
+	GetTaskRecordIDs startDate ((current date) - 9.9999999999E+10) endDate (current date)
+	set fetchedRecords to fetchedTaskRecordIDs as list
+	set myresult to {}
+	repeat with recordID in fetchedRecords
+		GetRecordWithID recordID
+		if billed of lastFetchedTaskRecord then
+			set myid to id of lastFetchedTaskRecord
+			set end of myresult to myid
+		end if
+	end repeat
+	return myresult
+end tell
