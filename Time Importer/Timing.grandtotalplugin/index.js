@@ -119,7 +119,7 @@ function timedEntries()
  			lineitem["category"] = line[5];
  			lineitem["notes"] = line[6];
  			lineitem["uid"] = "info.eurocomp.Timing.TaskActivity." + line[0];
- 			lineitem["url"] = "timing2://editTask/" + line[6];
+ 			lineitem["url"] = "timing2://editTask/" + line[0];
 			result.push(lineitem);
  		}
  		counter++
