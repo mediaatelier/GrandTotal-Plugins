@@ -64,7 +64,7 @@ function timedEntries()
 
 
 	var result = [];
-	var aWorkspaces = httpGetJSON("https://www.toggl.com/api/v8/workspaces");
+	var aWorkspaces = httpGetJSON("https://api.track.toggl.com/api/v8/workspaces");
 	if (aWorkspaces["grandtotal_error"])
 		return aWorkspaces["grandtotal_error"];
 		
@@ -89,7 +89,7 @@ function timedEntries()
 
 		/// get all projects first
 	
-		var aProjects = httpGetJSON("https://www.toggl.com/api/v8/workspaces/" + aWorkspaceID + "/projects");
+		var aProjects = httpGetJSON("https://api.track.toggl.com/api/v8/workspaces/" + aWorkspaceID + "/projects");
 		var aProjectIDs = {};
 	
 		
@@ -107,7 +107,7 @@ function timedEntries()
 
 		while (!lastpage)
 		{
-			var aArray = httpGetJSON("https://toggl.com/reports/api/v2/details?workspace_id=" + aWorkspaceID 	+"&since="+ aStartDateString + "&until="+ aEndDateString + "&user_agent=api_test&page=" + pageNum);
+			var aArray = httpGetJSON("https://api.track.toggl.com/reports/api/v2/details?workspace_id=" + aWorkspaceID 	+"&since="+ aStartDateString + "&until="+ aEndDateString + "&user_agent=api_test&page=" + pageNum);
 			var aItems = aArray["data"];
 				
 			for (aEntry in aItems)

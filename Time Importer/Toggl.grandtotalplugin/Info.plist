@@ -38,9 +38,9 @@
 		</dict>
 	</array>
 	<key>copyright</key>
-	<string>© 2018 Stefan Fürst</string>
+	<string>© 2018-2021 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>2.0</string>
+	<string>3.0</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your toggl token to allow access to your data. You can find the token in your toggl profile.</string>
 	<key>GrandTotalMinimumVersion</key>
