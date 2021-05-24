@@ -26,7 +26,7 @@ function calculate()
 			if (aValue.valueForKeyPath("field.name") == localize("Purchasing Price"))
 			{
 			
-				purchasingPrice += aValue.name * aItem.quantity;
+				purchasingPrice += parseFloat(aValue.name.replaceAll(',', '.')) * aItem.quantity;
 				sellingPrice += aItem.unitPrice * aItem.quantity;
 				break;
 			}
