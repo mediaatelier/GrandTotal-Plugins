@@ -48,7 +48,10 @@ function doExport()
 		aTotal			= document["grossAsString"];
 		aCurrency		= document["currency"];
 		aInvoiceDiscount= document["discountAsString"];
-		
+
+		aInvoiceDate = aInvoiceDate.toISOString().split('T')[0];
+		aDueDate = aDueDate.toISOString().split('T')[0];
+
 		// Item Properties
 		
 		for (item of document["items"])
