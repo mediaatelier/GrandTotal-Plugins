@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.sendto.XERO</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>4</integer>
 	<key>SendToMenu</key>
@@ -24,7 +24,7 @@
 		<string>Xero Invoices.csv</string>
 	</dict>
 	<key>copyright</key>
-	<string>© 2018 Stefan Fürst</string>
+	<string>© 2018-2021 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>sendtomenu</string>
