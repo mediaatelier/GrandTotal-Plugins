@@ -110,7 +110,10 @@ function timedEntries()
 		return "Check your settings, please";
 	}
 	
-	
+	if (aEntries["grandtotal_error"])
+	{
+		return aEntries["grandtotal_error"];
+	}
 	
 	var result = [];
 	for(aIndex in aEntries)
