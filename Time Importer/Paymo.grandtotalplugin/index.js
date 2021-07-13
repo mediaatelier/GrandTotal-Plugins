@@ -36,6 +36,11 @@ timedEntries();
 
 function httpGetJSON(theUrl)
 {
+	try {
+        sleep(1); /// Paymo quota limit introduced in July 2021
+	}
+		catch (exception) {
+	}
 	header = {Authorization:'Basic ' + base64Encode(token + ':api_token')};
 	string = loadURL("GET",theUrl,header);
 
@@ -80,6 +85,7 @@ function timedEntries()
 	var aClients = httpGetJSON("https://app.paymoapp.com/api/clients");
 	var aClientsLookup =  createIDLookUp(aClients["clients"]);
 	
+	
 	var aUsers = httpGetJSON("https://app.paymoapp.com/api/users");
 	var aUsersLookup =  createIDLookUp(aUsers["users"]);
 
@@ -87,11 +93,15 @@ function timedEntries()
 	var aTasksLookup =  createIDLookUp(aTasks["tasks"]);
 	
 	var aCompany = httpGetJSON("https://app.paymoapp.com/api/company");
-	var aCompanyRate = aCompany["company"]["default_price_per_hour"];
-
+	var aCompanyRate = 0;
+	if (aCompany["company"])
+	{
+		aCompanyRate = aCompany["company"]["default_price_per_hour"];
+	}
 	
-	var aProjectObjects = aProjects["projects"];
 
+	var aProjectObjects = aProjects["projects"];
+	
 
 	for (aProject in aProjectObjects)
 	{
@@ -100,7 +110,7 @@ function timedEntries()
 		var aProjectRate = aProjectObject["price_per_hour"];
 		var aClientID = aProjectObject["client_id"];
 
-	
+		
 		var aEntries = httpGetJSON("https://app.paymoapp.com/api/entries?where=project_id=" + aProjectObject["id"]);
 		if (!aEntries)
 		{
@@ -108,6 +118,7 @@ function timedEntries()
 		}
 	
 		var aEntryObjects = aEntries["entries"];
+		
 		
 		for (aEntry in aEntryObjects)
 		{
