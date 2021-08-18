@@ -7,11 +7,11 @@ tell application "TimingHelper"
 	tell reportSettings
 		set first grouping mode to raw
 		set second grouping mode to by project
-		set tasks included to true
-		set task title included to true
-		set also group by task title to true
-		set task timespan included to true
-		set task notes included to true
+		set time entries included to true
+		set time entry title included to true
+		set also group by time entry title to true
+		set time entry timespan included to true
+		set time entry notes included to true
 		set app usage included to false
 		set application info included to false
 		set timespan info included to false
