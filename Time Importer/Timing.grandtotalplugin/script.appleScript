@@ -2,8 +2,6 @@ tell application "TimingHelper"
 	set reportSettings to make report settings
 	set exportSettings to make export settings
 	
-	get properties of reportSettings
-	
 	tell reportSettings
 		set first grouping mode to raw
 		set second grouping mode to by project
