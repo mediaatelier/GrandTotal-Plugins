@@ -106,7 +106,14 @@ function timedEntries()
 				aItem["user"] = aEntry["user"]["firstName"];
 			}
 			aItem["cost"] = defaultRate * (aItem["minutes"] / 60);
-			aItem["startDate"] = aEntry["startDateUtc"].split("T")[0] + "T" + aEntry["startTimeUtc"] + "Z";
+			if (aEntry["startTimeUtc"])
+			{
+				aItem["startDate"] = aEntry["startDateUtc"].split("T")[0] + "T" + aEntry["startTimeUtc"] + "Z";
+			}
+			else
+			{
+				aItem["startDate"] = aEntry["startDateLocal"];
+			}
 			result.push(aItem);
 		}
 		page = page + 1;
