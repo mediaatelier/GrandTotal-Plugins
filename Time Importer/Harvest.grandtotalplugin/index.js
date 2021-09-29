@@ -99,7 +99,7 @@ function timedEntries()
 		{
 			aEntries = httpGetJSON(aNextpage);
 		}
-	} while (aNextpage && aEntries.length < 1000);
+	} while (aNextpage && aEntries.length < 100);
 	
 	return result;
 }
