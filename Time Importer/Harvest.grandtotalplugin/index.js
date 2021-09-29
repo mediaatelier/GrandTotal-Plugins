@@ -35,7 +35,7 @@ timedEntries();
 
 function urlForEndPoint(theEndPoint)
 {
-	return "https://api.harvestapp.com/api/v2/" + theEndPoint;
+	return "https://api.harvestapp.com/api/v2/" + theEndPoint + "?per_page=100";
 }
 
 
@@ -93,13 +93,13 @@ function timedEntries()
 			aItem["startDate"] = aEntry["spent_date"] + "T00:00:00";
 			result.push(aItem);
 		}
-		
+		log(aEntries);
 		var aNextpage = aEntries["links"]["next"];
 		if (aNextpage)
 		{
 			aEntries = httpGetJSON(aNextpage);
 		}
-	} while (aNextpage && aEntries.length < 100);
+	} while (aNextpage);
 	
 	return result;
 }
