@@ -93,7 +93,6 @@ function timedEntries()
 			aItem["startDate"] = aEntry["spent_date"] + "T00:00:00";
 			result.push(aItem);
 		}
-		log(aEntries);
 		var aNextpage = aEntries["links"]["next"];
 		if (aNextpage)
 		{
