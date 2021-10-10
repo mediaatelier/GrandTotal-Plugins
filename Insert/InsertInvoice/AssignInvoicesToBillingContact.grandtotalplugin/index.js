@@ -1,20 +1,19 @@
-var records = query().records();
+var records = query().records(); /// Get the inserted records. Usually an array of one
 
 var departments = ["Buchhaltung","Verwaltung","Billing","Bookkeeping"];
 
 for (i in records)
 {
 	var record = records[i];
-	var client = record.valueForKey("client");
-	var contacts = client.valueForKey("children").records();
+	var client = record.client;
+	var contacts = client.children.records();
 
 	for (c in contacts)
 	{
 		var contact = contacts[c];
-		var department = contact.valueForKey("department");
-		if (departments.includes(department))
+		if (departments.includes(contact.department))
 		{
-			record.setValueForKey(contact,"contact");
+			record.contact = contact;
 			break;
 		}
 	}
