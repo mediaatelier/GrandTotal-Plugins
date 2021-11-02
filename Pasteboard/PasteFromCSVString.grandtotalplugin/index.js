@@ -24,7 +24,7 @@ function paste()
 	
 	var string = pasteBoard["NSStringPboardType"];
 	var lines = parseCSVString(string);
-	
+		
 	for (index in lines)
 	{
 		var line = lines[index];
@@ -34,10 +34,10 @@ function paste()
 		if (!Number.isNaN(quantity) && !Number.isNaN(unitPrice))
 		{
 			aRec = insertRecord("Cost");
-			aRec.setValueForKey(quantity,"quantity");
-			aRec.setValueForKey(unitPrice,"unitPrice");
-			aRec.setValueForKey(line[2],"name");
-			aRec.setValueForKey(line[3],"notes");
+			aRec.quantity = quantity;
+			aRec.unitPrice = unitPrice;
+			aRec.name = line[2];
+			aRec.notes = line[3];
 			result.push(aRec);
 		}
 	}
