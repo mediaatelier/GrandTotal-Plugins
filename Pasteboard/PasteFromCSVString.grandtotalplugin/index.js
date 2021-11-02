@@ -40,6 +40,12 @@ function paste()
 			aRec.notes = line[3];
 			result.push(aRec);
 		}
+		else
+		{
+			aRec = insertRecord("Title");
+			aRec.name = line[0];
+			result.push(aRec);
+		}
 	}
 	return result;
 }
