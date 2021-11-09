@@ -70,19 +70,13 @@ timedEntries();
 
 function httpGetJSON(theUrl)
 {
-	
-
 	header = {"X-ClockodoApiUser":email,"X-ClockodoApiKey":token, "X-Clockodo-External-Application": "GrandTotal;info@mediaatelier.com"};
 	string = loadURL("GET",theUrl,header);
 	
-
 	if (string.length == 0)
 	{
 		return null;
 	}
-	
-
-	
 	return JSON.parse(string);
 }
 
@@ -128,77 +122,82 @@ function timedEntries()
 			}
 		}
 	}
-	var aEntries = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString);
-	
-	aEntries = aEntries["entries"];
-	
-	//log(aEntries);
 	
 	var result = [];
-	for (aIndex in aEntries)
+	var paging = {};
+	var page = 1;
+	do
 	{
-		var aItemResult = {};
-		var aEntry = aEntries[aIndex];
-		aRate = aEntry["hourly_rate"];
-
-		aItemResult["startDate"] = aEntry["time_since"].replace(/ /g, 'T')+"+"+aOffset;
-		aItemResult["uid"] = "com.clockodo." + aEntry["id"];
-		
-		var aProjectID = aEntry["projects_id"];
-		var aProject =  aProjects[aProjectID];
-		var aRevenueFactor = 1; // Default to 1 if no project
-		
-		if (aProject)
+		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page);
+		aPaging = aItems["paging"];
+		aEntries = aItems["entries"];
+		for (aIndex in aEntries)
 		{
-			aRevenueFactor = aProject["revenue_factor"];
-			var aBudget = aProject["budget_money"];
-			if (aBudget) //// only do this when there is a budget
+			var aItemResult = {};
+			var aEntry = aEntries[aIndex];
+			aRate = aEntry["hourly_rate"];
+
+			aItemResult["startDate"] = aEntry["time_since"].replace(/ /g, 'T')+"+"+aOffset;
+			aItemResult["uid"] = "com.clockodo." + aEntry["id"];
+		
+			var aProjectID = aEntry["projects_id"];
+			var aProject =  aProjects[aProjectID];
+			var aRevenueFactor = 1; // Default to 1 if no project
+		
+			if (aProject)
 			{
-				if ((!aRevenueFactor || aRevenueFactor == 0)) 
+				aRevenueFactor = aProject["revenue_factor"];
+				var aBudget = aProject["budget_money"];
+				if (aBudget) //// only do this when there is a budget
 				{
-					continue; // nothing to bill
+					if ((!aRevenueFactor || aRevenueFactor == 0)) 
+					{
+						continue; // nothing to bill
+					}
+				}
+			
+			}
+			if (aEntry["projects_name"])
+			{
+				aItemResult["project"] = aEntry["projects_name"];
+			}
+			if (aEntry["customers_name"])
+			{
+				aItemResult["client"] = aEntry["customers_name"];
+			}
+			if (aEntry["services_name"])
+			{
+				aItemResult["category"] = aEntry["services_name"];
+			}
+			if (aEntry["revenue"])
+			{
+				aItemResult["cost"] = aEntry["revenue"];
+			}
+			if (aEntry["text"])
+			{
+				aItemResult["notes"] = aEntry["text"];
+			}
+			if (aEntry["users_name"])
+			{
+				aItemResult["user"] = aEntry["users_name"];
+			}
+			if (aEntry["duration"] > 0 && ! aEntry["lumpSum"])
+			{
+				aItemResult["minutes"] = Math.round(aEntry["duration"] / 60);
+				{
+					aItemResult["cost"] = (aItemResult["minutes"] / 60) * aRate;
 				}
 			}
-			
-		}
-		if (aEntry["projects_name"])
-		{
-			aItemResult["project"] = aEntry["projects_name"];
-		}
-		if (aEntry["customers_name"])
-		{
-			aItemResult["client"] = aEntry["customers_name"];
-		}
-		if (aEntry["services_name"])
-		{
-			aItemResult["category"] = aEntry["services_name"];
-		}
-		if (aEntry["revenue"])
-		{
-			aItemResult["cost"] = aEntry["revenue"];
-		}
-		if (aEntry["text"])
-		{
-			aItemResult["notes"] = aEntry["text"];
-		}
-		if (aEntry["users_name"])
-		{
-			aItemResult["user"] = aEntry["users_name"];
-		}
-		if (aEntry["duration"] > 0 && ! aEntry["lumpSum"])
-		{
-			aItemResult["minutes"] = Math.round(aEntry["duration"] / 60);
+			aItemResult["url"] = "https://my.clockodo.com/en/entries/editentry?id=" + aEntry["id"];
+			if (aEntry["billable"] == 1)
 			{
-				aItemResult["cost"] = (aItemResult["minutes"] / 60) * aRate;
+				result.push(aItemResult);
 			}
 		}
-		aItemResult["url"] = "https://my.clockodo.com/en/entries/editentry?id=" + aEntry["id"];
-		if (aEntry["billable"] == 1)
-		{
-			result.push(aItemResult);
-		}
-	}
-	
+		
+		page++;
+
+	} while (aPaging["count_pages"] > aPaging["current_page"])
 
 
 	return result;
