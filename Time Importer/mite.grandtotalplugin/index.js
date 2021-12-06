@@ -57,11 +57,11 @@ function timedEntries()
 {
 	var result = [];
 
-	var aArray = httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active");
+	var aArray = httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000");
 	if (aArray["grandtotal_error"]) {
 		return aArray["grandtotal_error"];
 	}
-	
+		
 	for (var i = 0; i < aArray.length; i++) 
 	{
 		aEntry = aArray[i]["time_entry"];
