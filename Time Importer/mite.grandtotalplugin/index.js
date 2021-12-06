@@ -40,6 +40,8 @@ Date.prototype.yyyymmdd = function() {
 
 timedEntries();
 
+
+
 function httpGetJSON(theUrl)
 {
 	header = {Authorization:'Basic ' + base64Encode(token + ':api_token')};
@@ -52,36 +54,48 @@ function httpGetJSON(theUrl)
 }
 
 
+function getPage(page)
+{
+	return httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&page=" + page);
+}
+
+
 
 function timedEntries()
 {
 	var result = [];
-
-	var aArray = httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000");
-	if (aArray["grandtotal_error"]) {
-		return aArray["grandtotal_error"];
-	}
-		
-	for (var i = 0; i < aArray.length; i++) 
+	for (page = 1; page < 21; page++)
 	{
-		aEntry = aArray[i]["time_entry"];
-		var aItemResult = {};
-		aItemResult["client"] =  aEntry["customer_name"];
-		aItemResult["project"] =  aEntry["project_name"];
-		aItemResult["category"] =  aEntry["service_name"];
-		aItemResult["user"] =  aEntry["user_name"];
-		aItemResult["uid"] =  "lk.yo.mite." + aEntry["id"];
-		aItemResult["minutes"] = aEntry["minutes"];
-		aItemResult["rate"] = aEntry["hourly_rate"] / 100;
-		aItemResult["cost"] = aEntry["revenue"] / 100;
-		aItemResult["notes"] = aEntry["note"];
-		aItemResult["unit"] = "h";
-		aItemResult["startDate"] = aEntry["date_at"] + "T00:00:00";
-		var datePart = aEntry["date_at"].replace(/-/g,"/");
-		aItemResult["url"] = "https://"+ accountName + ".mite.yo.lk/daily#"+ datePart +"?open=time_entry_"+  aEntry["id"];
-		if (aEntry["billable"] > 0 && aEntry["locked"] == 0) {
-			result.push(aItemResult);
+		aArray = getPage(page);
+		if (aArray["grandtotal_error"]) 
+		{
+			return aArray["grandtotal_error"];
 		}
-	}
+		if (aArray.length == 0)
+		{
+			break;
+		}
+		for (var i = 0; i < aArray.length; i++) 
+		{
+			aEntry = aArray[i]["time_entry"];
+			var aItemResult = {};
+			aItemResult["client"] =  aEntry["customer_name"];
+			aItemResult["project"] =  aEntry["project_name"];
+			aItemResult["category"] =  aEntry["service_name"];
+			aItemResult["user"] =  aEntry["user_name"];
+			aItemResult["uid"] =  "lk.yo.mite." + aEntry["id"];
+			aItemResult["minutes"] = aEntry["minutes"];
+			aItemResult["rate"] = aEntry["hourly_rate"] / 100;
+			aItemResult["cost"] = aEntry["revenue"] / 100;
+			aItemResult["notes"] = aEntry["note"];
+			aItemResult["unit"] = "h";
+			aItemResult["startDate"] = aEntry["date_at"] + "T00:00:00";
+			var datePart = aEntry["date_at"].replace(/-/g,"/");
+			aItemResult["url"] = "https://"+ accountName + ".mite.yo.lk/daily#"+ datePart +"?open=time_entry_"+  aEntry["id"];
+			if (aEntry["billable"] > 0 && aEntry["locked"] == 0) {
+				result.push(aItemResult);
+			}
+		}
+	} 
 	return result;
 }
