@@ -71,10 +71,6 @@ function timedEntries()
 		{
 			return aArray["grandtotal_error"];
 		}
-		if (aArray.length == 0)
-		{
-			break;
-		}
 		for (var i = 0; i < aArray.length; i++) 
 		{
 			aEntry = aArray[i]["time_entry"];
@@ -95,6 +91,14 @@ function timedEntries()
 			if (aEntry["billable"] > 0 && aEntry["locked"] == 0) {
 				result.push(aItemResult);
 			}
+		}
+		if (aArray.length == 0)
+		{
+			break;
+		}
+		if (aArray.length < 1000)
+		{
+			break;
 		}
 	} 
 	return result;
