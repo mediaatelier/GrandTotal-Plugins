@@ -56,7 +56,7 @@ function httpGetJSON(theUrl)
 
 function getPage(page)
 {
-	return httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&page=" + page);
+	return httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
 }
 
 
