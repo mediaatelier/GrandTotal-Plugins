@@ -1,4 +1,4 @@
-"Info for Plugin" = "Dieses Plugin setzt Timing in der Expert Edition und einen Stundensatz in Einstellungen/Zeiterfassung voraus.";
+"Info for Plugin" = "Dieses Plugin erfordert ein Connect-Abonnement für Timing. Außerdem muss unter Einstellungen/Zeiterfassung ein Stundensatz konfiguriert sein.";
 "More about Timing" = "Mehr über Timing erfahren";
 "Please check Settings" = "Bitte Einstellungen überprüfen";
 "Set rate" = "Bitte in den GrandTotal/Einstellungen/Zeiterfassung einen Stundensatz festlegen";
