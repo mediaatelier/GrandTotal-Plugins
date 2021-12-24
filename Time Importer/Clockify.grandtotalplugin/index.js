@@ -259,13 +259,14 @@ function timedEntries()
 		
 				aTask = null;
 				aTaskID = aEntry["taskId"];
+				aTaskName = "";
+
 				if (aTaskID) {
 					aTask = aTasksLookup[aTaskID];
-					aTaskName = aTask["name"];
-				}
-				else
-				{
-					aTaskName = "";
+					if (aTask)
+					{
+						aTaskName = aTask["name"];
+					}
 				}
 		
 				aTagNames = "";
