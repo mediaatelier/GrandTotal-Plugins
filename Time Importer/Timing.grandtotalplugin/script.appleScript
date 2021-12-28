@@ -22,7 +22,7 @@ tell application "TimingHelper"
 		set short entries included to true
 	end tell
 	
-	save report with report settings reportSettings export settings exportSettings between (current date) - (365 * days) and current date to "<destination/>"
+	save report with report settings reportSettings export settings exportSettings between (current date) - (365 * 3 * days) and current date to "<destination/>"
 	
 	-- these commands are required to avoid accumulating old settings (and thus leaking memory)
 	delete reportSettings
