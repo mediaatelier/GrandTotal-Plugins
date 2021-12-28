@@ -60,8 +60,6 @@ function timedEntries()
 	script = script.replace("<destination/>",dest);
 	script = script.replace("<years/>",years);
 	
-	log(script);
-
  	executeAppleScript(script);
  	var content = contentsOfCSVFile(dest);
  	var counter = 0;
