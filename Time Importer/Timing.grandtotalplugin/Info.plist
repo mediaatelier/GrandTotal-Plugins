@@ -32,6 +32,14 @@
 		</dict>
 		<dict>
 			<key>label</key>
+			<string>Load entries older than 1 year</string>
+			<key>name</key>
+			<string>loadAll</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>label</key>
 			<string>More about Timing</string>
 			<key>url</key>
 			<string>https://timingapp.com/?ref=grandtotal</string>
@@ -42,7 +50,7 @@
 	<key>copyright</key>
 	<string>© 2018-2021 Timing</string>
 	<key>CFBundleVersion</key>
-	<string>1.6</string>
+	<string>1.7</string>
 	<key>GlobalsInfo</key>
 	<string>Info for Plugin</string>
 	<key>GrandTotalMinimumVersion</key>

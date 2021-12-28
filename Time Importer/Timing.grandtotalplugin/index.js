@@ -52,7 +52,16 @@ function timedEntries()
 	var path = PluginDirectory + "Script.applescript";
 	var script = contentsOfFile(path);
 	var dest = NSTemporaryDirectory + "Timing.csv";
+	var years = 1;
+	if (loadAll)
+	{
+		years = 5;
+	}
 	script = script.replace("<destination/>",dest);
+	script = script.replace("<years/>",years);
+	
+	log(script);
+
  	executeAppleScript(script);
  	var content = contentsOfCSVFile(dest);
  	var counter = 0;

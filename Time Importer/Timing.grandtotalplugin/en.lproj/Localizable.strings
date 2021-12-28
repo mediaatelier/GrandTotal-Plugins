@@ -4,5 +4,6 @@
 "Set rate" = "Please set an hourly rate in GrandTotal/Preferences/Work time";
 "Path contains" = "Project path must contain";
 "Round to" = "Round to";
+"Load entries older than 1 year" = "Einträge älter als 1 Jahr laden";
 "Minutes" = "Minutes";
 "Move project '%' in a folder named after your client" = "In Timing: Move project '%' in a folder named after your client";
