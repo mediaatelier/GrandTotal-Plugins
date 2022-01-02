@@ -24,7 +24,7 @@
 		<string>https://www.receipts-app.com/?ref=gt4</string>
 	</dict>
 	<key>copyright</key>
-	<string>© 2017 Stefan Fürst</string>
+	<string>© 2017-2022 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>sendtomenu</string>

@@ -24,7 +24,7 @@
 		<string>Xero Invoices.csv</string>
 	</dict>
 	<key>copyright</key>
-	<string>© 2018-2021 Stefan Fürst</string>
+	<string>© 2018-2022 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>sendtomenu</string>

@@ -32,7 +32,7 @@
 	<key>GrandTotalMinimumVersion</key>
 	<integer>5</integer>
 	<key>copyright</key>
-	<string>© 2015-2019 Stefan Fürst</string>
+	<string>© 2015-2022 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>
