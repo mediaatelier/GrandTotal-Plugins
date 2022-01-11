@@ -218,6 +218,19 @@ function timedEntries()
 				aRate = 0;
 				aProjectName = "";
 				aClientName = ""
+				
+				aTask = null;
+				aTaskID = aEntry["taskId"];
+				aTaskName = "";
+
+				if (aTaskID) {
+					aTask = aTasksLookup[aTaskID];
+					if (aTask)
+					{
+						aTaskName = aTask["name"];
+					}
+				}
+		
 
 				if (aProject)
 				{
@@ -236,8 +249,15 @@ function timedEntries()
 					{
 						aRate = aProjectRate / 100;
 					}
-					
-					
+				}
+				
+				if (aTask)
+				{
+					if (aTask["hourlyRate"])
+					{
+						aTaskRate =  aTask["hourlyRate"]["amount"];
+						aRate = aTaskRate / 100;
+					}
 				}
 				
 				for (aMembershipIndex in aUser["memberships"])
@@ -257,18 +277,7 @@ function timedEntries()
 				 	}
 				}
 		
-				aTask = null;
-				aTaskID = aEntry["taskId"];
-				aTaskName = "";
-
-				if (aTaskID) {
-					aTask = aTasksLookup[aTaskID];
-					if (aTask)
-					{
-						aTaskName = aTask["name"];
-					}
-				}
-		
+				
 				aTagNames = "";
 				aTagIDs = aEntry["tagIds"];
 				aTagNames = [];
