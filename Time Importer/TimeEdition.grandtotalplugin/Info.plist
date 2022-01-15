@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.timeEditionImporter</string>
+	<key>copyright</key>
+	<string>© 2022 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>Globals</key>
+	<array>	
+		<dict>
+			<key>label</key>
+			<string>More about timeEdition</string>
+			<key>url</key>
+			<string>http://www.timeedition.com</string>
+			<key>type</key>
+			<string>link</string>
+		</dict>
+	</array>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
