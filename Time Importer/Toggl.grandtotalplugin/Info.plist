@@ -44,7 +44,7 @@
 	<key>GlobalsInfo</key>
 	<string>Enter your toggl token to allow access to your data. You can find the token in your toggl profile.</string>
 	<key>GrandTotalMinimumVersion</key>
-	<real>4</real>
+	<real>5</real>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>
