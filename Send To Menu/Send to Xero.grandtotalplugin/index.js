@@ -33,6 +33,11 @@ function doExport()
 	{
 		// Document Properties
 		
+		if (!document["recipient"])
+		{
+			continue;
+		}
+		
 		aContactName	= document["recipient"]["name"];
 		aEmailAddress	= document["recipient"]["email"];
 		aPOAddressLine1	= document["recipient"]["street"];
