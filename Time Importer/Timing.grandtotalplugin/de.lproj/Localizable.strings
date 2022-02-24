@@ -1,9 +1,10 @@
-"Info for Plugin" = "Dieses Plugin erfordert ein Connect-Abonnement für Timing. Außerdem muss unter Einstellungen/Zeiterfassung ein Stundensatz konfiguriert sein.";
+"Info for Plugin" = "Dieses Plugin erfordert ein Connect-Abonnement für Timing. Außerdem muss unter Einstellungen/Zeiterfassung ein Stundensatz konfiguriert sein.\n\nUm Zeiten für ganze Teams zu listen, ist ein API Token aus dem Webinterface von Timing erforderlich.";
 "More about Timing" = "Mehr über Timing erfahren";
 "Please check Settings" = "Bitte Einstellungen überprüfen";
 "Set rate" = "Bitte in den GrandTotal/Einstellungen/Zeiterfassung einen Stundensatz festlegen";
 "Path contains" = "Projektpfad muss folgendes enthalten";
 "Round to" = "Runden auf";
 "Minutes" = "Minuten";
+"Only for Team accounts" = "Nur für Team-Konten";
 "Load entries older than 1 year" = "Einträge älter als 1 Jahr laden";
 "Move project '%' in a folder named after your client" = "In Timing: Bewege Projekt '%' in einen Ordner mit Kundenname";

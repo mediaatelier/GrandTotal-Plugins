@@ -1,4 +1,4 @@
-"Info for Plugin" = "This Plugin requires a subscription to the 'Connect' plan of Timing. It also requires an hourly rate to be set in Preferences/Work time.";
+"Info for Plugin" = "This Plugin requires a subscription to the 'Connect' plan of Timing. It also requires an hourly rate to be set in Preferences/Work time.\n\nTo list times for entire teams, an API token from Timing's web interface is required.";
 "More about Timing" = "More about Timing";
 "Please check Settings" = "Please check Settings";
 "Set rate" = "Please set an hourly rate in GrandTotal/Preferences/Work time";

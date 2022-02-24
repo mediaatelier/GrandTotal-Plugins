@@ -40,7 +40,6 @@
 */
 
 
-
 timedEntries();
 
 function timedEntries()
@@ -49,6 +48,50 @@ function timedEntries()
 	{
 		return localize("Set rate");
 	}
+	
+	if (token)
+	{
+		return timeEntriesAPI();
+	}
+	else
+	{
+		return timeEntriesLocal();
+	}
+}
+
+
+function timeEntriesAPI()
+{
+	var url = "https://web.timingapp.com/api/v1/time-entries?is_running=false&include_project_data=true&include_team_members=true";
+	counter = 0;
+	while (url)
+	{
+		var response = httpGetJSON(url);
+		var items =  response["data"];
+		var meta =  response["meta"];
+		var url = meta["links"][2]["url"];
+		if (typeof(url) != "string")
+		{
+			url = null;
+		}
+		var result = [];
+		for (itemToParse of items) 
+		{
+			lineitem = transformItem(itemToParse,"https://web.timingapp.com/time-entries/");
+			result.push(lineitem);
+		}
+		counter++;
+		if (counter > 3)
+		{
+			break;
+		}
+	}
+	return result;
+}
+
+	
+function timeEntriesLocal()
+{	
 	var path = PluginDirectory + "Script.applescript";
 	var script = contentsOfFile(path);
 	var dest = NSTemporaryDirectory + "Timing.csv";
@@ -72,65 +115,21 @@ function timedEntries()
  	{
  		if (counter > 0)
  		{
- 			lineitem = {};
- 			lineitem["startDate"] = line[2];
- 			lineitem["minutes"] = line[1] / 60;
+ 			var project = {};
+ 			var itemToParse = {};
+ 			itemToParse["project"] = project;
+ 			itemToParse["start_date"] = line[2];
+ 			itemToParse["duration"] = line[1];
+ 			itemToParse["notes"] = line[6];
+ 			itemToParse["title"] = line[5];
+ 			itemToParse["self"] = line[0];
  			var projectPath = line[4];
- 			var rawProjectComponents = projectPath.split(" ▸ "); 
- 			
+			project["title_chain"] =  projectPath.split(" ▸ ");
  			if (filterString && !projectPath.includes(filterString))
  			{
  				continue;
  			}
- 			
- 			
- 			var rate = defaultRate;
- 			var projectComponents = new Array();
- 			for (index in rawProjectComponents)
- 			{
-				var projectComponent = rawProjectComponents[index];
-				// Matches numbers in parentheses with zero or one dot at the end of the string.
-				// Group 1 is with parentheses, group 2 without.
-				var matches = projectComponent.match(/.+\s(\((\d+[\,\.]?\d*)\))$/);
-				
-				if (matches)
-				{
-					rate = matches[2].replace(",",".");
-					rate = parseFloat(rate);
-					projectComponent = projectComponent.replace(matches[1],"").trim();
-				}
-				projectComponents.push(projectComponent);
-			}
-			 			
- 			var clientOffset = 0;
- 			
- 			// if root is eg. "billable" this folder is ingnored
- 			if (projectComponents[0] == filterString && projectComponents.length > 2)
- 			{
- 			 	var clientOffset = 1;
- 			}
- 			
- 			if (projectComponents.length == 1)
- 			{
- 				lineitem["project"] = projectComponents[0];
- 			 	lineitem["client"] = localize("Move project '%' in a folder named after your client").replace("%",lineitem["project"]);
- 			}
- 			else
- 			{
- 			 	lineitem["client"] = projectComponents[clientOffset];
- 				lineitem["project"] = projectComponents[clientOffset + 1];
- 			}
- 			var aMinutes = lineitem["minutes"];
- 			if (aMinutes > 0 && roundTo > 0)
-			{
-				aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
-				lineitem["minutes"] = aMinutes;
-			}
- 			lineitem["cost"] = rate * lineitem["minutes"] / 60;
- 			lineitem["category"] = line[5];
- 			lineitem["notes"] = line[6];
- 			lineitem["uid"] = "info.eurocomp.Timing.TaskActivity." + line[0];
- 			lineitem["url"] = "timing2://editTask/" + line[0];
+ 			var lineitem = transformItem(itemToParse,"timing2://editTask/");
 			result.push(lineitem);
  		}
  		counter++
@@ -138,5 +137,103 @@ function timedEntries()
  	return result;
 }
 
+
+function transformItem(item,urlPrefix)
+{
+	lineitem = {};
+	var rate = defaultRate;
+	if (item["project"])
+	{
+		var parsedComponents = parseComponents(item["project"]["title_chain"]);
+		if (parsedComponents["rate"])
+		{
+			rate = parsedComponents["rate"];
+		}
+		lineitem["client"] = parsedComponents["client"];
+		lineitem["project"] = parsedComponents["project"];
+	}
+	lineitem["category"] = fixString(item["title"]);
+	lineitem["user"] = fixString(item["creator_name"]);
+	lineitem["startDate"] = item["start_date"];
+	lineitem["notes"] = fixString(item["notes"]);
+	lineitem["minutes"] = item["duration"] / 60;
+
+	var aMinutes = lineitem["minutes"];
+	if (aMinutes > 0 && roundTo > 0)
+	{
+		aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
+		lineitem["minutes"] = aMinutes;
+	}
+	lineitem["cost"] = rate * lineitem["minutes"] / 60;
+	var uid = item["self"].split("/").pop();
+	lineitem["uid"] = "info.eurocomp.Timing.TaskActivity." + uid;
+	lineitem["url"] = urlPrefix + uid;
+	return lineitem;
+}
+
+
+function fixString(string)
+{
+	if (typeof(string) == "string") 
+	{
+		return string;
+	}
+	return "";
+}
+
+
+function parseComponents(rawComponents)
+{
+	var result = {};
+	var projectComponents = new Array();
+	for (index in rawComponents)
+	{
+		var projectComponent = rawComponents[index];
+		// Matches numbers in parentheses with zero or one dot at the end of the string.
+		// Group 1 is with parentheses, group 2 without.
+		var matches = projectComponent.match(/.+\s(\((\d+[\,\.]?\d*)\))$/);
+		
+		if (matches)
+		{
+			rate = matches[2].replace(",",".");
+			rate = parseFloat(rate);
+			result["rate"] = rate;
+			projectComponent = projectComponent.replace(matches[1],"").trim();
+		}
+		projectComponents.push(projectComponent);
+	}
+				
+	var clientOffset = 0;
+	
+	// if root is eg. "billable" this folder is ingnored
+	if (projectComponents[0] == filterString && projectComponents.length > 2)
+	{
+		var clientOffset = 1;
+	}
+	
+	if (projectComponents.length == 1)
+	{
+		result["project"] = projectComponents[0];
+		result["client"] = localize("Move project '%' in a folder named after your client").replace("%",lineitem["project"]);
+	}
+	else
+	{
+		result["client"] = projectComponents[clientOffset];
+		result["project"] = projectComponents[clientOffset + 1];
+	}
+	return result;
+}
+
+
+function httpGetJSON(theUrl)
+{
+	header = {Authorization:'Bearer ' + token};
+	string = loadURL("GET",theUrl,header);
+	if (string.length == 0)
+	{
+		return null;
+	}
+	return result =  JSON.parse(string);
+}
 
 
