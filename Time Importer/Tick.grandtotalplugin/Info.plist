@@ -40,6 +40,8 @@
 	<string>© 2015-2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
 	<string>4.0.1</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Tick.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your tick token and subscription id to allow access to your data. You can obtain both values in your tick users settings.</string>
 	<key>GrandTotalMinimumVersion</key>

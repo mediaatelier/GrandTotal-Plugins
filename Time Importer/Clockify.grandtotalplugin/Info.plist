@@ -41,6 +41,8 @@
 	<string>© 2019-2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
 	<string>1.0.3</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockify.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your clockify api key to allow access to your data. You can find the token in your clockify profile.</string>
 	<key>GrandTotalMinimumVersion</key>

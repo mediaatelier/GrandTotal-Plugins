@@ -29,6 +29,8 @@
 	</array>
 	<key>GlobalsInfo</key>
 	<string>Enter your clockodo token to allow access to your data. You can find the token in your clockodo settings.</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockodo.grandtotalplugin.zip</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>5</integer>
 	<key>copyright</key>

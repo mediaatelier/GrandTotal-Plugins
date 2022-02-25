@@ -10,6 +10,8 @@
 	<string>© 2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/TimeEdition.grandtotalplugin.zip</string>
 	<key>GrandTotalMinimumVersion</key>
 	<real>4</real>
 	<key>Globals</key>

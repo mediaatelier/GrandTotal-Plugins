@@ -23,6 +23,8 @@
 	<string>Enter your Everhour token to allow access to your data. You can find the token in your Everhour settings.</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>6</integer>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Everhour.grandtotalplugin.zip</string>
 	<key>copyright</key>
 	<string>© 2020-2022 Stefan Fürst</string>
 	<key>types</key>

@@ -37,6 +37,8 @@
 	</array>
 	<key>GlobalsInfo</key>
 	<string>Enter your Harvest account ID and token to allow access to your data.</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Harvest.grandtotalplugin.zip</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>6</integer>
 	<key>copyright</key>

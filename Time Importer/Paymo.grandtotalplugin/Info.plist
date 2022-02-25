@@ -33,6 +33,8 @@
 	<string>© 2015-2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
 	<string>5.0</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Paymo.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your paymo token to allow access to your data. You can generate the token in your paymo profile.</string>
 	<key>GrandTotalMinimumVersion</key>
