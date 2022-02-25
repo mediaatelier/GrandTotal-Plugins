@@ -62,7 +62,7 @@ function timedEntries()
 
 function timeEntriesAPI()
 {
-	var url = "https://web.timingapp.com/api/v1/time-entries?is_running=false&include_project_data=true&include_team_members=true";
+	var url = "https://web.timingapp.com/api/v1/time-entries?is_running=false&include_project_data=true&include_team_members=true&start_date_min=2010-01-01T00%3A00%3A00%2B00%3A00&start_date_max=2040-12-31T23%3A59%3A59%2B00%3A00";
 	counter = 0;
 	while (url)
 	{
@@ -77,6 +77,11 @@ function timeEntriesAPI()
 		var result = [];
 		for (itemToParse of items) 
 		{
+			if (filterString && !item["project"]["title_chain"].join(" ▸ ").includes(filterString))
+			{
+				continue;
+			}
+
 			lineitem = transformItem(itemToParse,"https://web.timingapp.com/time-entries/");
 			result.push(lineitem);
 		}
