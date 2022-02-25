@@ -57,6 +57,8 @@
 			<string>link</string>
 		</dict>
 	</array>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Timing.grandtotalplugin.zip</string>
 	<key>copyright</key>
 	<string>© 2018-2022 Timing</string>
 	<key>CFBundleVersion</key>
