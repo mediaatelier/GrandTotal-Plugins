@@ -8,5 +8,7 @@ Once installed, you can edit the JavaScript file in place. Changes on the .plist
 Localization is done the standard way using a strings file in the corresponding .lproj folder.
 ### Things you should know
 Only one plugin is allowed per bundle identifier. Plugins in the users library will override built-in plugins with the same identifier.
+#### Automatic updates
+Installing new version of GrandTotal will automatically update plugins. Make sure you use custom bundle identifiers on modified versions of the plugins. Otherwise they cloud be replaced.
 
 
