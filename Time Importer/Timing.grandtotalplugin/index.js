@@ -227,7 +227,7 @@ function parseComponents(rawComponents)
 	// if root is eg. "billable" this folder is ingnored
 	if (projectComponents[0] == filterString && projectComponents.length > 2)
 	{
-		var clientOffset = 1;
+		 clientOffset = 1;
 	}
 	result["category"] = "";
 	if (projectComponents.length == 1)
