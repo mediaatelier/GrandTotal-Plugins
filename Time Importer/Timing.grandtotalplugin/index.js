@@ -165,8 +165,13 @@ function transformItem(item,urlPrefix)
 		}
 		lineitem["client"] = parsedComponents["client"];
 		lineitem["project"] = parsedComponents["project"];
+		lineitem["category"] = parsedComponents["category"];
+		
 	}
-	lineitem["category"] = fixString(item["title"]);
+	if (item["title"])
+	{
+		lineitem["category"] = fixString(item["title"]);
+	}
 	lineitem["user"] = fixString(item["creator_name"]);
 	lineitem["startDate"] = item["start_date"];
 	lineitem["notes"] = fixString(item["notes"]);
@@ -224,7 +229,7 @@ function parseComponents(rawComponents)
 	{
 		var clientOffset = 1;
 	}
-	
+	result["category"] = "";
 	if (projectComponents.length == 1)
 	{
 		result["project"] = projectComponents[0];
@@ -234,6 +239,10 @@ function parseComponents(rawComponents)
 	{
 		result["client"] = projectComponents[clientOffset];
 		result["project"] = projectComponents[clientOffset + 1];
+		if (projectComponents.length > clientOffset + 1)
+		{
+			result["category"] = projectComponents[clientOffset + 2];
+		}
 	}
 	return result;
 }
