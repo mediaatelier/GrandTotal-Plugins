@@ -23,6 +23,9 @@
 		<key>ApplicationURL</key>
 		<string>https://www.receipts-app.com/?ref=gt4</string>
 	</dict>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Send%20To%20Menu/Send%20to%20Receipts.grandtotalplugin.zip</string>
+
 	<key>copyright</key>
 	<string>© 2017-2022 Stefan Fürst</string>
 	<key>types</key>

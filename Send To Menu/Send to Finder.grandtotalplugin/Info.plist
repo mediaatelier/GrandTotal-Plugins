@@ -23,6 +23,8 @@
 		<key>ApplicationFileName</key>
 		<string>GrandTotal</string>
 	</dict>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Send%20To%20Menu/Send%20to%20Xero.grandtotalplugin.zip</string>
 	<key>copyright</key>
 	<string>© 2020-2022 Stefan Fürst</string>
 	<key>types</key>
