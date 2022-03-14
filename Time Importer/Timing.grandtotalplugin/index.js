@@ -159,7 +159,8 @@ function transformItem(item,urlPrefix)
 	if (item["project"])
 	{
 		var parsedComponents = parseComponents(item["project"]["title_chain"]);
-		if (parsedComponents["rate"])
+
+		if (parsedComponents["rate"] != null)
 		{
 			rate = parsedComponents["rate"];
 		}
