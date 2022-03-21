@@ -30,6 +30,13 @@
 	
 */
 
+Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+};
+
 
 
 timedEntries();
@@ -122,17 +129,19 @@ function timedEntries()
 	
 	var aOrganizationID = aOrganization["id"];
 	
-	var aProjects = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/projects?state[]=active","projects");
+	var aProjects = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/projects","projects");
 	var aProjectsLookup = createIDLookUp(aProjects);
 	
 	/// this call fails currently. Maybe it will be fixed
-	var aUsers = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/users?state[]=active","users");
+	var aUsers = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/users","users");
 	var aUsersLookup = createIDLookUp(aUsers);
 		
-	var aTasks = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/tasks?state[]=active","tasks");
+	var aTasks = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/tasks","tasks");
 	var aTasksLookup = createIDLookUp(aTasks);
-
-	var aTimes = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/report/time-entries","time_entries");
+	
+	var date = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+		
+	var aTimes = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/report/time-entries?from=" + date.yyyymmdd(),"time_entries");
 
 	for (i in aTimes)
 	{
