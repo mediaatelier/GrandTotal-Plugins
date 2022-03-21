@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.pdf</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.nl.keeping</string>
+	<key>Globals</key>
+	<array>
+	<dict>
+		<key>label</key>
+			<string>Organization</string>
+			<key>name</key>
+			<string>organization</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>API key</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Generate token here</string>
+			<key>type</key>
+			<string>link</string>
+			<key>url</key>
+			<string>https://keeping.nl/account/developer</string>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2022-2022 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Keeping.grandtotalplugin.zip</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your Keeping token to allow access to your data.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>7</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
