@@ -99,9 +99,14 @@ function timedEntries()
 		return localize("Set rate");
 	}
 	
-
 	var result = [];
-	var aOrganizations = httpGetJSON("https://api.keeping.nl/v1/organisations")["organisations"];
+	var aOrganizationsData = httpGetJSON("https://api.keeping.nl/v1/organisations");
+
+	if (aOrganizationsData["server_error"])
+	{
+		return aOrganizationsData["server_error"]["error"]["message"];
+	}
+	var aOrganizations = aOrganizationsData["organisations"];
 	var aOrganization = aOrganizations[0];
 	
 	for (i in aOrganizations)
