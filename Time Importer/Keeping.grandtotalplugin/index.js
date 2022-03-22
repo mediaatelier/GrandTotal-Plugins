@@ -147,6 +147,10 @@ function timedEntries()
 	{
 		var aTime = aTimes[i];
 		
+		if (aTime["ongoing"] == 1)
+		{
+			continue;
+		}
 		var aItemResult = {};
 		
 		aProject = aProjectsLookup[aTime["project_id"]];
@@ -177,8 +181,7 @@ function timedEntries()
 			aItemResult["notes"] = aTime["note"];
 		}
 
-		aItemResult["uid"] = "nl.keeping." + aTime["id"];
-
+		aItemResult["uid"] = "nl.keeping." + aOrganizationID + "." + aTime["id"];
 
 		result.push(aItemResult);
 	}
