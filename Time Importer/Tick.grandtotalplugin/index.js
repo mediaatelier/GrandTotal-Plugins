@@ -84,6 +84,10 @@ function urlForEndPoint(theEndPoint)
 
 function timedEntries()
 {
+	if (defaultRate == 0)
+	{
+		return localize("Set rate");
+	}
 	var aEndDate = new Date();
 	var aEndDateString = aEndDate.yyyymmdd();
 	var aStartDate = new Date();
@@ -136,7 +140,7 @@ function timedEntries()
 		aItemResult["project"] = aProjectObject["name"];
 		var aClientObject = aClientsLookup[aProjectObject["client_id"]];
 		aItemResult["client"] = aClientObject["name"];
-		aItemResult["cost"] = (aItemResult["minutes"] / 60) * rate;
+		aItemResult["cost"] = (aItemResult["minutes"] / 60) * defaultRate;
 		aItemResult["uid"] = "com.tickspot." + aEntryObject["id"];
 		result.push(aItemResult);
 	}

@@ -24,22 +24,11 @@
 			<key>type</key>
 			<string>string</string>
 		</dict>
-		<dict>
-			<key>label</key>
-			<string>Rate/h</string>
-			<key>name</key>
-			<string>rate</string>
-			<key>type</key>
-			<string>number</string>
-		</dict>
-		
-		
-		
 	</array>
 	<key>copyright</key>
 	<string>© 2015-2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>4.0.1</string>
+	<string>4.0.2</string>
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Tick.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
