@@ -329,7 +329,7 @@ function timedEntries()
 				if (aNotes) {
 					aItem["notes"] = aNotes;
 				}
-				aItem["user"] =  aUserName + "("+ aWorkspaceName +")";
+				aItem["user"] =  aUserName + " ("+ aWorkspaceName +")";
 				result.push(aItem);
 			}
 			page ++;
