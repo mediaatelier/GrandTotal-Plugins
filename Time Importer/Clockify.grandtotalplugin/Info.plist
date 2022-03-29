@@ -6,6 +6,8 @@
 	<string>Icon.pdf</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.clockifyimporter</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.5</string>
 	<key>Globals</key>
 	<array>
 		<dict>
@@ -16,37 +18,35 @@
 			<key>type</key>
 			<string>password</string>
 		</dict>
-			<dict>
+		<dict>
+			<key>buttonlabel</key>
+			<string>Minutes</string>
+			<key>default</key>
+			<real>1</real>
 			<key>label</key>
 			<string>Round to</string>
 			<key>name</key>
 			<string>roundTo</string>
-			<key>buttonlabel</key>
-			<string>Minutes</string>
 			<key>type</key>
 			<string>integer</string>
-			<key>default</key>
-			<real>1</real>
 		</dict>
 		<dict>
 			<key>label</key>
 			<string>Profile</string>
-			<key>url</key>
-			<string>https://clockify.me/user/settings</string>
 			<key>type</key>
 			<string>link</string>
+			<key>url</key>
+			<string>https://clockify.me/user/settings</string>
 		</dict>
 	</array>
-	<key>copyright</key>
-	<string>© 2019-2022 Stefan Fürst</string>
-	<key>CFBundleVersion</key>
-	<string>1.0.4</string>
-	<key>URL</key>
-	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockify.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your clockify api key to allow access to your data. You can find the token in your clockify profile.</string>
 	<key>GrandTotalMinimumVersion</key>
 	<real>6</real>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockify.grandtotalplugin.zip</string>
+	<key>copyright</key>
+	<string>© 2019-2022 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>

@@ -7,9 +7,9 @@
 	<key>copyright</key>
 	<string>© 2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.0</string>
+	<string>1.0.1</string>
 	<key>GrandTotalMinimumVersion</key>
-	<real>7.0</real>
+	<real>7.3</real>
 	<key>types</key>
 	<array>
 		<string>estimates</string>
