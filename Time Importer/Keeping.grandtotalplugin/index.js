@@ -166,7 +166,10 @@ function timedEntries()
 				aItemResult["client"] = aClient["name"];
 			}
 		}
-		aItemResult["category"] = aTask["name"];
+		if (aTask)
+		{
+			aItemResult["category"] = aTask["name"];
+		}
 		aItemResult["minutes"] = Math.round(aTime["hours"] * 60);
 		if (aUser)
 		{
