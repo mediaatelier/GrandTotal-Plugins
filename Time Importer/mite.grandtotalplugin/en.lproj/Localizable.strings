@@ -2,3 +2,4 @@
 "Your mite token" = "Your API-Key";
 "Enter your mite token to allow access to your data. You can find the token in your mite user profile." = "Enter your mite API-key to allow access to your data. You can find the key in your mite user profile.";
 "Created %d records" = "Created %d records";
+"Ignored %d duplicates" = "Ignored %d duplicates";

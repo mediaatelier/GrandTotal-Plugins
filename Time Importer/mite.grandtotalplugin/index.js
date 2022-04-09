@@ -117,7 +117,7 @@ function importTimedEntries()
 			aItemResult["cost"] = aEntry["revenue"] / 100;
 			aItemResult["notes"] = aEntry["note"];
 			aItemResult["unit"] = "h";
-			aItemResult["startDate"] = aEntry["date_at"] + "T00:00:00";
+			aItemResult["startDate"] = new Date(aEntry["date_at"] + "T00:00:00");
 			var datePart = aEntry["date_at"].replace(/-/g,"/");
 			aItemResult["url"] = "https://"+ accountName + ".mite.yo.lk/daily#"+ datePart +"?open=time_entry_"+  aEntry["id"];
 			if (aEntry["billable"] > 0 && aEntry["locked"] == 0) {
@@ -188,22 +188,70 @@ function getRecordForNameInEndpoint(lookup,name,endpoint,value,extraKey,extraVal
 
 function exportTimedEntries()
 {
+	var existingItems = importTimedEntries();
+	
 	customers = getEndpointValues("customers","customer");
 	projects = getEndpointValues("projects","project");
 	services = getEndpointValues("services","service");
 	
+	skipCount = 0;
+	addCount = 0;
 	
 	for (i in timeentries)
 	{
 		entry = timeentries[i];
-
+		skip = false;
+		for (ii in existingItems)
+		{
+			existingEntry = existingItems[ii];
+			if (entry["client"] == existingEntry["client"])
+			{
+				if (entry["project"] == existingEntry["project"])
+				{
+					if (entry["category"] == existingEntry["category"])
+					{
+						if (entry["minutes"] == existingEntry["minutes"])
+						{
+							if (entry["startDate"].yyyymmdd() == existingEntry["startDate"].yyyymmdd())
+							{
+								skip = true;
+							} 
+						}
+					}
+				}
+			}
+		}
+		
+		if (skip)
+		{
+			skipCount++;
+			continue;
+		}
+		
 		clientName = entry["client"];
 		client = getRecordForNameInEndpoint(customers,clientName,"customers","customer");
+		if (!client)
+		{
+			ingoreCount++;
+			continue;
+		}
 		projectName = entry["project"];
 		project = getRecordForNameInEndpoint(projects,projectName,"projects","project","customer_id",client["id"]);
+		if (!project)
+		{
+			ingoreCount++;
+			continue;
+		}
 		serviceName = entry["category"];
 		service = getRecordForNameInEndpoint(services,serviceName,"services","service","hourly_rate",entry["rate"] * 100);
+		if (!service)
+		{
+			ingoreCount++;
+			continue;
+		}
 		
+		addCount++;
+
 		payload = {};
 		payload["note"] = entry["notes"];
 		payload["minutes"] = entry["duration"] / 60;
@@ -215,6 +263,9 @@ function exportTimedEntries()
 		httpPostJSON("https://" + accountName + ".mite.yo.lk/" + "time_entries" + ".json",body);
 	}
 	
-	displayUserNotification("mite",localize("Created %d records").replace("%d",timeentries.length));	
+	displayUserNotification("mite",
+		localize("Created %d records").replace("%d",addCount) + "\n" + 
+		localize("Ignored %d duplicates").replace("%d",skipCount)
+	);	
 
 }
