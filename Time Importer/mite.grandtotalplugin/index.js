@@ -37,8 +37,14 @@ Date.prototype.yyyymmdd = function() {
    return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
 };
 
-
-timedEntries();
+if (pluginType() == "timeexporter")
+{
+	exportTimedEntries();
+}
+else
+{
+	importTimedEntries();
+}
 
 
 
@@ -54,14 +60,40 @@ function httpGetJSON(theUrl)
 }
 
 
+function httpPostJSON(theUrl,body)
+{
+	header = {Authorization:'Basic ' + base64Encode(token + ':api_token'),'content-type':'application/json'};
+	string = loadURL("POST",theUrl,header,JSON.stringify(body));
+	if (string.length == 0)
+	{
+		return null;
+	}
+	return JSON.parse(string);
+}
+
+
 function getPage(page)
 {
 	return httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
 }
 
 
+function getEndpointValues(endpoint,value)
+{
+	result = {};
+	list = httpGetJSON("https://" + accountName + ".mite.yo.lk/" + endpoint + ".json");
+	for (item in list)
+	{
+		record = list[item][value];
+		keyValue = record["id"];
+		result[keyValue] = record;
+	}
+	return result;
+}
 
-function timedEntries()
+
+
+function importTimedEntries()
 {
 	var result = [];
 	for (page = 1; page < 21; page++)
@@ -102,4 +134,87 @@ function timedEntries()
 		}
 	} 
 	return result;
+}
+
+
+function getRecordForNameInEndpoint(lookup,name,endpoint,value,extraKey,extraValue)
+{
+	if (!name) {
+		return null;
+	}
+	
+	record = null;
+	
+	for (i in lookup)
+	{
+		testrecord = lookup[i];
+		if (testrecord["name"] == name)
+		{
+			if (extraKey && extraValue)
+			{
+				if (testrecord[extraKey] == extraValue)
+				{
+					record = testrecord;
+					break;
+				}
+			}
+			else
+			{
+				record = testrecord;
+				break;
+			}
+		}
+	}
+	
+
+	if (!record)
+	{
+		payload = {};
+		payload["name"] = name;
+		if (extraKey && extraValue)
+		{
+			payload[extraKey] = extraValue;
+		}
+		body = {};
+		body[value] = payload;
+		item = httpPostJSON("https://" + accountName + ".mite.yo.lk/" + endpoint + ".json",body);
+		record = item[value];
+		keyValue = record["id"];
+		lookup[keyValue] = record;
+	}
+	return record;
+}
+
+
+function exportTimedEntries()
+{
+	customers = getEndpointValues("customers","customer");
+	projects = getEndpointValues("projects","project");
+	services = getEndpointValues("services","service");
+	
+	
+	for (i in timeentries)
+	{
+		entry = timeentries[i];
+
+		clientName = entry["client"];
+		client = getRecordForNameInEndpoint(customers,clientName,"customers","customer");
+		projectName = entry["project"];
+		project = getRecordForNameInEndpoint(projects,projectName,"projects","project","customer_id",client["id"]);
+		serviceName = entry["category"];
+		service = getRecordForNameInEndpoint(services,serviceName,"services","service","hourly_rate",entry["rate"] * 100);
+		
+		payload = {};
+		payload["note"] = entry["notes"];
+		payload["minutes"] = entry["duration"] / 60;
+		payload["service_id"] = service["id"];
+		payload["project_id"] = project["id"];
+		payload["date_at"] = entry["startDate"].yyyymmdd();
+		body = {};
+		body["time_entry"] = payload;
+		httpPostJSON("https://" + accountName + ".mite.yo.lk/" + "time_entries" + ".json",body);
+	}
+	
+	displayUserNotification("mite",localize("Created %d records").replace("%d",timeentries.length));	
+
 }

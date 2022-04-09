@@ -28,16 +28,17 @@
 	<key>copyright</key>
 	<string>© 2018-2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/mite.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your mite token to allow access to your data. You can find the token in your mite user profile.</string>
 	<key>GrandTotalMinimumVersion</key>
-	<real>4</real>
+	<real>7.3</real>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>
+		<string>timeexporter</string>
 	</array>
 </dict>
 </plist>
