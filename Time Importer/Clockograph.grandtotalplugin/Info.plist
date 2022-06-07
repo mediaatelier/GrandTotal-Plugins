@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.pdf</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.importer.clockograph</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Your API key</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+	</array>
+	<key>copyright</key>
+	<string>© 2022 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/clockograph.grandtotalplugin.zip</string>
+	<key>GlobalsInfo</key>
+	<string>Enter your Clockograph API key to allow access to your data. You can find the token in your Clockograph user profile.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>7.3</real>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
