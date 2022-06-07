@@ -77,7 +77,7 @@ function importTimedEntries()
 				
 	
 		response = httpPostJSON("https://1.clockograph.com/api/graphql",query);
-		if (!response) {
+		if (response["grandtotal_error"]) {
 			return localize("Please check your settings");
 		}
 		rows = response["data"]["myRecordTimes"]["nodes"];

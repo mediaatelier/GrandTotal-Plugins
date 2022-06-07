@@ -20,9 +20,9 @@
 	<key>copyright</key>
 	<string>© 2022 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>URL</key>
-	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/clockograph.grandtotalplugin.zip</string>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockograph.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
 	<string>Enter your Clockograph API key to allow access to your data. You can find the token in your Clockograph user profile.</string>
 	<key>GrandTotalMinimumVersion</key>
