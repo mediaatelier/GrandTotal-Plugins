@@ -72,11 +72,14 @@ function importTimedEntries()
 
 	do
 	{
-		query = { "query": "query myRecordTimes($startsGte: String, $before: String) { myRecordTimes(startsAt:{gte:$startsGte}, last:100, before:$before) { nodes { id, startsAt, startsAt, duration, cost, subproject { name, project { name, client { name } } } } pageInfo { startCursor hasPreviousPage } }}", 
+		query = { "query": "query myRecordTimes($startsGte: String, $before: String) { myRecordTimes(startsAt:{gte:$startsGte}, last:100, before:$before) { nodes { id, startsAt, startsAt, duration, cost, labels {name}, subproject { name, project { name, client { name } } } } pageInfo { startCursor hasPreviousPage } }}", 
 				"variables": {"startsGte": startDate.toISOString(), "before": startCursor} };
 				
 	
 		response = httpPostJSON("https://1.clockograph.com/api/graphql",query);
+		if (!response) {
+			return localize("Please check your settings");
+		}
 		rows = response["data"]["myRecordTimes"]["nodes"];
 		pageInfo = response["data"]["myRecordTimes"]["pageInfo"];
 
@@ -90,12 +93,13 @@ function importTimedEntries()
 			{
 				continue;
 			}
-		
+	
 			aItemResult["uid"] =  "1.clockograph.com." + aEntry["id"];
 			aItemResult["minutes"] = aEntry["duration"];
 			aItemResult["startDate"] = aEntry["startsAt"];
 			aItemResult["notes"] = aEntry["note"];
 			aItemResult["cost"] = aEntry["cost"];
+			aItemResult["label"] = aEntry["labels"].map(label => label.name).join(", ");
 			aItemResult["category"] = aEntry["subproject"]["name"];
 			aItemResult["project"] = aEntry["subproject"]["project"]["name"];
 			aItemResult["client"] = aEntry["subproject"]["project"]["client"]["name"];

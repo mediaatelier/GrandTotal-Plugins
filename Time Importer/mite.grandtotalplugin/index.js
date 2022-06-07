@@ -232,21 +232,18 @@ function exportTimedEntries()
 		client = getRecordForNameInEndpoint(customers,clientName,"customers","customer");
 		if (!client)
 		{
-			ingoreCount++;
 			continue;
 		}
 		projectName = entry["project"];
 		project = getRecordForNameInEndpoint(projects,projectName,"projects","project","customer_id",client["id"]);
 		if (!project)
 		{
-			ingoreCount++;
 			continue;
 		}
 		serviceName = entry["category"];
 		service = getRecordForNameInEndpoint(services,serviceName,"services","service","hourly_rate",entry["rate"] * 100);
 		if (!service)
 		{
-			ingoreCount++;
 			continue;
 		}
 		
