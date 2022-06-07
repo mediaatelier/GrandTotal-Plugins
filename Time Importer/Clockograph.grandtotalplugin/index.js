@@ -67,21 +67,32 @@ function importTimedEntries()
 	var startDate = new Date();
 	startDate.setFullYear(startDate.getFullYear() - 1);
 	startCursor = "";
+	
+	
+	query = { "query": "{teams { nodes { id, name }}}" }
+	response = httpPostJSON("https://1.clockograph.com/api/graphql",query);
+	if (response["grandtotal_error"]) {
+		return localize("Please check your settings");
+	}
+	
+	
+	teamID = response["data"]["teams"]["nodes"][0]["id"];
+	
+
 		
 	var result = [];
 
 	do
 	{
-		query = { "query": "query myRecordTimes($startsGte: String, $before: String) { myRecordTimes(startsAt:{gte:$startsGte}, last:100, before:$before) { nodes { id, startsAt, startsAt, duration, cost, labels {name}, subproject { name, project { name, client { name } } } } pageInfo { startCursor hasPreviousPage } }}", 
-				"variables": {"startsGte": startDate.toISOString(), "before": startCursor} };
+		query = {  "query": "query recordTimesByTeamId($teamId: ID, $startsGte: String, $before: String) { recordTimesByTeamId(teamId:$teamId, startsAt:{gte:$startsGte}, last:1000, before:$before) { nodes { id, startsAt, duration, note, labels { name }, cost, subproject { name, project { name, client { name } } }, teamMember { nickname } } pageInfo { startCursor hasPreviousPage } }}", 
+			
+			"variables": {"teamId" :teamID, "startsGte": startDate.toISOString(), "before": startCursor} };
 				
 	
 		response = httpPostJSON("https://1.clockograph.com/api/graphql",query);
-		if (response["grandtotal_error"]) {
-			return localize("Please check your settings");
-		}
-		rows = response["data"]["myRecordTimes"]["nodes"];
-		pageInfo = response["data"]["myRecordTimes"]["pageInfo"];
+		
+		rows = response["data"]["recordTimesByTeamId"]["nodes"];
+		pageInfo = response["data"]["recordTimesByTeamId"]["pageInfo"];
 
 	
 		for (var i = 0; i < rows.length; i++)
@@ -103,7 +114,8 @@ function importTimedEntries()
 			aItemResult["category"] = aEntry["subproject"]["name"];
 			aItemResult["project"] = aEntry["subproject"]["project"]["name"];
 			aItemResult["client"] = aEntry["subproject"]["project"]["client"]["name"];
-		
+			aItemResult["user"] = aEntry["teamMember"]["nickname"];
+
 			result.push(aItemResult);
 		}
 		startCursor = pageInfo["startCursor"];
