@@ -118,8 +118,11 @@ function timedEntries()
 		var aMinutes = aTimeEntry["DurationMinutes"];
 		var aProjectID = aTimeEntry["ProjectId"];
 		var aProject =  aProjectsLookup[aProjectID];
-		var aClientID = aProject["Customer_Id"];
-		var aCustomer = aCustomersLookup[aClientID];
+		if (aProject)
+		{
+			var aClientID = aProject["Customer_Id"];
+			var aCustomer = aCustomersLookup[aClientID];
+		}
 		var aUserID = aTimeEntry["UserId"];
 		var aUser = aUsersLookup[aUserID];
 		
