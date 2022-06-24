@@ -151,7 +151,7 @@ function timedEntries()
 			aProject = aProjects[aProjectIndex];
 			aProjectID = aProject["id"];
 			aProjectLookup[aProjectID] = aProject;
-			var aTasks = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects/"+aProjectID+"/tasks");
+			var aTasks = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects/"+aProjectID+"/tasks?page-size=5000");
 	
 			for(aTasksIndex in aTasks)
 			{
@@ -250,6 +250,7 @@ function timedEntries()
 						aRate = aProjectRate / 100;
 					}
 				}
+			
 				
 				if (aTask)
 				{
