@@ -138,6 +138,9 @@ function timeEntriesLocal()
  			itemToParse["title"] = line[5];
  			itemToParse["self"] = line[0];
  			var projectPath = line[4];
+ 			if (!projectPath) {
+ 				projectPath = "";
+ 			}
 			project["title_chain"] =  projectPath.split(" ▸ ");
  			if (filterString && !projectPath.includes(filterString))
  			{
