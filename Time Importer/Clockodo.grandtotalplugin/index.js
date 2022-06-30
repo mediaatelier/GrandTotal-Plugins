@@ -130,6 +130,9 @@ function timedEntries()
 	{
 		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page);
 		aPaging = aItems["paging"];
+		if (!aPaging) {
+			break;
+		}
 		aEntries = aItems["entries"];
 		for (aIndex in aEntries)
 		{
