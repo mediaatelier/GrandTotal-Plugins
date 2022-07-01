@@ -38,8 +38,8 @@ Date.prototype.yyyymmddhhss = function() {
    var min =  this.getMinutes().toString();
    var ss =  this.getSeconds().toString();
 
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]) + " " + (hh[1]?hh:"0"+hh[0]) + ":"
-   + (min[1]?min:"0"+min[0]) + ":" + (ss[1]?ss:"0"+ss[0])
+   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]) + "T" + (hh[1]?hh:"0"+hh[0]) + ":"
+   + (min[1]?min:"0"+min[0]) + ":" + (ss[1]?ss:"0"+ss[0]) + "Z"
    ; // padding
 };
 
@@ -61,7 +61,7 @@ function createIDLookUp(theJSON)
 
 function urlForEndPoint(theEndPoint)
 {
-	return "https://my.clockodo.com/api/" + theEndPoint;
+	return "https://my.clockodo.com/api/v2/" + theEndPoint;
 }
 
 
@@ -101,50 +101,50 @@ function timedEntries()
 	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
 	
 	
-	var aCustomers = httpGetJSON( urlForEndPoint("customers"));
-	aCustomers = aCustomers["customers"];
-	if (!aCustomers)
+	
+	var aUser = httpGetJSON( urlForEndPoint("aggregates/users/me"));
+	
+	if (!aUser["user"])
 	{
 		return "Check your settings, please";
 	}
-	var aProjects = {};
-
-	for (aIndex in aCustomers)
-	{
-		var aClientProjects = aCustomers[aIndex]["projects"];
-		if (aClientProjects)
-		{
-			for (aPIndex in aClientProjects)
-			{
-				var aProject = aClientProjects[aPIndex];
-				var aProjectID =  aProject["id"];
-				aProjects[aProjectID] = aProject;
-			}
-		}
-	}
+	
+	
+	var aProjects = httpGetJSON( urlForEndPoint("projects"));
+	aProjects = aProjects["projects"];
+	var aProjectsLookup = createIDLookUp(aProjects);
+	
 	
 	var result = [];
 	var paging = {};
 	var page = 1;
 	do
 	{
-		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page);
+		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page + "&enhanced_list=true");
 		aPaging = aItems["paging"];
-		if (!aPaging) {
+		
+		if (!aPaging)
+		{
+			displayUserNotification(localize("Too many requests for clockodo"),localize("Please wait or switch to another service"));
 			break;
 		}
+
+		
 		aEntries = aItems["entries"];
 		for (aIndex in aEntries)
 		{
 			var aItemResult = {};
 			var aEntry = aEntries[aIndex];
+			
+			
+
 			aRate = aEntry["hourly_rate"];
 
-			aItemResult["startDate"] = aEntry["time_since"].replace(/ /g, 'T')+"+"+aOffset;
+			aItemResult["startDate"] = aEntry["time_since"];
 			aItemResult["uid"] = "com.clockodo." + aEntry["id"];
 		
 			var aProjectID = aEntry["projects_id"];
-			var aProject =  aProjects[aProjectID];
+			var aProject =  aProjectsLookup[aProjectID];
 			var aRevenueFactor = 1; // Default to 1 if no project
 		
 			if (aProject)
@@ -160,17 +160,17 @@ function timedEntries()
 				}
 			
 			}
-			if (aEntry["projects_name"])
+			if (aProjectID)
 			{
 				aItemResult["project"] = aEntry["projects_name"];
 			}
-			if (aEntry["customers_name"])
+			if (aEntry["customers_id"])
 			{
 				aItemResult["client"] = aEntry["customers_name"];
 			}
-			if (aEntry["services_name"])
+			if (aEntry["services_id"])
 			{
-				aItemResult["category"] = aEntry["services_name"];
+				aItemResult["category"] = aEntry["services_name"];;
 			}
 			if (aEntry["revenue"])
 			{
@@ -199,6 +199,7 @@ function timedEntries()
 		}
 		
 		page++;
+		
 
 	} while (aPaging["count_pages"] > aPaging["current_page"])
 
