@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.sendto.MonKeyOffice</string>
+	<key>CFBundleVersion</key>
+	<string>1.1</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>7</integer>
+	<key>SendToMenu</key>
+	<dict>
+		<key>ApplicationFileExtension</key>
+		<string>txt</string>
+		<key>ApplicationIdentifiers</key>
+		<array>
+			<string>com.prosaldo.monkeyoffice2021</string>
+			<string>com.prosaldo.monkeyoffice2022</string>
+			<string>com.prosaldo.monkeyoffice2023</string>
+		</array>
+		<key>ApplicationMinimumVersion</key>
+		<string>1.0</string>
+		<key>ApplicationName</key>
+		<string>MonKey Office</string>
+		<key>AskForFile</key>
+		<true/>
+		<key>ApplicationFileName</key>
+		<string>MonKeyOffice.txt</string>
+	</dict>
+	<key>copyright</key>
+	<string>© 2022 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>sendtomenu</string>
+	</array>
+</dict>
+</plist>
