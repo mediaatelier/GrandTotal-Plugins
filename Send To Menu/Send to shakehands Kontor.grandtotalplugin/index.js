@@ -29,6 +29,7 @@ function doExport()
 	var fields = contentsOfCSVFile(PluginDirectory + "Template.txt")[0];
 	
 	lines.push(fields);
+	
 
 	for (document of items)
 	{
@@ -59,7 +60,7 @@ function doExport()
 		aInvoiceDiscount= document["discountAsString"];
 		aInvoiceSubject	= document["subject"];
 		aInvoiceProject	= document["project"];
-
+		
 		if (mode == 1)
 		{
 			aInvoiceDate	= document["datePaid"];
@@ -78,20 +79,17 @@ function doExport()
 			
 			aGrossAmount 	= item["grossAsString"];
 			aTaxPercentage 	= item["taxPercentage"];
-			aHaben 			= "8110";
+			aHaben 			= "6099";
 
-			if (aTaxPercentage == 19)
+			if (aTaxPercentage == 7.7)
 			{
-				aHaben	= "8400";
+				aHaben	= "6200";
 			}
-			else if (aTaxPercentage == 16)
+			else if (aTaxPercentage == 2.5)
 			{
-				aHaben	= "8340";
+				aHaben	= "6100";
 			}
-			else if (aTaxPercentage == 7)
-			{
-				aHaben	= "8300";
-			}
+		
 
 			
 			line = [];
@@ -116,7 +114,7 @@ function doExport()
 			addFieldValue(line,"BelegNr",aInvoiceNumber,fields);
 			addFieldValue(line,"Text",text,fields);
 			addFieldValue(line,"Währung",aCurrency,fields);
-			addFieldValue(line,"KontoSoll","1200",fields);
+			addFieldValue(line,"KontoSoll","1050",fields);
 			addFieldValue(line,"KontoHaben",aHaben,fields);
 			addFieldValue(line,"Betrag",aGrossAmount,fields);
 

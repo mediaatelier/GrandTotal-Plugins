@@ -1,0 +1,1 @@
+Firma_id	Datum	BelegNr	Referenz	Währung	Text	KontoSoll	KontoHaben	Betrag	Steuersatz	Kostenstelle1	Kostenstelle2	Notiz
