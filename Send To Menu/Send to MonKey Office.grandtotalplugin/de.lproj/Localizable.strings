@@ -1,1 +1,6 @@
 "Company ID" = "Firmen ID";
+"Debit" = "Soll";
+"Credit 19%" = "Haben 19%";
+"Credit 16%" = "Haben 16%";
+"Credit 7%" = "Haben 7%";
+"Credit 0%" = "Haben Steuerfrei";
