@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.sendto.shakehandsKontor</string>
 	<key>CFBundleVersion</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>7</integer>
 	<key>URL</key>
@@ -23,6 +23,46 @@
 			<string>string</string>
 			<key>default</key>
 			<string>1</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Debit</string>
+			<key>name</key>
+			<string>debitAccount</string>
+			<key>type</key>
+			<string>string</string>
+			<key>default</key>
+			<string>1050</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Credit 7.7%</string>
+			<key>name</key>
+			<string>credit_7_7_Account</string>
+			<key>type</key>
+			<string>string</string>
+			<key>default</key>
+			<string>6200</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Credit 2.5%</string>
+			<key>name</key>
+			<string>credit_2_5_Account</string>
+			<key>type</key>
+			<string>string</string>
+			<key>default</key>
+			<string>6100</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Credit 0%</string>
+			<key>name</key>
+			<string>credit_0_Account</string>
+			<key>type</key>
+			<string>string</string>
+			<key>default</key>
+			<string>6099</string>
 		</dict>
 	</array>
 	<key>SendToMenu</key>

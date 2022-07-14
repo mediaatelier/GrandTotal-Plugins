@@ -79,15 +79,15 @@ function doExport()
 			
 			aGrossAmount 	= item["grossAsString"];
 			aTaxPercentage 	= item["taxPercentage"];
-			aHaben 			= "6099";
+			aCreditAccount 	= credit_0_Account;
 
 			if (aTaxPercentage == 7.7)
 			{
-				aHaben	= "6200";
+				aCreditAccount	= credit_7_7_Account;
 			}
 			else if (aTaxPercentage == 2.5)
 			{
-				aHaben	= "6100";
+				aCreditAccount	= credit_2_5_Account;
 			}
 		
 
@@ -114,8 +114,8 @@ function doExport()
 			addFieldValue(line,"BelegNr",aInvoiceNumber,fields);
 			addFieldValue(line,"Text",text,fields);
 			addFieldValue(line,"Währung",aCurrency,fields);
-			addFieldValue(line,"KontoSoll","1050",fields);
-			addFieldValue(line,"KontoHaben",aHaben,fields);
+			addFieldValue(line,"KontoSoll",debitAccount,fields);
+			addFieldValue(line,"KontoHaben",aCreditAccount,fields);
 			addFieldValue(line,"Betrag",aGrossAmount,fields);
 
 			lines.push(line);
