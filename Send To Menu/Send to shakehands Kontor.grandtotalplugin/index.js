@@ -28,7 +28,7 @@ function doExport()
 	var lines = [];	
 	var fields = contentsOfCSVFile(PluginDirectory + "Template.txt")[0];
 	
-	lines.push(fields);
+	// lines.push(fields); // No headers
 	
 
 	for (document of items)
@@ -80,6 +80,11 @@ function doExport()
 			aGrossAmount 	= item["grossAsString"];
 			aTaxPercentage 	= item["taxPercentage"];
 			aCreditAccount 	= credit_0_Account;
+			aTaxName		= "U" + aTaxPercentage.toString() + "B";
+			if (aTaxPercentage == 0)
+			{
+				aTaxName = "";
+			}
 
 			if (aTaxPercentage == 7.7)
 			{
@@ -117,6 +122,7 @@ function doExport()
 			addFieldValue(line,"KontoSoll",debitAccount,fields);
 			addFieldValue(line,"KontoHaben",aCreditAccount,fields);
 			addFieldValue(line,"Betrag",aGrossAmount,fields);
+			addFieldValue(line,"Steuersatz",aTaxName,fields);
 
 			lines.push(line);
 		}
