@@ -84,7 +84,7 @@ function importTimedEntries()
 
 	do
 	{
-		query = {  "query": "query recordTimesByTeamId($teamId: ID, $startsGte: String, $before: String) { recordTimesByTeamId(teamId:$teamId, startsAt:{gte:$startsGte}, last:1000, before:$before) { nodes { id, startsAt, duration, note, labels { name }, cost, subproject { name, project { name, client { name } } }, teamMember { nickname } } pageInfo { startCursor hasPreviousPage } }}", 
+		query = {  "query": "query recordTimesByTeamId($teamId: ID, $startsGte: String, $before: String) { recordTimesByTeamId(teamId:$teamId, startsAt:{gte:$startsGte}, last:1000, before:$before) { nodes { id, startsAt, duration, note, labels { name }, rate, price, subproject { name, project { name, client { name } } }, teamMember { nickname } } pageInfo { startCursor hasPreviousPage } }}", 
 			
 			"variables": {"teamId" :teamID, "startsGte": startDate.toISOString(), "before": startCursor} };
 				
@@ -109,7 +109,8 @@ function importTimedEntries()
 			aItemResult["minutes"] = aEntry["duration"];
 			aItemResult["startDate"] = aEntry["startsAt"];
 			aItemResult["notes"] = aEntry["note"];
-			aItemResult["cost"] = aEntry["cost"];
+      aItemResult["rate"] = aEntry["rate"];
+			aItemResult["cost"] = aEntry["price"];
 			aItemResult["label"] = aEntry["labels"].map(label => label.name).join(", ");
 			aItemResult["category"] = aEntry["subproject"]["name"];
 			aItemResult["project"] = aEntry["subproject"]["project"]["name"];
@@ -123,5 +124,3 @@ function importTimedEntries()
 	
 	return result;
 }
-
-
