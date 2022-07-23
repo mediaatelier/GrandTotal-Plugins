@@ -1,4 +1,3 @@
-
 "Enter your clockodo token to allow access to your data. You can find the token in your clockodo settings." = "Gebe deinen clockodo Token ein, um Zugriff auf deine Daten zu erlauben. Den Token findet man in den clockodo Einstellungen.";
 "Include fixed cost items" = "Pauschalbetr\U00e4ge anzeigen";
 "Please wait or switch to another service" = "Bitte warten Sie oder wechseln Sie zu einem anderen Dienst";
@@ -6,3 +5,4 @@
 "Too many requests for clockodo" = "Eingeschr\U00e4nkt durch clockodo: Zu viele Anfragen";
 "Your e-mail" = "Deine E-mail";
 "Your token" = "Dein Token";
+"Clockodo" = "Clocko:do";
