@@ -1,5 +1,5 @@
 
-if (pluginType() == "pluginsMenu")
+if (pluginType() == "pluginsmenu")
 {
 	runInfo();
 }
