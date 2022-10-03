@@ -57,15 +57,19 @@ function timedEntries()
 	var clients = entries["groups"];
  	var nodes = entries["nodes"];
 
+ 	clients["ARCHIVE"] = {"type":"archive"};
+
 	parents = {};
- 	
+	 	
  	for (node of nodes)
  	{ 	
  		if (node["parent"])
  		{
 			parents[node["id"]] = clients[node["parent"]];
  		}
+ 		
 	}
+	
  	
  	var tasks = entries["tasks"];
  	var keys = Object.keys(tasks)
@@ -80,9 +84,17 @@ function timedEntries()
  		project = task["title"];
  		records = task["records"];
  		
- 		client = parents[key];
-
  		
+ 		client = parents[key];
+ 		if (client)
+ 		{
+ 			if (client["type"] == "archive")
+ 			{
+ 				continue;
+ 			}
+ 		}
+ 		
+
  		for (record of records)
  		{
  			start = new Date(record["start"]);
