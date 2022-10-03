@@ -261,20 +261,37 @@ function timedEntries()
 					}
 				}
 				
+				
+				var aCostRate = 30;
+			
+
 				for (aMembershipIndex in aUser["memberships"])
 				{
 					var aMembership = aUser["memberships"][aMembershipIndex];
+					
 
 					if (aMembership["membershipType"] == "WORKSPACE" && aRate == 0 && aMembership["hourlyRate"])
 					{
 						aMembershipRate =  aMembership["hourlyRate"]["amount"]
 				 		aRate = aMembershipRate / 100;
+				 		
+				 		if (aMembership["costRate"])
+				 		{
+				 			aMembershipCostRate =  aMembership["costRate"]["amount"];
+				 			aCostRate = aMembershipCostRate / 100;
+				 		}
 					}
 					
 				 	if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"])
 				 	{
 				 		aMembershipRate =  aMembership["hourlyRate"]["amount"]
 				 		aRate = aMembershipRate / 100;
+				 		
+				 		if (aMembership["costRate"])
+				 		{
+				 			aMembershipCostRate =  aMembership["costRate"]["amount"];
+				 			aCostRate = aMembershipCostRate / 100;
+				 		}
 				 	}
 				}
 		
@@ -306,16 +323,13 @@ function timedEntries()
 					}
 				}
 				
-				
-				
-			
-		
 				aItem["uid"] = aEntryID;
 				aItem["project"] = aProjectName;
 				aItem["client"] = aClientName;
 				aItem["minutes"] = aMinutes;
 				aItem["category"] = aTaskName;
 				aItem["cost"] = aRate * aMinutes / 60;
+				aItem["costPrice"] = aCostRate;
 		
 				aMinutes = aItem["minutes"];
 				if (aMinutes > 0 && roundTo > 0)
@@ -331,6 +345,7 @@ function timedEntries()
 					aItem["notes"] = aNotes;
 				}
 				aItem["user"] =  aUserName + " ("+ aWorkspaceName +")";
+								
 				result.push(aItem);
 			}
 			page ++;
