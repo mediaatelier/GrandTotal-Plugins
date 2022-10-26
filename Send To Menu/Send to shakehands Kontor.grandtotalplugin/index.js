@@ -94,8 +94,7 @@ function doExport()
 			{
 				aCreditAccount	= credit_2_5_Account;
 			}
-		
-
+			
 			
 			line = [];
 			
@@ -113,6 +112,12 @@ function doExport()
 				text = text + " | " + aClientName;
 			}
 			
+			
+			if (aCurrency == "CHF")
+			{
+				var factor = 0.05;
+			   	aGrossAmount = Math.round(aGrossAmount / factor) * factor;
+			}
 			
 			addFieldValue(line,"Firma_id",companyID,fields);
 			addFieldValue(line,"Datum",aInvoiceDate,fields);
