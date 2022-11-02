@@ -3,3 +3,4 @@
 "Enter your mite token to allow access to your data. You can find the token in your mite user profile." = "Den mite API-Schlüssel eingeben, um Zugriff auf die Daten zu erlauben. Den Schlüssel findet man in seinem mite-Profil.";
 "Created %d records" = "%d Einträge angelegt";
 "Ignored %d duplicates" = "%d Duplikate ignoriert";
+"Please replace the email in the settings with the account name" = "Bitte die E-Mail in den Einstellungen mit dem Kontonamen ersetzen";
