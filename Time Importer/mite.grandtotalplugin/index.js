@@ -95,6 +95,10 @@ function getEndpointValues(endpoint,value)
 
 function importTimedEntries()
 {
+	if (accountName.indexOf("@") !== -1)
+	{
+		return localize("Please replace the email in the settings with the account name");
+	}
 	var result = [];
 	for (page = 1; page < 21; page++)
 	{
