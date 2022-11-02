@@ -1,2 +1,0 @@
-"Enter your Stripe secret key" = "Bitte den Stripe Geheimschlüssel eingeben. Der Zahlungslink wird beim Versand eines Dokuments in das benutzerdefinierte Feld 'stripe_link' eingetragen";
-"StripePaymentLink" = "Stripe Bezahl-Link";

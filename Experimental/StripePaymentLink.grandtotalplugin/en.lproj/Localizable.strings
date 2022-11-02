@@ -1,2 +1,0 @@
-"Enter your Stripe secret key" = "Enter your Stripe secret key. The payment link is entered in the user-defined field 'stripe_link' when sending a document";
-"StripePaymentLink" = "Stripe Payment Link";
