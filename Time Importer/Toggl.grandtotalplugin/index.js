@@ -64,7 +64,7 @@ function timedEntries()
 
 
 	var result = [];
-	var aWorkspaces = httpGetJSON("https://api.track.toggl.com/api/v8/workspaces");
+	var aWorkspaces = httpGetJSON("https://api.track.toggl.com/api/v9/workspaces");
 	if (aWorkspaces["grandtotal_error"])
 		return aWorkspaces["grandtotal_error"];
 		
@@ -89,7 +89,7 @@ function timedEntries()
 
 		/// get all projects first
 	
-		var aProjects = httpGetJSON("https://api.track.toggl.com/api/v8/workspaces/" + aWorkspaceID + "/projects");
+		var aProjects = httpGetJSON("https://api.track.toggl.com/api/v9/workspaces/" + aWorkspaceID + "/projects");
 		var aProjectIDs = {};
 	
 		
