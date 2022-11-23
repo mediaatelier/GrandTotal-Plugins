@@ -30,19 +30,8 @@
 	
 */
 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
-};
-
 
 timedEntries();
-
-
-
-
 
 function timedEntries()
 {
@@ -58,9 +47,7 @@ function timedEntries()
 	}
 	var nodes = db.executeQuery("SELECT * FROM ZNODE");
 	
-	
 	var newNodes = {};
-	
 	for (const node of nodes)
 	{
 		var newNode = {};
@@ -74,7 +61,6 @@ function timedEntries()
 		
 	var sessions = db.executeQuery("SELECT * FROM ZSESSION");
 	var result = [];
-	
 	for (const session of sessions)
 	{
 		seconds = session["ZCONFIRMEDDURATION"];
@@ -92,14 +78,12 @@ function timedEntries()
 		resultItem["uid"] = cleanString(session["ZIDENTIFIER"]);
 		resultItem["cost"] = rate * (minutes / 60);
 		
-		
 		category = newNodes[taskID];
 		resultItem["category"] = category["name"];
 		if (category["archived"])
 		{
 			continue;
 		}
-		
 		if (category["parentID"])
 		{
 			project = newNodes[category["parentID"]];
@@ -108,7 +92,6 @@ function timedEntries()
 			{
 				continue;
 			}
-		
 			if (project["parentID"])
 			{
 				client = newNodes[project["parentID"]];
@@ -120,7 +103,6 @@ function timedEntries()
 			}
 		}
 		result.push(resultItem);
-
 	}
 	db.close();
 	return result;
@@ -142,4 +124,3 @@ function cleanDate(input)
 	result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
 	return result;
 }
-
