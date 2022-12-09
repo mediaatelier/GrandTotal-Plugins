@@ -66,7 +66,6 @@ function timedEntries()
 	aStartDate.setDate(aEndDate.getDate() - 180);
 	var aStartDateString = aStartDate.yyyymmdd();
 
-
 	var result = [];
 	var aArray = httpGetJSON("https://api.clockify.me/api/v1/user");
 
@@ -196,7 +195,7 @@ function timedEntries()
 		do 
 		{
 	
-			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/user/"+aUserID+"/time-entries/?page-size=200&is-active=true&page="+page);
+			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/user/"+aUserID+"/time-entries/?page-size=5000&is-active=true&page="+page);
 			for(aEntriesIndex in aEntries)
 			{
 				aItem = {};
@@ -350,7 +349,7 @@ function timedEntries()
 			}
 			page ++;
 		}
-		while (aEntries.length != 0 && page < 11);
+		while (aEntries.length != 0 && page < 3);
 	
 	}
 	
