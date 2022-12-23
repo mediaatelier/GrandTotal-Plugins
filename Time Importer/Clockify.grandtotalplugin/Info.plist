@@ -46,7 +46,7 @@
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockify.grandtotalplugin.zip</string>
 	<key>copyright</key>
-	<string>© 2019-2022 Stefan Fürst</string>
+	<string>© 2019-2023 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>

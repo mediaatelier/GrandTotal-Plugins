@@ -32,7 +32,7 @@
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Tim.grandtotalplugin.zip</string>
 	<key>copyright</key>
-	<string>© 2022 Stefan Fürst</string>
+	<string>© 2022-2023 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>GlobalsInfo</key>

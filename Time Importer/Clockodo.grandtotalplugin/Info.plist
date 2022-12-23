@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.clockodoImporter</string>
 	<key>CFBundleVersion</key>
-	<string>3.0.1</string>
+	<string>3.0.2</string>
 	<key>Globals</key>
 	<array>
 		<dict>
@@ -34,7 +34,7 @@
 	<key>GrandTotalMinimumVersion</key>
 	<integer>5</integer>
 	<key>copyright</key>
-	<string>© 2015-2022 Stefan Fürst</string>
+	<string>© 2015-2023 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>

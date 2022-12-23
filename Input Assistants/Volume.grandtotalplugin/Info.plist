@@ -44,7 +44,7 @@
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Input%20Assistants/Volume.grandtotalplugin.zip</string>
 	<key>copyright</key>
-	<string>© 2015 Stefan Fürst</string>
+	<string>© 2015-2023 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
 	<string>1.1</string>
 	<key>width</key>

@@ -42,7 +42,7 @@
 	<key>GrandTotalMinimumVersion</key>
 	<integer>6</integer>
 	<key>copyright</key>
-	<string>© 2020-2022 Stefan Fürst</string>
+	<string>© 2020-2023 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>
