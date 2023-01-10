@@ -95,7 +95,7 @@ function timedEntries()
 	aEndDate.setDate(aEndDate.getDate() + 1);
 	var aEndDateString = aEndDate.yyyymmddhhss();
 	var aStartDate = new Date();
-	aStartDate.setDate(aEndDate.getDate() - 90);
+	aStartDate.setDate(aEndDate.getDate() - 365);
 	var aStartDateString = aStartDate.yyyymmddhhss();
 	var aTestdate = new Date()
 	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
@@ -200,8 +200,7 @@ function timedEntries()
 		
 		page++;
 		
-
-	} while (aPaging["count_pages"] > aPaging["current_page"])
+	} while (aPaging["count_pages"] > aPaging["current_page"] && page < 3)
 
 
 	return result;
