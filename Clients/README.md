@@ -1,3 +1,3 @@
 ## Clients
 
-Installed the context menu on the clients list and in the context menu of the contact details
+Installed in the context menu on the clients list and in the context menu of the contact details
