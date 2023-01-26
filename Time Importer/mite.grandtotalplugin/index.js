@@ -50,7 +50,7 @@ else
 
 function httpGetJSON(theUrl)
 {
-	header = {Authorization:'Basic ' + base64Encode(token + ':api_token')};
+	header = {Authorization:'Basic ' + base64Encode(token.trim() + ':api_token')};
 	string = loadURL("GET",theUrl,header);
 	if (string.length == 0)
 	{
