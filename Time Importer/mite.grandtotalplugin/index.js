@@ -62,7 +62,7 @@ function httpGetJSON(theUrl)
 
 function httpPostJSON(theUrl,body)
 {
-	header = {Authorization:'Basic ' + base64Encode(token + ':api_token'),'content-type':'application/json'};
+	header = {Authorization:'Basic ' + base64Encode(token.trim() + ':api_token'),'content-type':'application/json'};
 	string = loadURL("POST",theUrl,header,JSON.stringify(body));
 	if (string.length == 0)
 	{
@@ -74,14 +74,14 @@ function httpPostJSON(theUrl,body)
 
 function getPage(page)
 {
-	return httpGetJSON("https://" + accountName + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
+	return httpGetJSON("https://" + fixAccountName(accountName) + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
 }
 
 
 function getEndpointValues(endpoint,value)
 {
 	result = {};
-	list = httpGetJSON("https://" + accountName + ".mite.yo.lk/" + endpoint + ".json");
+	list = httpGetJSON("https://" + fixAccountName(accountName) + ".mite.yo.lk/" + endpoint + ".json");
 	for (item in list)
 	{
 		record = list[item][value];
@@ -92,12 +92,31 @@ function getEndpointValues(endpoint,value)
 }
 
 
+function fixAccountName(accountName)
+{
+	if (accountName != undefined)
+	{
+		if (accountName.indexOf(".") !== -1)
+		{
+			newName = accountName.replace(/^https?:\/\//, "")
+                              .replace(/^www\./, "")
+                              .replace(/\..*/, '');
+			return newName;
+		}
+	}
+	return accountName;
+}
+
+
 
 function importTimedEntries()
 {
-	if (accountName.indexOf("@") !== -1)
+	if (accountName != undefined)
 	{
-		return localize("Please replace the email in the settings with the account name");
+		if (accountName.indexOf("@") !== -1)
+		{
+			return localize("Please replace the email in the settings with the account name");
+		}
 	}
 	var result = [];
 	for (page = 1; page < 21; page++)
