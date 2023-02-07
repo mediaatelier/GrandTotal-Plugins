@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.clockifyimporter</string>
 	<key>CFBundleVersion</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>Globals</key>
 	<array>
 		<dict>
@@ -42,7 +42,7 @@
 	<key>GlobalsInfo</key>
 	<string>Enter your clockify api key to allow access to your data. You can find the token in your clockify profile.</string>
 	<key>GrandTotalMinimumVersion</key>
-	<real>6</real>
+	<real>8</real>
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Clockify.grandtotalplugin.zip</string>
 	<key>copyright</key>
