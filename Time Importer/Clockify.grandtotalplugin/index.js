@@ -48,11 +48,11 @@ function httpGetJSON(theUrl)
 	
 	header = {"X-Api-Key":token};
 	string = loadURL("GET",theUrl,header);
-	
 	if (string.length == 0)
 	{
 		return null;
 	}
+	grandtotal.sleep(0.02);
 	return JSON.parse(string);
 }
 
@@ -127,7 +127,7 @@ function timedEntries()
 	var aClientLookup = {};
 	do 
 	{
-		var aClients = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/clients?page="+page);
+		var aClients = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/clients?page-size=5000&page="+page);
 		for(aClientIndex in aClients)
 		{
 			aClient = aClients[aClientIndex];
@@ -144,14 +144,13 @@ function timedEntries()
 	var aTasksLookup = {};
 	do 
 	{
-		var aProjects = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects?page="+page);
+		var aProjects = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects?page-size=5000&page="+page);
 		for(aProjectIndex in aProjects)
 		{
 			aProject = aProjects[aProjectIndex];
 			aProjectID = aProject["id"];
 			aProjectLookup[aProjectID] = aProject;
 			var aTasks = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects/"+aProjectID+"/tasks?page-size=5000");
-	
 			for(aTasksIndex in aTasks)
 			{
 				aTask = aTasks[aTasksIndex];
@@ -170,7 +169,7 @@ function timedEntries()
 	var page = 1;
 	do 
 	{
-		var aTags = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/tags?page="+page);
+		var aTags = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/tags?page-size=5000&page="+page);
 		for(aTagsIndex in aTags)
 		{
 			aTag = aTags[aTagsIndex];
@@ -201,6 +200,10 @@ function timedEntries()
 				aItem = {};
 				aEntry = aEntries[aEntriesIndex];
 				if (aEntry["billable"] == 0) {
+					continue;
+				}
+				if (!aEntry["timeInterval"])
+				{
 					continue;
 				}
 				if (!aEntry["timeInterval"]["duration"]) {
