@@ -50,6 +50,7 @@ else
 
 function httpGetJSON(theUrl)
 {
+	grandtotal.sleep(0.05);
 	header = {Authorization:'Basic ' + base64Encode(token.trim() + ':api_token')};
 	string = loadURL("GET",theUrl,header);
 	if (string.length == 0)
@@ -74,14 +75,14 @@ function httpPostJSON(theUrl,body)
 
 function getPage(page)
 {
-	return httpGetJSON("https://" + fixAccountName(accountName) + ".mite.yo.lk/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
+	return httpGetJSON("https://" + fixAccountName(accountName) + ".mite.de/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
 }
 
 
 function getEndpointValues(endpoint,value)
 {
 	result = {};
-	list = httpGetJSON("https://" + fixAccountName(accountName) + ".mite.yo.lk/" + endpoint + ".json");
+	list = httpGetJSON("https://" + fixAccountName(accountName) + ".mite.de/" + endpoint + ".json");
 	for (item in list)
 	{
 		record = list[item][value];
@@ -142,7 +143,7 @@ function importTimedEntries()
 			aItemResult["unit"] = "h";
 			aItemResult["startDate"] = new Date(aEntry["date_at"] + "T00:00:00");
 			var datePart = aEntry["date_at"].replace(/-/g,"/");
-			aItemResult["url"] = "https://"+ accountName + ".mite.yo.lk/daily#"+ datePart +"?open=time_entry_"+  aEntry["id"];
+			aItemResult["url"] = "https://"+ accountName + ".mite.de/daily#"+ datePart +"?open=time_entry_"+  aEntry["id"];
 			if (aEntry["billable"] > 0 && aEntry["locked"] == 0) {
 				result.push(aItemResult);
 			}
@@ -200,7 +201,7 @@ function getRecordForNameInEndpoint(lookup,name,endpoint,value,extraKey,extraVal
 		}
 		body = {};
 		body[value] = payload;
-		item = httpPostJSON("https://" + accountName + ".mite.yo.lk/" + endpoint + ".json",body);
+		item = httpPostJSON("https://" + accountName + ".mite.de/" + endpoint + ".json",body);
 		record = item[value];
 		keyValue = record["id"];
 		lookup[keyValue] = record;
@@ -280,7 +281,7 @@ function exportTimedEntries()
 		payload["date_at"] = entry["startDate"].yyyymmdd();
 		body = {};
 		body["time_entry"] = payload;
-		httpPostJSON("https://" + accountName + ".mite.yo.lk/" + "time_entries" + ".json",body);
+		httpPostJSON("https://" + accountName + ".mite.de/" + "time_entries" + ".json",body);
 	}
 	
 	displayUserNotification("mite",
