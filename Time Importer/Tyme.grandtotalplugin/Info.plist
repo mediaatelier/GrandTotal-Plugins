@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.tyme-app.Tyme3.grandtotalimporter</string>
 	<key>CFBundleVersion</key>
-	<string>3.0</string>
+	<string>3.1</string>
 	<key>Globals</key>
 	<array>
 		<dict>
@@ -23,6 +23,8 @@
 	<string>Info for Plugin</string>
 	<key>GrandTotalMinimumVersion</key>
 	<real>4</real>
+	<key>RequiresFullDiskAccess</key>
+	<true/>
 	<key>callOnDeactivate</key>
 	<true/>
 	<key>copyright</key>
