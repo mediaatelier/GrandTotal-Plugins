@@ -52,7 +52,16 @@ function httpGetJSON(theUrl)
 	{
 		return null;
 	}
-	grandtotal.sleep(0.05);
+	
+	try
+	{
+ 	  grandtotal.sleep(0.05);
+	} 
+	catch (error)
+	{
+	}
+
+	
 	return JSON.parse(string);
 }
 
