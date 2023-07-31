@@ -193,57 +193,8 @@ function timedEntries()
 	
 	
 	
-	//// Expenses
-	
 	
 		
-	var page = 1;
-	do 
-	{
-		var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/expenses/?page="+page);
-		for(aEntriesIndex in aEntries)
-		{
-			aEntry = aEntries[aEntriesIndex];
-			
-			
-			if (aEntry.expenses)
-			{
-				for(aExpense of aEntry.expenses)
-				{
-					aItem = {};
-										
-					if (aExpense.billable == 0) {
-						continue;
-					}
-					
-					aItem.startDate = aExpense.date;
-					aItem.uid = "me.clockify." + aExpense.id;
-					aItem.notes = aExpense.notes;
-
-					var aProject = aExpense.project;
-					if (aProject)
-					{
-						aItem.project = aProject.name;
-						aItem.client = aProject.clientName;
-					}
-					
-					var aCategory = aExpense.category;
-					if (aCategory)
-					{
-						aItem.category = aCategory.name;
-					}
-					
-					aItem.cost = aExpense.total / 100;
-					result.push(aItem);
-				}
-			}
-		}
-		page ++;
-
-	}
-	while (aEntries.length != 0 && page < 3);
-		
-	//// Time Entries
 
 	
 	
@@ -252,8 +203,65 @@ function timedEntries()
 		aUser = aUserLookup[aUserIndex];
 		aUserName = aUser["name"];
 		aUserID =  aUser["id"];
-
+		
+		
+		
+		//// Expenses
 	
+	
+		
+		var page = 1;
+		do 
+		{
+			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/expenses/?page="+page +"&userId="+ aUserID);
+			for(aEntriesIndex in aEntries)
+			{
+				aEntry = aEntries[aEntriesIndex];
+			
+			
+				if (aEntry.expenses)
+				{
+					for(aExpense of aEntry.expenses)
+					{
+						aItem = {};
+										
+						if (aExpense.billable == 0) {
+							continue;
+						}
+					
+						aItem.startDate = aExpense.date;
+						aItem.uid = "me.clockify." + aExpense.id;
+						aItem.notes = aExpense.notes;
+
+						var aProject = aExpense.project;
+						if (aProject)
+						{
+							aItem.project = aProject.name;
+							aItem.client = aProject.clientName;
+						}
+					
+						var aCategory = aExpense.category;
+						if (aCategory)
+						{
+							aItem.category = aCategory.name;
+						}
+					
+						aItem.cost = aExpense.total / 100;
+						aItem["user"] =  aUserName + " ("+ aWorkspaceName +")";
+
+						result.push(aItem);
+
+					}
+				}
+			}
+			page ++;
+
+		}
+		while (aEntries.length != 0 && page < 3);
+
+		//// Time Entries
+
+
 		var page = 1;
 		do 
 		{
