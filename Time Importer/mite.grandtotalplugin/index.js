@@ -50,6 +50,9 @@ else
 
 function httpGetJSON(theUrl)
 {
+	if (!token) {
+		return null;
+	}
 	grandtotal.sleep(0.05);
 	header = {Authorization:'Basic ' + base64Encode(token.trim() + ':api_token')};
 	string = loadURL("GET",theUrl,header);
@@ -63,6 +66,9 @@ function httpGetJSON(theUrl)
 
 function httpPostJSON(theUrl,body)
 {
+	if (!token) {
+		return null;
+	}
 	header = {Authorization:'Basic ' + base64Encode(token.trim() + ':api_token'),'content-type':'application/json'};
 	string = loadURL("POST",theUrl,header,JSON.stringify(body));
 	if (string.length == 0)
@@ -118,6 +124,9 @@ function importTimedEntries()
 		{
 			return localize("Please replace the email in the settings with the account name");
 		}
+	}
+	if (token == undefined) {
+		return;
 	}
 	var result = [];
 	for (page = 1; page < 21; page++)
