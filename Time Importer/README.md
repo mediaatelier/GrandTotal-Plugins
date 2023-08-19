@@ -35,32 +35,32 @@ The provided url will be opened when double clicking the the entry in GrandTotal
 
 The unified JSON can also be used to migrate time entries to your service. For this, in your plist add the "timeexporter" type.
 
-`<key>types</key>
-<array>
-    <string>timeimporter</string>
-    <string>timeexporter</string>
-</array>`
+`<key>types</key>`
+`<array>`
+`    <string>timeimporter</string>`
+`<string>timeexporter</string>`
+`</array>`
 
 In the code check the pluginType() to call the corresponding function.
 
-`if (pluginType() === "timeexporter") {
-    exportEntries();
-} else {
-    importEntries();
-}`
+`if (pluginType() === "timeexporter") {`
+`    exportEntries();`
+`} else {`
+`    importEntries();`
+`}`
 
 Use the progressIndicator to give the user feedback on the progress. Setup:
 
-`progressIndicator = grandtotal.progress;
-progressIndicator.configuration.value = 0;
-progressIndicator.configuration.maxValue = timeentries.length;
-progressIndicator.configuration.canCancel = true;
-progressIndicator.start();`
+`progressIndicator = grandtotal.progress;`
+`progressIndicator.configuration.value = 0;`
+`progressIndicator.configuration.maxValue = timeentries.length;`
+`progressIndicator.configuration.canCancel = true;`
+`progressIndicator.start();`
 
 Update the progressIndicator
 
-`progressIndicator.configuration.value += recordBatchItems.length;
-progressIndicator.configuration.message = "Uploading";`
+`progressIndicator.configuration.value += recordBatchItems.length;`
+`progressIndicator.configuration.message = "Uploading";`
 
 End the progressIndicator
 
