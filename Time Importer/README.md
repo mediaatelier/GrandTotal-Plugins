@@ -12,10 +12,32 @@ Base64
 
 Expected result is a JSON representation of an array.
 
-`[
-{"startDate":"2015-05-24T17:49:27+02:00","client":"Client A","project":"My Project","minutes":120,"notes":"HTML Coding","user":"me","cost":200,"uid":"com.toggle.233283908"},
-{"startDate":"2015-05-24T16:58:00+02:00","client":"Client B","project":"Other Project","minutes":10,"notes":"Fixing bugs","user":"me","cost":16.666666666666664,"uid":"com.toggle.233275239","url":"https://linktotheentry","appURL":"appname://linktotheentry"}
-]`
+```
+[
+	{
+		"startDate":"2015-05-24T17:49:27+02:00",
+		"client":"Client A",
+		"project":"My Project",
+		"minutes":120,
+		"notes":"HTML Coding",
+		"user":"me",
+		"cost":200,
+		"uid":"com.toggle.233283908"
+	},
+	{
+		"startDate":"2015-05-24T16:58:00+02:00",
+		"client":"Client B",
+		"project":"Other Project",
+		"minutes":10,
+		"notes":"Fixing bugs",
+		"user":"me",
+		"cost":16.666666666666664,
+		"uid":"com.toggle.233275239",
+		"url":"https://linktotheentry",
+		"appURL":"appname://linktotheentry"
+	}
+]
+```
 
 Make *sure* the uid you provide is not just a plain integer and globally unique. Prepend an identifier for your application if needed. Eg: com.myservice.1
 
@@ -35,35 +57,45 @@ The provided url will be opened when double clicking the the entry in GrandTotal
 
 The unified JSON can also be used to migrate time entries to your service. For this, in your plist add the "timeexporter" type.
 
-`<key>types</key>`
-`<array>`
-`    <string>timeimporter</string>`
-`<string>timeexporter</string>`
-`</array>`
+```
+<key>types</key>
+<array>
+	<string>timeimporter</string>
+	<string>timeexporter</string>`
+</array>
+```
 
 In the code check the pluginType() to call the corresponding function.
 
-`if (pluginType() === "timeexporter") {`
-`    exportEntries();`
-`} else {`
-`    importEntries();`
-`}`
+```
+if (pluginType() === "timeexporter") {
+    exportEntries();
+} else {
+    importEntries();
+}
+```
 
 Use the progressIndicator to give the user feedback on the progress. Setup:
 
-`progressIndicator = grandtotal.progress;`
-`progressIndicator.configuration.value = 0;`
-`progressIndicator.configuration.maxValue = timeentries.length;`
-`progressIndicator.configuration.canCancel = true;`
-`progressIndicator.start();`
+```
+progressIndicator = grandtotal.progress;
+progressIndicator.configuration.value = 0;
+progressIndicator.configuration.maxValue = timeentries.length;
+progressIndicator.configuration.canCancel = true;
+progressIndicator.start();
+```
 
 Update the progressIndicator
 
-`progressIndicator.configuration.value += recordBatchItems.length;`
-`progressIndicator.configuration.message = "Uploading";`
+```
+progressIndicator.configuration.value += recordBatchItems.length;
+progressIndicator.configuration.message = "Uploading";
+```
 
 End the progressIndicator
 
-`progressIndicator.end();`
+```
+progressIndicator.end();
+```
 
 Make *sure* that you store the source service's item uid. This uid has to be provided to when importing to GrandTotal, so the user won't bill the same times twice.
