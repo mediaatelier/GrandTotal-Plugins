@@ -171,8 +171,7 @@ function timedEntries()
 
 	}
 	while (aProjects.length != 0);
-	
-	
+		
 	
 	var aTagsLookup = {};
 	var page = 1;
@@ -190,11 +189,6 @@ function timedEntries()
 	}
 	while (aTags.length != 0);
 	
-	
-	
-	
-	
-		
 
 	
 	
@@ -323,7 +317,10 @@ function timedEntries()
 					{
 						aRate = aProjectRate / 100;
 					}
+
 				}
+				
+
 			
 				
 				if (aTask)
@@ -355,6 +352,9 @@ function timedEntries()
 				 			aCostRate = aMembershipCostRate / 100;
 				 		}
 					}
+					
+
+					
 					
 				 	if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"])
 				 	{
