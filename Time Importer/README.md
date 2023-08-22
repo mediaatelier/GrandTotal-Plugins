@@ -92,6 +92,16 @@ progressIndicator.configuration.value += recordBatchItems.length;
 progressIndicator.configuration.message = "Uploading";
 ```
 
+
+Stop your upload if cancelled
+
+```
+if (progressIndicator.cancelled) {
+	progressIndicator.end();
+	break;
+}
+```
+
 End the progressIndicator
 
 ```
