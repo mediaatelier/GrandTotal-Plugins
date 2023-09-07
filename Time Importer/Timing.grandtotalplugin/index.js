@@ -63,10 +63,15 @@ function timedEntries()
 function timeEntriesAPI()
 {
 	var url = "https://web.timingapp.com/api/v1/time-entries?is_running=false&include_project_data=true&include_team_members=true&start_date_min=2010-01-01&start_date_max=2050-01-01";
-	counter = 0;
-	while (url)
+	var counter = 0;
+	var result = [];
+
+	// Paginate through up to the first 5 pages, aborting if there is no next page available.
+	while (url && counter < 5)
 	{
 		var response = httpGetJSON(url);
+
+		// Error reporting.
 		if (response["message"]) {
 			return "Timing API Error: " + response["message"];
 		}
@@ -76,14 +81,9 @@ function timeEntriesAPI()
 		if (response["grandtotal_error"]) {
 			return "Timing API Error: " + response["grandtotal_error"];
 		}
-		var items =  response["data"];
-		var meta =  response["meta"];
-		var url = meta["links"][2]["url"];
-		if (typeof(url) != "string")
-		{
-			url = null;
-		}
-		var result = [];
+
+		// Iterate through response["data"] and add each item to result.
+		var items = response["data"];
 		for (itemToParse of items) 
 		{
 			if (filterString && !itemToParse["project"]["title_chain"].join(" ▸ ").includes(filterString))
@@ -91,14 +91,23 @@ function timeEntriesAPI()
 				continue;
 			}
 
-			lineitem = transformItem(itemToParse,"https://web.timingapp.com/time-entries/");
+			lineitem = transformItem(itemToParse, "https://web.timingapp.com/time-entries/");
 			result.push(lineitem);
 		}
-		counter++;
-		if (counter > 3)
-		{
-			break;
+
+		// Iterate through meta["links"] to find the first element with "next" in "label" whose url starts with "https".
+		var meta = response["meta"];
+		url = null;
+		for (link of meta["links"]) {
+			if (typeof(link["url"]) == "string"
+				&& link["label"].toLowerCase().includes("next")
+				&& link["url"].startsWith("https"))
+			{
+				url = link["url"];
+				break;
+			}
 		}
+		counter++;
 	}
 	return result;
 }
