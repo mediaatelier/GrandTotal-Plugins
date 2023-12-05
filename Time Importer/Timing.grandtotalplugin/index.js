@@ -86,7 +86,10 @@ function timeEntriesAPI()
 		var items = response["data"];
 		for (itemToParse of items) 
 		{
-			if (filterString && !itemToParse["project"]["title_chain"].join(" ▸ ").includes(filterString))
+			if (filterString
+				// Suppress items that either have no project at all or whose project title chain does not contain the filter string.
+				&& (!itemToParse["project"]
+					|| !itemToParse["project"]["title_chain"].join(" ▸ ").includes(filterString)))
 			{
 				continue;
 			}
