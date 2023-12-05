@@ -68,7 +68,6 @@ function timedEntries()
 		var aWorkspaceName = aWorkspace["name"];
 		var aPremium = aWorkspace["premium"];
 		
-
 		/// get all projects first
 	
 		var aProjects = httpGetJSON("https://api.track.toggl.com/api/v9/workspaces/" + aWorkspaceID + "/projects");
@@ -86,10 +85,17 @@ function timedEntries()
 
 		var lastpage = false;
 		var pageNum = 1;
+		
+		var aExtraQuery = "";
+		
+		if (aPremium == 1)
+		{
+			aExtraQuery = "&billable=YES";
+		}
 
 		while (!lastpage)
 		{
-			var aArray = httpGetJSON("https://api.track.toggl.com/reports/api/v2/details?workspace_id=" + aWorkspaceID 	+"&since="+ aStartDateString + "&until="+ aEndDateString + "&user_agent=api_test&page=" + pageNum);
+			var aArray = httpGetJSON("https://api.track.toggl.com/reports/api/v2/details?workspace_id=" + aWorkspaceID 	+"&since="+ aStartDateString + "&until="+ aEndDateString + "&user_agent=api_test&page=" + pageNum + aExtraQuery);
 			var aItems = aArray["data"];
 				
 			for (aEntry in aItems)
@@ -146,12 +152,9 @@ function timedEntries()
 				
 				aItemResult["uid"] = "com.toggle." + aItems[aEntry]["id"];
 			
-				if (aItems[aEntry]["is_billable"] == 1 || aPremium == 0)
-				{
-					result.push(aItemResult);
-
-				}
+				result.push(aItemResult);
 			}
+			
 	
 			if (aArray["total_count"] < aArray["per_page"] || pageNum == 10)
 			{
@@ -162,6 +165,7 @@ function timedEntries()
 			}
 		}
 	}
+	
 	
 	return JSON.stringify(result);
 }
