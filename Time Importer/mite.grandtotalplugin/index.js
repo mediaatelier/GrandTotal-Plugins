@@ -37,6 +37,13 @@ Date.prototype.yyyymmdd = function() {
    return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
 };
 
+if (!String.prototype.trim) {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
+}
+
+
 if (pluginType() == "timeexporter")
 {
 	exportTimedEntries();
@@ -44,13 +51,6 @@ if (pluginType() == "timeexporter")
 else
 {
 	importTimedEntries();
-}
-
-
-if (!String.prototype.trim) {
-  String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g, '');
-  };
 }
 
 
@@ -132,9 +132,10 @@ function importTimedEntries()
 		}
 	}
 	if (token == undefined) {
-		return;
+		return "No API-Key";
 	}
-	var result = [];
+	var result = new Array();
+
 	for (page = 1; page < 21; page++)
 	{
 		aArray = getPage(page);
