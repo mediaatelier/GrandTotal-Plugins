@@ -120,7 +120,7 @@ function timedEntries()
 	var page = 1;
 	do
 	{
-		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page + "&enhanced_list=true");
+		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page + "&enhanced_list=true&filter[billable]=1");
 		aPaging = aItems["paging"];
 		
 		if (!aPaging)
@@ -200,7 +200,7 @@ function timedEntries()
 		
 		page++;
 		
-	} while (aPaging["count_pages"] > aPaging["current_page"] && page < 3)
+	} while (aPaging["count_pages"] > aPaging["current_page"] && page < 5)
 
 
 	return result;
