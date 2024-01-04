@@ -121,6 +121,11 @@ function timedEntries()
 				{
 					cost = aItemResult["minutes"] / 60 * defaultRate;
 				}
+				
+				var aRate = aWorkspace.default_hourly_rate;
+				if (!aRate) {
+					aRate = defaultRate;
+				}
 			
 				var pid = aItems[aEntry]["pid"];
 			
@@ -129,10 +134,13 @@ function timedEntries()
 					var aProject = aProjectIDs[pid];
 					if (aProject)
 					{
-						var rate = aProject["rate"];
-						if (rate != undefined)
+						if (aProject.rate)
 						{
-							cost = aItemResult["minutes"] / 60 * rate;
+							aRate = aProject.rate;
+						}
+						if (aRate != undefined)
+						{
+							cost = aItemResult["minutes"] / 60 * aRate;
 						}
 					}
 				}
@@ -143,7 +151,10 @@ function timedEntries()
 				aMinutes = aItemResult["minutes"];
 				if (aMinutes > 0 && roundTo > 0)
 				{
-					aRate = aItemResult["cost"] / (aMinutes / 60);
+					if (!aRate)
+					{
+						aRate = aItemResult["cost"] / (aMinutes / 60);
+					}
 					aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
 					aItemResult["minutes"] = aMinutes;
 					aItemResult["cost"] =  aMinutes / 60 * aRate;
