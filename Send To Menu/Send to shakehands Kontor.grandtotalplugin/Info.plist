@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.sendto.shakehandsKontor</string>
 	<key>CFBundleVersion</key>
-	<string>1.4</string>
+	<string>1.5</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>7</integer>
 	<key>URL</key>
@@ -74,6 +74,10 @@
 			<string>com.shakehands.kontor2022</string>
 			<string>com.shakehands.kontor2023</string>
 			<string>com.shakehands.kontor2024</string>
+			<string>com.shakehands.kontor2025</string>
+			<string>com.shakehands.kontor2026</string>
+			<string>com.shakehands.kontor2027</string>
+			<string>com.shakehands.kontor2028</string>
 		</array>
 		<key>ApplicationMinimumVersion</key>
 		<string>1.0</string>
@@ -85,7 +89,7 @@
 		<string>shakehands Kontor.txt</string>
 	</dict>
 	<key>copyright</key>
-	<string>© 2022-2023 Stefan Fürst</string>
+	<string>© 2022-2024 Stefan Fürst</string>
 	<key>types</key>
 	<array>
 		<string>sendtomenu</string>
