@@ -123,7 +123,7 @@ function timedEntries()
 				}
 				
 				var aRate = aWorkspace.default_hourly_rate;
-				if (!aRate) {
+				if (!aRate && !aPremium) {
 					aRate = defaultRate;
 				}
 			
@@ -159,8 +159,6 @@ function timedEntries()
 					aItemResult["minutes"] = aMinutes;
 					aItemResult["cost"] =  aMinutes / 60 * aRate;
 				}
-				
-				
 				aItemResult["uid"] = "com.toggle." + aItems[aEntry]["id"];
 			
 				result.push(aItemResult);
