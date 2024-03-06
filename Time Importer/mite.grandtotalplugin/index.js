@@ -87,7 +87,16 @@ function httpPostJSON(theUrl,body)
 
 function getPage(page)
 {
-	return httpGetJSON("https://" + fixAccountName(accountName) + ".mite.de/time_entries.json?from=last_year&project_id=all_active&limit=1000&sort=date&page=" + page);
+	var years = 1;
+	if (loadAll)
+	{
+		years = 5;
+	}
+	
+	var aStartDate = new Date();
+	aStartDate.setDate(aStartDate.getDate() - (years * 365));
+	var aStartDateString = aStartDate.yyyymmdd();	
+	return httpGetJSON("https://" + fixAccountName(accountName) + ".mite.de/time_entries.json?from=" + aStartDateString + "&project_id=all_active&limit=1000&sort=date&page=" + page);
 }
 
 

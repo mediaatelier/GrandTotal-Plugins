@@ -18,6 +18,14 @@
 		</dict>
 		<dict>
 			<key>label</key>
+			<string>Load entries older than 1 year</string>
+			<key>name</key>
+			<string>loadAll</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>label</key>
 			<string>Your mite token</string>
 			<key>name</key>
 			<string>token</string>
@@ -28,7 +36,7 @@
 	<key>copyright</key>
 	<string>© 2018-2023 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>3.0.2</string>
+	<string>3.0.3</string>
 	<key>URL</key>
 	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/mite.grandtotalplugin.zip</string>
 	<key>GlobalsInfo</key>
