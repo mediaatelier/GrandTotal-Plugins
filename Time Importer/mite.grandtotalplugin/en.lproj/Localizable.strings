@@ -4,3 +4,4 @@
 "Created %d records" = "Created %d records";
 "Ignored %d duplicates" = "Ignored %d duplicates";
 "Please replace the email in the settings with the account name" = "Please replace the email in the settings with the account name";
+"Load entries older than 1 year" = "Load entries older than 1 year";
