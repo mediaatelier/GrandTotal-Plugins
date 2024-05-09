@@ -290,6 +290,7 @@ function timedEntries()
 				aTask = null;
 				aTaskID = aEntry["taskId"];
 				aTaskName = "";
+				
 
 				if (aTaskID) {
 					aTask = aTasksLookup[aTaskID];
@@ -298,6 +299,7 @@ function timedEntries()
 						aTaskName = aTask["name"];
 					}
 				}
+				
 		
 
 				if (aProject)
@@ -319,9 +321,7 @@ function timedEntries()
 					}
 
 				}
-				
-
-			
+							
 				
 				if (aTask)
 				{
@@ -330,6 +330,12 @@ function timedEntries()
 						aTaskRate =  aTask["hourlyRate"]["amount"];
 						aRate = aTaskRate / 100;
 					}
+				}
+				
+				if (aEntry.hourlyRate)
+				{
+				
+					aRate = aEntry.hourlyRate.amount / 100;
 				}
 				
 				
@@ -352,8 +358,6 @@ function timedEntries()
 				 			aCostRate = aMembershipCostRate / 100;
 				 		}
 					}
-					
-
 					
 					
 				 	if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"])
@@ -396,6 +400,8 @@ function timedEntries()
 						aMinutes += 1;
 					}
 				}
+				
+		
 				
 				aItem["uid"] = aEntryID;
 				aItem["project"] = aProjectName;
