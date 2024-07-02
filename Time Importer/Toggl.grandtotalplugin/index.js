@@ -95,9 +95,9 @@ function timedEntries()
 
 		while (!lastpage)
 		{
-			var aArray = httpGetJSON("https://api.track.toggl.com/reports/api/v2/details?workspace_id=" + aWorkspaceID 	+"&since="+ aStartDateString + "&until="+ aEndDateString + "&user_agent=api_test&page=" + pageNum + aExtraQuery);
+			var aArray = httpGetJSON("https://api.track.toggl.com/reports/api/v2/details?workspace_id=" + aWorkspaceID 	+"&order_field=date&order_desc=on&since="+ aStartDateString + "&until="+ aEndDateString + "&user_agent=api_test&page=" + pageNum + aExtraQuery);
 			var aItems = aArray["data"];
-				
+			
 			for (aEntry in aItems)
 			{
 				var aItemResult = {};
