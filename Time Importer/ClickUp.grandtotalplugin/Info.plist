@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>clickup.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.importer.ClickUp</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>ClickUp token</string>
+			<key>name</key>
+			<string>token</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Profile</string>
+			<key>type</key>
+			<string>link</string>
+			<key>url</key>
+			<string>https://app.clickup.com/settings/apps</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Enter your ClickUp token to allow access to your data. You can find the token in your ClickUp profile.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>8</real>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/ClickUp.grandtotalplugin.zip</string>
+	<key>copyright</key>
+	<string>© 2024 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
