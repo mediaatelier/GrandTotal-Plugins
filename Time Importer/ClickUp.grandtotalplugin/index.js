@@ -16,26 +16,25 @@ function httpGetJSON(theUrl, token) {
 
 function fetchAllTimeEntries(token, teamId) {
   var allTimeEntries = [];
-  var page = 0;
-  var limit = 100;
-  var maxPages = 5;
-  var hasMore = true;
-  
-  while (hasMore && page < maxPages) {
-    var timeEntriesUrl = `https://api.clickup.com/api/v2/team/${teamId}/time_entries?page=${page}&limit=${limit}&include_location_names=true`;
+  var now = new Date();
+  var monthInMilliseconds = 30 * 24 * 60 * 60 * 1000;
+
+  for (var i = 0; i < 6; i++) {
+    var endDate = now.getTime();
+    var startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()).getTime();
+    now = new Date(startDate); // Move to the previous month
+
+    var timeEntriesUrl = `https://api.clickup.com/api/v2/team/${teamId}/time_entries?start_date=${startDate}&end_date=${endDate}&include_location_names=true`;
     var timeEntries = httpGetJSON(timeEntriesUrl, token);
-    if (timeEntries && timeEntries.data && timeEntries.data.length > 0) {
+
+    if (timeEntries && timeEntries.data) {
       allTimeEntries = allTimeEntries.concat(timeEntries.data);
-      page++;
-      if (timeEntries.data.length < limit) {
-        hasMore = false;
-      }
-    } else {
-      hasMore = false;
     }
   }
+
   return allTimeEntries;
 }
+
 
 
 function fetchClickUpTasks() {
@@ -55,7 +54,7 @@ function fetchClickUpTasks() {
   if (!teamData || !teamData.teams || teamData.teams.length === 0) {
     return localize("Check your token");
   }
-  
+    
   var teamId = teamData.teams[0].id;
     
   var time_entries = fetchAllTimeEntries(clickUpToken, teamId);
