@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.sendto.shakehandsKontor</string>
 	<key>CFBundleVersion</key>
-	<string>1.5</string>
+	<string>1.6</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>7</integer>
 	<key>URL</key>
@@ -36,9 +36,9 @@
 		</dict>
 		<dict>
 			<key>label</key>
-			<string>Credit 7.7%</string>
+			<string>Credit 8.1%</string>
 			<key>name</key>
-			<string>credit_7_7_Account</string>
+			<string>credit_8_1_Account</string>
 			<key>type</key>
 			<string>string</string>
 			<key>default</key>

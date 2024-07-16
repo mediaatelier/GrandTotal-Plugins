@@ -86,9 +86,9 @@ function doExport()
 				aTaxName = "";
 			}
 
-			if (aTaxPercentage == 7.7)
+			if (aTaxPercentage == 8.1)
 			{
-				aCreditAccount	= credit_7_7_Account;
+				aCreditAccount	= credit_8_1_Account;
 			}
 			else if (aTaxPercentage == 2.5)
 			{
