@@ -65,7 +65,7 @@ function doExport()
 			aDescription	= item["name"];
 			aQuantity		= item["quantityAsString"];
 			aUnitAmount		= item["rateAsString"];
-			aDiscount		= item["discount"];
+			aDiscount		= 0; //item["discount"];
 			aAccountCode	= parseInt(item["category"]);
 			if (isNaN(aAccountCode))
 			{
