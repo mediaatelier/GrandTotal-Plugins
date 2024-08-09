@@ -45,6 +45,5 @@ function send() {
 	var script = contentsOfFile(path);
 	
 	script = "processList(" + quotedAndCommaSeparated + ")" + script;
-	log(script);
     executeAppleScript(script);
 }
