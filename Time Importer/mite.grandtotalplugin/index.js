@@ -133,7 +133,12 @@ function fixAccountName(accountName)
 
 function importTimedEntries()
 {
-	if (accountName != undefined)
+	if (accountName == undefined)
+	{
+		return localize("No account");
+
+	}
+	else
 	{
 		if (accountName.indexOf("@") !== -1)
 		{
@@ -141,7 +146,14 @@ function importTimedEntries()
 		}
 	}
 	if (token == undefined) {
-		return "No API-Key";
+		return localize("No API-Key");
+	}
+	else
+	{
+		if (token.length < 1)
+		{
+			return localize("No API-Key");
+		}
 	}
 	var result = new Array();
 

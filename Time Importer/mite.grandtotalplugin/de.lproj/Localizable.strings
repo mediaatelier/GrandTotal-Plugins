@@ -5,3 +5,5 @@
 "Ignored %d duplicates" = "%d Duplikate ignoriert";
 "Please replace the email in the settings with the account name" = "Bitte die E-Mail in den Einstellungen mit dem Kontonamen ersetzen";
 "Load entries older than 1 year" = "Einträge älter als 1 Jahr laden";
+"No account" = "Kein Kontoname";
+"No API-Key" = "Kein API-Schlüssel";
