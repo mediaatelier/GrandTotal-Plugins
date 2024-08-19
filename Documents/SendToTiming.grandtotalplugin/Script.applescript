@@ -2,12 +2,12 @@
 
 on processList(theList)
 	
-	set client to getOrCreateProject(item 1 of theList, missing value)
-	set project to getOrCreateProject(item 2 of theList, client)
+	set myclient to getOrCreateProject(item 1 of theList, missing value)
+	set myproject to getOrCreateProject(item 2 of theList, myclient)
 	
 	
 	repeat with i from 3 to length of theList
-		getOrCreateProject(item i of theList, project)
+		getOrCreateProject(item i of theList, myproject)
 	end repeat
 	
 	

@@ -44,6 +44,8 @@ function send() {
 	var path = PluginDirectory + "Script.applescript";
 	var script = contentsOfFile(path);
 	
+	
 	script = "processList(" + quotedAndCommaSeparated + ")" + script;
+	
     executeAppleScript(script);
 }
