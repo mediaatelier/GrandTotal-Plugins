@@ -38,8 +38,8 @@ function send() {
     	 }
     });
     
-    var quotedAndCommaSeparated = "{\"" + parameters.join("\",\"") + "\"}";
-
+	var quotedAndCommaSeparated = "{\"" + parameters.map(param => param.replace(/\\/g, '\\\\').replace(/"/g, '\\"')).join("\",\"") + "\"}";
+	
 
 	var path = PluginDirectory + "Script.applescript";
 	var script = contentsOfFile(path);
