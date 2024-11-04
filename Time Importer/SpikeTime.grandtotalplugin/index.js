@@ -74,27 +74,36 @@ function createIDLookUp(theJSON)
 
 function timedEntries()
 {
+
+	var baseUrl = "https://app.spiketime.de/api/v2";
+	var userEndpoint = "/user/list";
 	var aTestdate = new Date()
 	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
 
 	var result = [];
 	
-	var aCustomers = httpGetJSON("https://www.spiketime.de/api/Customer");
+	var aCustomers = httpGetJSON(`${baseUrl}/Customer`);
 	if (aCustomers["grandtotal_error"]) {
-		return aCustomers["grandtotal_error"];
+		
+		var baseUrl = "https://www.spiketime.de/api";
+		var userEndpoint = "/user/all";
+		aCustomers = httpGetJSON(`${baseUrl}/Customer`);
+		if (aCustomers["grandtotal_error"]) {
+			return aCustomers["grandtotal_error"];
+		}
 	}
 	if (aCustomers == null) {
 		return "Check your account settings";
 	}
 		
 	var aCustomersLookup =  createIDLookUp(aCustomers);
-	var aProjects = httpGetJSON("https://www.spiketime.de/api/Project");
+	var aProjects = httpGetJSON(`${baseUrl}/Project`);
 	var aProjectsLookup =  createIDLookUp(aProjects);
 	
-	var aRates = httpGetJSON("https://www.spiketime.de/api/Rate");
+	var aRates = httpGetJSON(`${baseUrl}/Rate`);
 	var aRatesLookup =  createIDLookUp(aRates);
-	
-	var aUsers = httpGetJSON("https://www.spiketime.de/api/user/all");
+		
+	var aUsers = httpGetJSON(`${baseUrl}${userEndpoint}`);
 	var aUsersLookup =  createIDLookUp(aUsers);
 	
 	var aEndDate = new Date();
@@ -106,7 +115,7 @@ function timedEntries()
 	}
 	var aStartDateString = aStartDate.yyyymmdd();
 	
-	var aTimeEntries = httpGetJSON("https://www.spiketime.de/api/TimeEntry?DateFrom="+ aStartDateString+ "&DateTo=" + aEndDateString);
+	var aTimeEntries = httpGetJSON(`${baseUrl}/TimeEntry?DateFrom=`+ aStartDateString+ "&DateTo=" + aEndDateString);
 	
 	for (aTimeEntryIndex in aTimeEntries)
 	{
