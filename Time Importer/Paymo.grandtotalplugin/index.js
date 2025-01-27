@@ -142,10 +142,10 @@ function timedEntries()
 			{
 				aItemResult["startDate"] = aEntryObjects[aEntry]["date"] + "T00:00:00";
 			}
-			var aTask = aTasksLookup[aEntryObjects[aEntry]["task_id"]];
 			
-			aItemResult["category"] = aTask["name"];
-			var aRate =  aUserRate = aUser["price_per_hour"];
+			var aTask = aTasksLookup[aEntryObjects[aEntry]["task_id"]] || {};
+			aItemResult["category"] = aTask["name"] || "No Task";
+			var aRate = aUserRate = aUser["price_per_hour"];
 
 			
 			if (aBillingType == "task")
@@ -172,13 +172,7 @@ function timedEntries()
 				aItemResult["cost"] =  aMinutes / 60 * aRate;
 			}
 			
-			
-			/*
-			aItemResult["__raw"] = aEntryObjects[aEntry];
-			aItemResult["__raw.task"] = aTask;
-			aItemResult["__raw.project"] = aProjectObject;
-			aItemResult["__raw.user"] = aUser;
-			*/
+
 
 			aItemResult["uid"] = "com.paymoapp." + aEntryObjects[aEntry]["id"];
 
