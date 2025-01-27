@@ -167,43 +167,45 @@ function timeEntriesLocal()
 }
 
 
-function transformItem(item,urlPrefix)
-{
-	lineitem = {};
-	var rate = defaultRate;
-	if (item["project"])
-	{
-		var parsedComponents = parseComponents(item["project"]["title_chain"]);
+function transformItem(item, urlPrefix) {
+    lineitem = {};
+    var rate = defaultRate;
+    
+    if (item["project"]) {
+        var parsedComponents = parseComponents(item["project"]["title_chain"]);
 
-		if (parsedComponents["rate"] != null)
-		{
-			rate = parsedComponents["rate"];
-		}
-		lineitem["client"] = parsedComponents["client"];
-		lineitem["project"] = parsedComponents["project"];
-		lineitem["category"] = parsedComponents["category"];
-		
-	}
-	if (item["title"])
-	{
-		lineitem["category"] = fixString(item["title"]);
-	}
-	lineitem["user"] = fixString(item["creator_name"]);
-	lineitem["startDate"] = item["start_date"];
-	lineitem["notes"] = fixString(item["notes"]);
-	lineitem["minutes"] = item["duration"] / 60;
+        if (parsedComponents["rate"] != null) {
+            rate = parsedComponents["rate"];
+        }
+        lineitem["client"] = parsedComponents["client"];
+        lineitem["project"] = parsedComponents["project"];
+        lineitem["category"] = parsedComponents["category"];
+    }
+    
+    // Check for rate in time entry title
+    if (item["title"]) {
+        var extracted = extractRate(item["title"]);
+        if (extracted.rate !== null) {
+            rate = extracted.rate;
+        }
+        lineitem["category"] = extracted.cleanString;
+    }
+    
+    lineitem["user"] = fixString(item["creator_name"]);
+    lineitem["startDate"] = item["start_date"];
+    lineitem["notes"] = fixString(item["notes"]);
+    lineitem["minutes"] = item["duration"] / 60;
 
-	var aMinutes = lineitem["minutes"];
-	if (aMinutes > 0 && roundTo > 0)
-	{
-		aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
-		lineitem["minutes"] = aMinutes;
-	}
-	lineitem["cost"] = rate * lineitem["minutes"] / 60;
-	var uid = item["self"].split("/").pop();
-	lineitem["uid"] = "info.eurocomp.Timing.TaskActivity." + uid;
-	lineitem["url"] = urlPrefix + uid;
-	return lineitem;
+    var aMinutes = lineitem["minutes"];
+    if (aMinutes > 0 && roundTo > 0) {
+        aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
+        lineitem["minutes"] = aMinutes;
+    }
+    lineitem["cost"] = rate * lineitem["minutes"] / 60;
+    var uid = item["self"].split("/").pop();
+    lineitem["uid"] = "info.eurocomp.Timing.TaskActivity." + uid;
+    lineitem["url"] = urlPrefix + uid;
+    return lineitem;
 }
 
 
@@ -217,50 +219,52 @@ function fixString(string)
 }
 
 
-function parseComponents(rawComponents)
-{
-	var result = {};
-	var projectComponents = new Array();
-	for (index in rawComponents)
-	{
-		var projectComponent = rawComponents[index];
-		// Matches numbers in parentheses with zero or one dot at the end of the string.
-		// Group 1 is with parentheses, group 2 without.
-		var matches = projectComponent.match(/.+\s(\((\d+[\,\.]?\d*)\))$/);
-		
-		if (matches)
-		{
-			rate = matches[2].replace(",",".");
-			rate = parseFloat(rate);
-			result["rate"] = rate;
-			projectComponent = projectComponent.replace(matches[1],"").trim();
-		}
-		projectComponents.push(projectComponent);
-	}
-				
-	var clientOffset = 0;
-	
-	// if root is eg. "billable" this folder is ingnored
-	if (projectComponents[0] == filterString && projectComponents.length > 2)
-	{
-		 clientOffset = 1;
-	}
-	result["category"] = "";
-	if (projectComponents.length == 1)
-	{
-		result["project"] = projectComponents[0];
-		result["client"] = localize("Move project '%' in a folder named after your client").replace("%",lineitem["project"]);
-	}
-	else
-	{
-		result["client"] = projectComponents[clientOffset];
-		result["project"] = projectComponents[clientOffset + 1];
-		if (projectComponents.length > clientOffset + 1)
-		{
-			result["category"] = projectComponents[clientOffset + 2];
-		}
-	}
-	return result;
+function parseComponents(rawComponents) {
+    var result = {};
+    var projectComponents = new Array();
+    for (index in rawComponents) {
+        var projectComponent = rawComponents[index];
+        var extracted = extractRate(projectComponent);
+        
+        if (extracted.rate !== null) {
+            result["rate"] = extracted.rate;
+        }
+        projectComponents.push(extracted.cleanString);
+    }
+            
+    var clientOffset = 0;
+    
+    // if root is eg. "billable" this folder is ingnored
+    if (projectComponents[0] == filterString && projectComponents.length > 2) {
+        clientOffset = 1;
+    }
+    result["category"] = "";
+    if (projectComponents.length == 1) {
+        result["project"] = projectComponents[0];
+        result["client"] = localize("Move project '%' in a folder named after your client").replace("%",lineitem["project"]);
+    } else {
+        result["client"] = projectComponents[clientOffset];
+        result["project"] = projectComponents[clientOffset + 1];
+        if (projectComponents.length > clientOffset + 1) {
+            result["category"] = projectComponents[clientOffset + 2];
+        }
+    }
+    return result;
+}
+
+
+function extractRate(string) {
+    if (typeof(string) != "string") {
+        return { rate: null, cleanString: "" };
+    }
+    // Matches numbers in parentheses with zero or one dot at the end of the string
+    var matches = string.match(/.+\s(\((\d+[\,\.]?\d*)\))$/);
+    if (matches) {
+        var rate = parseFloat(matches[2].replace(",","."));
+        var cleanString = string.replace(/\s*\(\d+[\,\.]?\d*\)$/, "").trim();
+        return { rate: rate, cleanString: cleanString };
+    }
+    return { rate: null, cleanString: string };
 }
 
 
@@ -274,5 +278,3 @@ function httpGetJSON(theUrl)
 	}
 	return result =  JSON.parse(string);
 }
-
-
