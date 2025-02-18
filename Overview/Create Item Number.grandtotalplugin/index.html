@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create item</title>
+    <style>
+      body {
+        margin: 20px;
+        font-family: 'Helvetica', Arial, sans-serif;
+        font-size: 12px;
+        background-color: #f0f0f0;
+        color: #333;
+      }
+
+      h1 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      select {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 12px;
+      }
+
+      button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007aff;
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #005bb5;
+      }
+    </style>
+    <script>
+      function generateItemNumber(category, material, color, existingNumbers) {
+        category = category || 'A';
+        material = material || 'M1';
+        color = color || 'C1';
+
+        var baseCode = `${category}_${material}_${color}_`;
+        var maxNumber = 0;
+
+        existingNumbers.forEach(function (num) {
+          var match = num.match(/\d{4}$/); // Select last 4 digits
+          if (match) {
+            var parsedNum = parseInt(match[0], 10);
+            if (!isNaN(parsedNum) && parsedNum > maxNumber) {
+              maxNumber = parsedNum;
+            }
+          }
+        });
+        // Take last number, add 1, pad with zeros to 4 digits
+        var newNumber = (maxNumber + 1).toString().padStart(4, '0');
+        return baseCode + newNumber;
+      }
+
+      function createCatalogItem() {
+        var category = document.getElementById('category').value;
+        var material1 = document.getElementById('material1').value;
+        var material2 = document.getElementById('material2').value;
+
+        var existingItems = grandtotal.newQuery('CatalogItem');
+
+        var existingNumbers = [];
+        existingItems.records().forEach((record) => {
+          var number = record.valueForKey('itemNumber');
+          if (number) {
+            existingNumbers.push(number);
+          }
+        });
+
+        var itemNumber = generateItemNumber(
+          category,
+          material1,
+          material2,
+          existingNumbers
+        );
+
+        var newItem = grandtotal.insertRecord('CatalogItem');
+        newItem.setValue('itemNumber', itemNumber);
+        newItem.setValue('name', 'New');
+
+        alert('New item created with number: ' + itemNumber);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Create new item</h1>
+    <label for="category">Category:</label>
+    <select id="category">
+      <option value="A" selected>Sonstiges (X)</option>
+      <option value="A">Category A</option>
+      <option value="B">Category B</option>
+      <option value="Z">Category C</option></select
+    ><br />
+
+    <label for="material1">Material:</label>
+    <select id="material1">
+      <option value="M1">Material 1</option>
+      <option value="M2">Material 2</option>
+      <option value="M3">Material 3</option></select
+    ><br />
+
+    <label for="material2">Color:</label>
+    <select id="material2">
+      <option value="C1">Color 1</option>
+      <option value="C2">Color 2</option>
+      <option value="C3">Color 3</option></select
+    ><br />
+
+    <button onclick="createCatalogItem()">Create item</button>
+  </body>
+</html>
