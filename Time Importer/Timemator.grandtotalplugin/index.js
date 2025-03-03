@@ -84,24 +84,33 @@ function timedEntries()
 		{
 			continue;
 		}
-		if (category["parentID"])
-		{
-			project = newNodes[category["parentID"]];
-			resultItem["project"] = project["name"];
-			if (project["archived"])
-			{
-				continue;
-			}
-			if (project["parentID"])
-			{
-				client = newNodes[project["parentID"]];
-				resultItem["client"] = client["name"];
-				if (client["archived"])
-				{
-					continue;
-				}
-			}
-		}
+		
+      	// Initialize variables to store client and project
+		let depth = 0;
+        let client = null;
+        let project = null;
+        
+        // Traverse up the parent chain to find client and project
+        let currentNode = category;
+        while (currentNode["parentID"]) {
+            project = currentNode;
+            currentNode = newNodes[currentNode["parentID"]];
+            if (!currentNode) break;
+            if (currentNode["archived"]) {
+                continue;
+            }
+            client = currentNode;
+			depth++;
+        }
+
+        // Set client and project in the result item
+        if (client) {
+            resultItem["client"] = client["name"];
+        }
+        if (project && depth > 1) {
+            resultItem["project"] = project["name"];
+        }
+
 		result.push(resultItem);
 	}
 	db.close();
