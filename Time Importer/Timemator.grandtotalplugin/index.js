@@ -30,46 +30,40 @@
 	
 */
 
-
 timedEntries();
 
-function timedEntries()
-{
-    var dataPath = grandtotal.fileManager.homeDirectory + "/Library/Application Support/com.catforce.timemator.macos/Data/timemator.storedata";
-    if (!grandtotal.fileManager.fileExists(dataPath))
-    {
-    	dataPath = grandtotal.fileManager.homeDirectory + "/Library/Containers/com.catforce.timemator.macos/Data/Library/Application\ Support/com.catforce.timemator.macos/Data/timemator.storedata"; 
+function timedEntries() {
+	var dataPath = grandtotal.fileManager.homeDirectory + "/Library/Application Support/com.catforce.timemator.macos/Data/timemator.storedata";
+	if (!grandtotal.fileManager.fileExists(dataPath)) {
+		dataPath = grandtotal.fileManager.homeDirectory + "/Library/Containers/com.catforce.timemator.macos/Data/Library/Application\ Support/com.catforce.timemator.macos/Data/timemator.storedata";
 	}
 	var db = grandtotal.SQLite.openDatabase(dataPath);
-	if (!db)
-	{
+	if (!db) {
 		return "No data found";
 	}
 	var nodes = db.executeQuery("SELECT * FROM ZNODE");
-	
+
 	var newNodes = {};
-	for (const node of nodes)
-	{
+	for (const node of nodes) {
 		var newNode = {};
-		
+
 		newNode["name"] = node["ZNAME"];
 		newNode["id"] = node["Z_PK"];
 		newNode["parentID"] = cleanString(node["ZPARENT"]);
 		newNode["archived"] = node["ZARCHIVED"];
 		newNodes[node["Z_PK"]] = newNode;
-	} 
-		
+	}
+
 	var sessions = db.executeQuery("SELECT * FROM ZSESSION");
 	var result = [];
-	for (const session of sessions)
-	{
+	for (const session of sessions) {
 		seconds = session["ZCONFIRMEDDURATION"];
 		rate = session["ZHOURLYRATE"];
 		taskID = session["ZTASK"];
-		
+
 		minutes = seconds / 60;
 		minutes = Math.ceil(minutes);
-				
+
 		var resultItem = {};
 		resultItem["notes"] = cleanString(session["ZNOTES"]);
 		resultItem["startDate"] = cleanDate(session["ZBEGIN"]);
@@ -77,50 +71,52 @@ function timedEntries()
 		resultItem["rate"] = rate;
 		resultItem["uid"] = cleanString(session["ZIDENTIFIER"]);
 		resultItem["cost"] = rate * (minutes / 60);
-		
+
 		category = newNodes[taskID];
 		resultItem["category"] = category["name"];
-		if (category["archived"])
-		{
+		if (category["archived"]) {
 			continue;
 		}
-		if (category["parentID"])
-		{
-			project = newNodes[category["parentID"]];
-			resultItem["project"] = project["name"];
-			if (project["archived"])
-			{
+
+		// Initialize variables to store client and project
+		let depth = 0;
+		let client = null;
+		let project = null;
+
+		// Traverse up the parent chain to find client and project
+		let currentNode = category;
+		while (currentNode["parentID"]) {
+			project = currentNode;
+			currentNode = newNodes[currentNode["parentID"]];
+			if (!currentNode) break;
+			if (currentNode["archived"]) {
 				continue;
 			}
-			if (project["parentID"])
-			{
-				client = newNodes[project["parentID"]];
-				resultItem["client"] = client["name"];
-				if (client["archived"])
-				{
-					continue;
-				}
-			}
+			client = currentNode;
+			depth++;
 		}
+
+		// Set client and project in the result item
+		if (client) {
+			resultItem["client"] = client["name"];
+		}
+		if (project && depth > 1) {
+			resultItem["project"] = project["name"];
+		}
+
 		result.push(resultItem);
 	}
 	db.close();
 	return result;
 }
 
-
-function cleanString(input)
-{
-	if (input == null)
-		return undefined;
-	else
-		return input;
+function cleanString(input) {
+	if (input == null) return undefined;
+	else return input;
 }
 
-
-function cleanDate(input)
-{
-	result =  new Date((input + 978303600) * 1000);
+function cleanDate(input) {
+	result = new Date((input + 978303600) * 1000);
 	result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
 	return result;
 }
