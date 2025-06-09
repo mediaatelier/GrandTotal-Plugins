@@ -109,7 +109,7 @@ function timedEntries()
 					aItemResult["project"] = aItems[aEntry]["project"];
 				if (aItems[aEntry]["task"])
 					aItemResult["category"] = aItems[aEntry]["task"];
-				aItemResult["minutes"] = Math.round(aItems[aEntry]["dur"] / 60000);
+				aItemResult["minutes"] = aItems[aEntry]["dur"] / 60000;
 				aItemResult["notes"] = aItems[aEntry]["description"];
 				aItemResult["user"] = aItems[aEntry]["user"] + " ("+ aWorkspaceName +")";
 				aItemResult["label"] = aItems[aEntry]["tags"].join(", ");
