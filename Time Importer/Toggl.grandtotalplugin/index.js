@@ -104,12 +104,25 @@ function timedEntries()
 			
 				aItemResult["startDate"] = aItems[aEntry]["start"];
 				if (aItems[aEntry]["client"])
+				{
 					aItemResult["client"] = aItems[aEntry]["client"];
+				}
 				if (aItems[aEntry]["project"])
+				{
 					aItemResult["project"] = aItems[aEntry]["project"];
+				}
 				if (aItems[aEntry]["task"])
+				{
 					aItemResult["category"] = aItems[aEntry]["task"];
-				aItemResult["minutes"] = Math.round(aItems[aEntry]["dur"] / 60000);
+				}
+				if (roundTo == 0) // only round here, if no further rounding occurs after this
+				{
+					aItemResult["minutes"] = Math.round(aItems[aEntry]["dur"] / 60000);
+				}
+				else
+				{
+					aItemResult["minutes"] = aItems[aEntry]["dur"] / 60000;
+				}
 				aItemResult["notes"] = aItems[aEntry]["description"];
 				aItemResult["user"] = aItems[aEntry]["user"] + " ("+ aWorkspaceName +")";
 				aItemResult["label"] = aItems[aEntry]["tags"].join(", ");
