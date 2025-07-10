@@ -160,9 +160,13 @@ function timedEntries()
 				}
 			
 			}
-			if (aProjectID)
-			{
-				aItemResult["project"] = aEntry["projects_name"];
+			if (aProjectID) {
+				projectName = aEntry["projects_name"];
+				subprojectName = aEntry["subprojects_name"];
+    			if (subprojectName && subprojectName.length > 0) {
+        			projectName += " - " + subprojectName;
+   				}
+				aItemResult["project"] = projectName;
 			}
 			if (aEntry["customers_id"])
 			{
