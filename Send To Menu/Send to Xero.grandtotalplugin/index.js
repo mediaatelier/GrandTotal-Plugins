@@ -65,11 +65,14 @@ function doExport()
 			aDescription	= item["name"];
 			aQuantity		= item["quantityAsString"];
 			aUnitAmount		= item["rateAsString"];
-			aDiscount		= 0; //item["discount"];
-			aAccountCode	= parseInt(item["category"]);
-			if (isNaN(aAccountCode))
-			{
-				aAccountCode = 200; // sales
+			aDiscount		= 0;
+			
+			aAccountCode = item["itemgroup"] ? item["itemgroup"]["revenueAccount"] : null;
+			if (!aAccountCode) {
+				aAccountCode = parseInt(item["category"]);
+				if (isNaN(aAccountCode)) {
+					aAccountCode = 200; // sales
+				}
 			}
 			aAccountCode 	= aAccountCode + ""; // make this a string
 			aTaxType		= item["taxGroup"];

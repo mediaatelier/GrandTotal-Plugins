@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.sendto.XERO</string>
 	<key>CFBundleVersion</key>
-	<string>1.2</string>
+	<string>1.3</string>
 	<key>GrandTotalMinimumVersion</key>
 	<integer>4</integer>
 	<key>SendToMenu</key>
