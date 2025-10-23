@@ -1,7 +1,7 @@
 tell application "TimingHelper"
 	set reportSettings to make report settings
 	set exportSettings to make export settings
-	
+
 	tell reportSettings
 		set first grouping mode to raw
 		set second grouping mode to by project
@@ -14,6 +14,9 @@ tell application "TimingHelper"
 		set application info included to false
 		set timespan info included to false
 		set also group by application to true
+		try
+			set billing status filter to {billable, billed, paid, undetermined}
+		end try
 	end tell
 	
 	tell exportSettings

@@ -62,7 +62,7 @@ function timedEntries()
 
 function timeEntriesAPI()
 {
-	var url = "https://web.timingapp.com/api/v1/time-entries?is_running=false&include_project_data=true&include_team_members=true&start_date_min=2010-01-01&start_date_max=2050-01-01";
+	var url = "https://web.timingapp.com/api/v1/time-entries?is_running=false&include_project_data=true&include_team_members=true&start_date_min=2010-01-01&start_date_max=2050-01-01&billing_status[]=billable&billing_status[]=billed&billing_status[]=paid&billing_status[]=undetermined";
 	var counter = 0;
 	var result = [];
 
@@ -117,7 +117,10 @@ function timeEntriesAPI()
 
 	
 function timeEntriesLocal()
-{	
+{
+	// Update billing status in Timing first
+	updateBillingStatus();
+
 	var path = PluginDirectory + "Script.applescript";
 	var script = contentsOfFile(path);
 	var dest = NSTemporaryDirectory + "Timing.csv";
@@ -128,9 +131,9 @@ function timeEntriesLocal()
 	}
 	script = script.replace("<destination/>",dest);
 	script = script.replace("<years/>",years);
-	
+
  	var error = executeAppleScript(script);
- 	if (error["NSAppleScriptErrorMessage"]) 
+ 	if (error["NSAppleScriptErrorMessage"])
  	{
  		return error["NSAppleScriptErrorMessage"];
  	}
@@ -277,4 +280,116 @@ function httpGetJSON(theUrl)
 		return null;
 	}
 	return result =  JSON.parse(string);
+}
+
+
+function updateBillingStatus()
+{
+	try
+	{
+		var prefix = "info.eurocomp.Timing.TaskActivity.";
+
+		// Get UIDs from GrandTotal
+		var billedUIDs = getBilledUIDs(prefix);
+		var paidUIDs = getPaidUIDs(prefix);
+
+		// Extract numeric IDs from UIDs
+		var billedIDs = [];
+		for (uid of billedUIDs)
+		{
+			var id = uid.replace(prefix, "");
+			if (id && id.length > 0)
+			{
+				billedIDs.push(id);
+			}
+		}
+
+		var paidIDs = [];
+		for (uid of paidUIDs)
+		{
+			var id = uid.replace(prefix, "");
+			if (id && id.length > 0)
+			{
+				paidIDs.push(id);
+			}
+		}
+
+		// Only update if there are IDs to update
+		if (billedIDs.length > 0 || paidIDs.length > 0)
+		{
+			if (token)
+			{
+				// Use API for team accounts
+				updateBillingStatusAPI(billedIDs, paidIDs);
+			}
+			else
+			{
+				// Use AppleScript for local accounts
+				var path = PluginDirectory + "UpdateBillingStatus.applescript";
+				var script = contentsOfFile(path);
+
+				script = script.replace(/<billableIDs\/>/g, "");
+				script = script.replace(/<billedIDs\/>/g, billedIDs.join(","));
+				script = script.replace(/<paidIDs\/>/g, paidIDs.join(","));
+
+				executeAppleScript(script);
+				// Silently ignore any errors - feature might not be available in older Timing versions
+			}
+		}
+	}
+	catch (e)
+	{
+		// Silently ignore errors - feature might not be available
+	}
+}
+
+
+function updateBillingStatusAPI(billedIDs, paidIDs)
+{
+	try
+	{
+		// Update billed entries
+		if (billedIDs.length > 0)
+		{
+			var billedUrl = "https://web.timingapp.com/api/v1/time-entries/batch-update";
+			var billedPayload = JSON.stringify({
+				time_entries: billedIDs,
+				data: {
+					billing_status: "billed"
+				}
+			});
+
+			var header = {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'application/json'
+			};
+
+			loadURL("PATCH", billedUrl, header, billedPayload);
+			// Silently ignore any errors
+		}
+
+		// Update paid entries
+		if (paidIDs.length > 0)
+		{
+			var paidUrl = "https://web.timingapp.com/api/v1/time-entries/batch-update";
+			var paidPayload = JSON.stringify({
+				time_entries: paidIDs,
+				data: {
+					billing_status: "paid"
+				}
+			});
+
+			var header = {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'application/json'
+			};
+
+			loadURL("PATCH", paidUrl, header, paidPayload);
+			// Silently ignore any errors
+		}
+	}
+	catch (e)
+	{
+		// Silently ignore errors - feature might not be available or network issues
+	}
 }
