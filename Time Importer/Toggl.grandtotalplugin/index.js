@@ -178,7 +178,7 @@ function timedEntries()
 			}
 			
 	
-			if (aArray["total_count"] < aArray["per_page"] || pageNum == 10)
+			if (aArray["total_count"] < aArray["per_page"] || pageNum >= 10)
 			{
 				lastpage = true;
 			}
