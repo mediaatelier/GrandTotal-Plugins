@@ -50,6 +50,7 @@ function timedEntries()
 	if (aWorkspaces["grandtotal_error"])
 		return aWorkspaces["grandtotal_error"];
 		
+		
 	if (!aWorkspaces)
 	{
 		return "Check your settings, please";
@@ -73,6 +74,11 @@ function timedEntries()
 		var aProjects = httpGetJSON("https://api.track.toggl.com/api/v9/workspaces/" + aWorkspaceID + "/projects");
 		var aProjectIDs = {};
 	
+		if (aProjects.http_error == 402)
+		{
+			return "<a href='https://www.mediaatelier.com/Posts/Toggl-Limits'>Toggl limit reached</a>" + "\n" + aProjects.server_response;
+		}	
+
 		
 		
 		for(aEntry in aProjects)
