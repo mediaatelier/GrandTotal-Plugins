@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.tyme-app.Tyme3.grandtotalimporter</string>
 	<key>CFBundleVersion</key>
-	<string>3.1</string>
+	<string>4.0</string>
 	<key>Globals</key>
 	<array>
 		<dict>
@@ -22,7 +22,7 @@
 	<key>GlobalsInfo</key>
 	<string>Info for Plugin</string>
 	<key>GrandTotalMinimumVersion</key>
-	<real>4</real>
+	<real>6.0</real>
 	<key>RequiresFullDiskAccess</key>
 	<true/>
 	<key>callOnDeactivate</key>
@@ -32,7 +32,18 @@
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>
+		<string>estimates</string>
+		<string>invoices</string>
 	</array>
+	<key>displayNames</key>
+	<dict>
+		<key>timeimporter</key>
+		<string>Tyme</string>
+		<key>estimates</key>
+		<string>Send to Tyme</string>
+		<key>invoices</key>
+		<string>Send to Tyme</string>
+	</dict>
 	<key>TimeImporterEntryURLTemplate</key>
 	<string>tyme://time_entry/%@</string>
 	<key>URL</key>
