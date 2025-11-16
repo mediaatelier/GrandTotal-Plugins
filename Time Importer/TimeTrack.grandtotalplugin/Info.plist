@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.importer.timetrack</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Account</string>
+			<key>name</key>
+			<string>account</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Your API key</string>
+			<key>name</key>
+			<string>key</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Your API secret</string>
+			<key>name</key>
+			<string>secret</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Enter your TimeTrack API values to allow access to your data. You can find the data in your TimeTrack user profile.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>8</real>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/TimeTrack.grandtotalplugin.zip</string>
+	<key>copyright</key>
+	<string>© 2020-2024 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>

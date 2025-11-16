@@ -1,0 +1,10 @@
+"Account ID" = "Account ID";
+"Email" = "Email";
+"Password" = "Password";
+"Enter your TrackingTime email and password to allow access to your data. Account ID is optional - only needed if you belong to multiple workspaces and want to access a specific one (otherwise your default workspace will be used)." = "Enter your TrackingTime email and password to allow access to your data. Account ID is optional - only needed if you belong to multiple workspaces and want to access a specific one (otherwise your default workspace will be used).";
+"Email is required" = "Email is required";
+"Password is required" = "Password is required";
+"Failed to get user information" = "Failed to get user information";
+"Authentication failed" = "Authentication failed";
+"Please check your credentials" = "Please check your credentials";
+"TrackingTime" = "TrackingTime";

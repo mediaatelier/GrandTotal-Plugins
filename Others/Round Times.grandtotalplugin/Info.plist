@@ -10,6 +10,8 @@
 	</array>
 	<key>menuValidationKeyPath</key>
 	<string>isUnlocked</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Others/Round%20Times.grandtotalplugin.zip</string>
 	<key>copyright</key>
 	<string>© 2015-2023 Stefan Fürst</string>
 	<key>CFBundleVersion</key>

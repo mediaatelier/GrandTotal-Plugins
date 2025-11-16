@@ -35,7 +35,8 @@ timedEntries();
 
 function urlForEndPoint(theEndPoint,pageSize,page)
 {
-	return "https://api.awork.io/api/v1/" + theEndPoint + "?pageSize=" + pageSize + "&page=" + page;
+	// Correct base URL is api.awork.com (not .io)
+	return "https://api.awork.com/api/v1/" + theEndPoint + "?pageSize=" + pageSize + "&page=" + page;
 }
 
 
@@ -48,15 +49,21 @@ function httpGetJSON(theUrl)
 	{
 		return null;
 	}
-	return JSON.parse(string);
+
+	try {
+		var parsed = JSON.parse(string);
+		return parsed;
+	} catch (e) {
+		return null;
+	}
 }
 
 
 function timedEntries()
 {
-	var pageSize = 200;
+	var pageSize = 1000; // Maximum allowed by API
 	var page = 1;
-	
+
 	if (defaultRate == 0)
 	{
 		return localize("Set rate");
@@ -67,6 +74,7 @@ function timedEntries()
 
 	do {
 		var aEntries = httpGetJSON(urlForEndPoint("timeentries",pageSize,page));
+
 		if (!aEntries)
 		{
 			return "Check your settings, please";
@@ -79,12 +87,14 @@ function timedEntries()
 		for(aIndex in aEntries)
 		{
 			var aEntry = aEntries[aIndex];
-			var aItem = {};
-			
-			if (!aEntry["isBillable"])
+
+			// Skip non-billable entries
+			if (aEntry["isBillable"] === false)
 			{
 				continue;
 			}
+
+			var aItem = {};
 			if (aEntry["project"])
 			{
 				aItem["project"] = aEntry["project"]["name"];
@@ -93,7 +103,6 @@ function timedEntries()
 					aItem["client"] = aEntry["project"]["company"]["name"];
 				}
 			}
-			aItem["user"] = aEntry["user"]["name"];
 			if (aEntry["task"])
 			{
 				aItem["category"] = aEntry["task"]["name"];
@@ -104,10 +113,15 @@ function timedEntries()
 			if (aEntry["user"])
 			{
 				aItem["user"] = aEntry["user"]["firstName"];
+				if (aEntry["user"]["lastName"])
+				{
+					aItem["user"] += " " + aEntry["user"]["lastName"];
+				}
 			}
 			aItem["cost"] = defaultRate * (aItem["minutes"] / 60);
 			if (aEntry["startTimeUtc"])
 			{
+				// Combine UTC date and time: extract date from startDateUtc, combine with startTimeUtc
 				aItem["startDate"] = aEntry["startDateUtc"].split("T")[0] + "T" + aEntry["startTimeUtc"] + "Z";
 			}
 			else
@@ -119,6 +133,6 @@ function timedEntries()
 		page = page + 1;
 
 	} while (aEntries.length == pageSize && page < 6);
-	
+
 	return result;
 }

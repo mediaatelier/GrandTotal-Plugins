@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.trackingtimeImporter</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Account ID</string>
+			<key>name</key>
+			<string>accountId</string>
+			<key>type</key>
+			<string>string</string>
+			<key>placeholder</key>
+			<string>Optional</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Email</string>
+			<key>name</key>
+			<string>email</string>
+			<key>type</key>
+			<string>string</string>
+			<key>placeholder</key>
+			<string>your.email@example.com</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Password</string>
+			<key>name</key>
+			<string>password</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Enter your TrackingTime email and password to allow access to your data. Account ID is optional - only needed if you belong to multiple workspaces and want to access a specific one (otherwise your default workspace will be used).</string>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/TrackingTime.grandtotalplugin.zip</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>5</integer>
+	<key>copyright</key>
+	<string>© 2025 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
