@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.grandtotal.plugin.envelopes</string>
+	<key>types</key>
+	<array>
+		<string>invoices</string>
+		<string>clients</string>
+		<string>estimates</string>
+		<string>overview</string>
+		
+	</array>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Overview/Print%20Envelope.grandtotalplugin.zip</string>
+	<key>copyright</key>
+	<string>© 2015 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>4.0.2</string>
+	<key>GrandTotal3Ready</key>
+	<true/>
+</dict>
+</plist>
