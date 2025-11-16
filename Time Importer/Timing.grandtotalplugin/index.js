@@ -81,7 +81,7 @@ function sendEstimate() {
 	var quotedAndCommaSeparated = "{\"" + parameters.map(param => param.replace(/\\/g, '\\\\').replace(/"/g, '\\"')).join("\",\"") + "\"}";
 
 
-	var path = PluginDirectory + "Script.applescript";
+	var path = PluginDirectory + "SendToTiming.applescript";
 	var script = contentsOfFile(path);
 
 
