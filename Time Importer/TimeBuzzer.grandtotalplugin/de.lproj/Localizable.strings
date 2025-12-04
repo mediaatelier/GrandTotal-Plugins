@@ -1,0 +1,11 @@
+"Info for Plugin" = "Dieses Plugin importiert Zeiteinträge aus timeBuzzer. Sie benötigen einen API-Schlüssel, den Sie in Ihrem timeBuzzer-Konto unter Einstellungen → API finden.\n\nStellen Sie sicher, dass Sie einen Stundensatz in GrandTotal/Einstellungen/Arbeitszeit festlegen.";
+"More about timeBuzzer" = "Mehr über timeBuzzer";
+"API Key" = "API-Schlüssel";
+"API Key required" = "Bitte geben Sie Ihren timeBuzzer API-Schlüssel in den Plugin-Einstellungen ein";
+"Round to" = "Runden auf";
+"Minutes" = "Minuten";
+"Set rate" = "Bitte legen Sie einen Stundensatz in GrandTotal/Einstellungen/Arbeitszeit fest";
+"Error loading account" = "Fehler beim Laden der Kontoinformationen von timeBuzzer. Bitte überprüfen Sie Ihren API-Schlüssel.";
+"Error loading tiles" = "Fehler beim Laden der Projekte und Kunden von timeBuzzer. Bitte überprüfen Sie Ihren API-Schlüssel.";
+"Error loading activities" = "Fehler beim Laden der Zeiteinträge von timeBuzzer. Bitte überprüfen Sie Ihren API-Schlüssel.";
+"No activities found" = "Keine Zeiteinträge in timeBuzzer gefunden";

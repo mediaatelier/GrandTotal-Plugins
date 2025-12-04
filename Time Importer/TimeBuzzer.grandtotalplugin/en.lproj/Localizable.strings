@@ -1,0 +1,11 @@
+"Info for Plugin" = "This plugin imports time entries from timeBuzzer. You need an API Key which can be found in your timeBuzzer account under Settings → API.\n\nMake sure to set an hourly rate in GrandTotal/Preferences/Work time.";
+"More about timeBuzzer" = "More about timeBuzzer";
+"API Key" = "API Key";
+"API Key required" = "Please enter your timeBuzzer API Key in the plugin settings";
+"Round to" = "Round to";
+"Minutes" = "Minutes";
+"Set rate" = "Please set an hourly rate in GrandTotal/Preferences/Work time";
+"Error loading account" = "Error loading account information from timeBuzzer. Please check your API Key.";
+"Error loading tiles" = "Error loading projects and clients from timeBuzzer. Please check your API Key.";
+"Error loading activities" = "Error loading time entries from timeBuzzer. Please check your API Key.";
+"No activities found" = "No time entries found in timeBuzzer";
