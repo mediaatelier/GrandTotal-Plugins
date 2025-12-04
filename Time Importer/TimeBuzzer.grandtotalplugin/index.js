@@ -100,7 +100,7 @@ function timedEntries()
 	}
 
 	// Get activities
-	var response = httpGetJSON("https://my.timebuzzer.com/open-api/activities?count=500");
+	var response = httpGetJSON("https://my.timebuzzer.com/open-api/activities?count=5000");
 
 	if (!response)
 	{
