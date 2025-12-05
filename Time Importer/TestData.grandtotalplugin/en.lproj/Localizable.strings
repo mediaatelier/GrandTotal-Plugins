@@ -1,0 +1,4 @@
+/* Localized strings for TestData Time Importer */
+
+CFBundleName = "Test Data Importer";
+description = "Imports 2000 fixed test time entries with diverse clients, projects, categories, and users. Perfect for testing and demonstration purposes.";
