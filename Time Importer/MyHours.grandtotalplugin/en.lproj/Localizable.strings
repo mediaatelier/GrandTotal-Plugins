@@ -1,0 +1,12 @@
+"Info for Plugin" = "This plugin imports time entries from My Hours. You need an API Key which can be found in your My Hours account under Settings → Integrations → API Keys.\n\nMake sure to set an hourly rate in GrandTotal/Preferences/Work time.";
+"Enter your My Hours API Key to import time entries. You can find the API Key in your My Hours account under Settings → Integrations → API Keys." = "Enter your My Hours API Key to import time entries. You can find the API Key in your My Hours account under Settings → Integrations → API Keys.";
+"More about My Hours" = "More about My Hours";
+"API Key" = "API Key";
+"API Key required" = "Please enter your My Hours API Key in the plugin settings";
+"Round to" = "Round to";
+"Minutes" = "Minutes";
+"Set rate" = "Please set an hourly rate in GrandTotal/Preferences/Work time";
+"Error loading user" = "Error loading user information from My Hours. Please check your API Key.";
+"Error loading projects" = "Error loading projects from My Hours. Please check your API Key.";
+"Error loading time logs" = "Error loading time entries from My Hours. Please check your API Key.";
+"No time entries found" = "No time entries found in My Hours";

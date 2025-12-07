@@ -1,0 +1,12 @@
+"Info for Plugin" = "Deze plugin importeert tijdregistraties uit My Hours. U heeft een API-sleutel nodig die u kunt vinden in uw My Hours-account onder Instellingen → Integraties → API-sleutels.\n\nZorg ervoor dat u een uurtarief instelt in GrandTotal/Voorkeuren/Werktijd.";
+"Enter your My Hours API Key to import time entries. You can find the API Key in your My Hours account under Settings → Integrations → API Keys." = "Voer uw My Hours API-sleutel in om tijdregistraties te importeren. U kunt de API-sleutel vinden in uw My Hours-account onder Instellingen → Integraties → API-sleutels.";
+"More about My Hours" = "Meer over My Hours";
+"API Key" = "API-sleutel";
+"API Key required" = "Voer uw My Hours API-sleutel in bij de plugin-instellingen";
+"Round to" = "Afronden op";
+"Minutes" = "Minuten";
+"Set rate" = "Stel een uurtarief in bij GrandTotal/Voorkeuren/Werktijd";
+"Error loading user" = "Fout bij laden van gebruikersinformatie uit My Hours. Controleer uw API-sleutel.";
+"Error loading projects" = "Fout bij laden van projecten uit My Hours. Controleer uw API-sleutel.";
+"Error loading time logs" = "Fout bij laden van tijdregistraties uit My Hours. Controleer uw API-sleutel.";
+"No time entries found" = "Geen tijdregistraties gevonden in My Hours";

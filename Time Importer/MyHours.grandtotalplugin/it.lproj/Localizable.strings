@@ -1,0 +1,12 @@
+"Info for Plugin" = "Questo plugin importa le voci di tempo da My Hours. È necessaria una chiave API che può essere trovata nel tuo account My Hours in Impostazioni → Integrazioni → Chiavi API.\n\nAssicurati di impostare una tariffa oraria in GrandTotal/Preferenze/Tempo di lavoro.";
+"Enter your My Hours API Key to import time entries. You can find the API Key in your My Hours account under Settings → Integrations → API Keys." = "Inserisci la tua chiave API My Hours per importare le voci di tempo. Puoi trovare la chiave API nel tuo account My Hours in Impostazioni → Integrazioni → Chiavi API.";
+"More about My Hours" = "Maggiori informazioni su My Hours";
+"API Key" = "Chiave API";
+"API Key required" = "Inserisci la tua chiave API My Hours nelle impostazioni del plugin";
+"Round to" = "Arrotonda a";
+"Minutes" = "Minuti";
+"Set rate" = "Imposta una tariffa oraria in GrandTotal/Preferenze/Tempo di lavoro";
+"Error loading user" = "Errore nel caricamento delle informazioni utente da My Hours. Verifica la tua chiave API.";
+"Error loading projects" = "Errore nel caricamento dei progetti da My Hours. Verifica la tua chiave API.";
+"Error loading time logs" = "Errore nel caricamento delle voci di tempo da My Hours. Verifica la tua chiave API.";
+"No time entries found" = "Nessuna voce di tempo trovata in My Hours";
