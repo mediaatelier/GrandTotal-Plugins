@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.pdf</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.jibbleimporter</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Client ID</string>
+			<key>name</key>
+			<string>clientId</string>
+			<key>type</key>
+			<string>string</string>
+			<key>placeholder</key>
+			<string>Get from Organization Settings → API Keys</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Client Secret</string>
+			<key>name</key>
+			<string>clientSecret</string>
+			<key>type</key>
+			<string>password</string>
+			<key>placeholder</key>
+			<string>Get from Organization Settings → API Keys</string>
+		</dict>
+		<dict>
+			<key>buttonlabel</key>
+			<string>Minutes</string>
+			<key>default</key>
+			<real>1</real>
+			<key>label</key>
+			<string>Round to</string>
+			<key>name</key>
+			<string>roundTo</string>
+			<key>type</key>
+			<string>integer</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Enter your Jibble Client ID and Client Secret to import time entries. You can generate API credentials in your Jibble account under Organization Settings → API Keys.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>7.3</real>
+	<key>URL</key>
+	<string>https://github.com/mediaatelier/GrandTotal-Plugins/raw/master/Time%20Importer/Jibble.grandtotalplugin.zip</string>
+	<key>copyright</key>
+	<string>© 2025 Media Atelier</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>

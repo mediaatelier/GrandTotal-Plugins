@@ -1,0 +1,14 @@
+"Info for Plugin" = "Deze plugin importeert tijdregistraties uit Jibble. U heeft API-referenties nodig die u kunt genereren in uw Jibble-account onder Organisatie-instellingen → API-sleutels.\n\nZorg ervoor dat u een uurtarief instelt in GrandTotal/Voorkeuren/Werktijd.";
+"Enter your Jibble Client ID and Client Secret to import time entries. You can generate API credentials in your Jibble account under Organization Settings → API Keys." = "Voer uw Jibble Client-ID en Client-Secret in om tijdregistraties te importeren. U kunt API-referenties genereren in uw Jibble-account onder Organisatie-instellingen → API-sleutels.";
+"More about Jibble" = "Meer over Jibble";
+"Client ID" = "Client-ID";
+"Client Secret" = "Client-Secret";
+"Get from Organization Settings → API Keys" = "Verkrijg via Organisatie-instellingen → API-sleutels";
+"Client ID required" = "Voer uw Jibble Client-ID in bij de plugin-instellingen";
+"Client Secret required" = "Voer uw Jibble Client-Secret in bij de plugin-instellingen";
+"Round to" = "Afronden op";
+"Minutes" = "Minuten";
+"Set rate" = "Stel een uurtarief in bij GrandTotal/Voorkeuren/Werktijd";
+"Authentication failed" = "Authenticatie mislukt. Controleer uw Client-ID en Client-Secret.";
+"Error loading time entries" = "Fout bij laden van tijdregistraties uit Jibble. Controleer uw referenties.";
+"No time entries found" = "Geen tijdregistraties gevonden in Jibble";

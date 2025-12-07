@@ -1,0 +1,14 @@
+"Info for Plugin" = "Este plugin importa entradas de tiempo de Jibble. Necesitas credenciales API que puedes generar en tu cuenta de Jibble en Configuración de la organización → Claves API.\n\nAsegúrate de establecer una tarifa por hora en GrandTotal/Preferencias/Tiempo de trabajo.";
+"Enter your Jibble Client ID and Client Secret to import time entries. You can generate API credentials in your Jibble account under Organization Settings → API Keys." = "Ingresa tu ID de cliente y secreto de cliente de Jibble para importar entradas de tiempo. Puedes generar credenciales API en tu cuenta de Jibble en Configuración de la organización → Claves API.";
+"More about Jibble" = "Más sobre Jibble";
+"Client ID" = "ID de cliente";
+"Client Secret" = "Secreto de cliente";
+"Get from Organization Settings → API Keys" = "Obtener de Configuración de la organización → Claves API";
+"Client ID required" = "Por favor ingresa tu ID de cliente de Jibble en la configuración del plugin";
+"Client Secret required" = "Por favor ingresa tu secreto de cliente de Jibble en la configuración del plugin";
+"Round to" = "Redondear a";
+"Minutes" = "Minutos";
+"Set rate" = "Por favor establece una tarifa por hora en GrandTotal/Preferencias/Tiempo de trabajo";
+"Authentication failed" = "Autenticación fallida. Verifica tu ID de cliente y secreto de cliente.";
+"Error loading time entries" = "Error al cargar entradas de tiempo de Jibble. Verifica tus credenciales.";
+"No time entries found" = "No se encontraron entradas de tiempo en Jibble";
