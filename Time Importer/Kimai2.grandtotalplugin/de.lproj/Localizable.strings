@@ -1,0 +1,9 @@
+"Your Kimai API token" = "API Token";
+"Your Kimai URL" = "Kimai URL";
+"Your Kimai username" = "Benutzername";
+"More about Kimai" = "Mehr über Kimai erfahren";
+"Enter your Kimai URL, username and API token to allow access to your data." = "Geben Sie hier Ihre Kimai Verbindungsdaten ein, um den Zugriff auf Ihre Daten zu erlauben.";
+"Please check your settings: Kimai version could not be detected." = "Bitte überprüfen Sie ihre Einstellungen, die Kimai Version konnte nicht erkannt werden.";
+"This plugin works only with Kimai %version% and later." = "Dieses Plugin benötigt mindestens Kimai %version%.";
+"Please check your settings: missing or invalid credentials." = "Bitte überprüfen Sie ihre Einstellungen, es wurden fehlende oder falsche Verbindungsdaten erkannt.";
+"No timesheets found or invalid response from server." = "Keine Zeiteinträge gefunden oder ungültige Antwort vom Server.";

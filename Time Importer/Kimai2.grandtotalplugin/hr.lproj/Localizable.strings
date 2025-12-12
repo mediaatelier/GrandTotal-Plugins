@@ -1,0 +1,9 @@
+"Your Kimai API token" = "API token";
+"Your Kimai URL" = "Kimai URL";
+"Your Kimai username" = "Korisničko ime";
+"More about Kimai" = "Više o Kimaiju";
+"Enter your Kimai URL, username and API token to allow access to your data." = "Upiši tvoj Kimai URL, korisničko ime i API token za dozvoljavanje pristupa tvojim podacima.";
+"Please check your settings: Kimai version could not be detected." = "Provjeri tvoje postavke. Nije bilo moguće otkriti Kimai verziju.";
+"This plugin works only with Kimai %version% and later." = "Ovaj dodatak radi samo s Kimai verzijom %version% i novijim verzijama.";
+"Please check your settings: missing or invalid credentials." = "Provjeri tvoje postavke: podaci za prijavu nedostaju ili nisu ispravne.";
+"No timesheets found or invalid response from server." = "Nisu pronađeni vremenski zapisi ili nevažeći odgovor s poslužitelja.";
