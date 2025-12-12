@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.migrate.Bexio</string>
+	<key>copyright</key>
+	<string>© 2025 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>9</real>
+	<key>types</key>
+	<array>
+		<string>migration</string>
+	</array>
+	<key>APIKeyURL</key>
+	<string>https://docs.bexio.com/#section/Authentication</string>
+	<key>MenuName</key>
+	<string>Bexio</string>
+</dict>
+</plist>
