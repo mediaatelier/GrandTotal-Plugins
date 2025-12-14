@@ -8,7 +8,7 @@
 - Consult official documentation for your target e-invoice format
 - Consider these samples as starting points, not production-ready code
 
-E-Invoice standards change frequently. Always verify compliance with the latest version.
+Always verify compliance with the latest version of your target e-invoice standard.
 
 ---
 
@@ -42,8 +42,7 @@ Before using any e-invoice plugin in production:
 1. **Validate XML output** against official validators
 2. **Test with receiving systems** to ensure acceptance
 3. **Check compliance** with current legal requirements
-4. **Update regularly** as standards evolve
-5. **Consult official specs** for your country/format:
+4. **Consult official specs** for your country/format:
    - ZUGFeRD: https://www.ferd-net.de/
    - EN16931 / XRechnung: https://www.xeinkauf.de/
    - Peppol: https://peppol.org/
