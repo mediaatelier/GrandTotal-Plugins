@@ -107,7 +107,7 @@ function migrate() {
                     date: invoice.date
                 },
                 relations: {
-                    parentDocument: "service.client." + invoice.clientId
+                    parentDocument: "Client/service.client." + invoice.clientId
                 }
             })),
 
@@ -139,12 +139,90 @@ Supported entity types include:
 Each entity has:
 - **uid**: Unique identifier (string) - must be unique across all entities
 - **attributes**: Dictionary of entity properties (matches Core Data attributes)
-- **relations**: Dictionary of relationships to other entities (reference by `EntityType/uid`)
+- **relations**: Dictionary of relationships to other entities
 
 ### Relationship Format
 
-- To-one: `"parentDocument": "Client/client123"`
-- To-many: `"costs": ["Cost/cost1", "Cost/cost2"]`
+**Important**: Relations must use the format `"EntityType/uid"` where:
+- `EntityType` is the entity name (e.g., `Client`, `Invoice`, `Cost`)
+- `/` is the separator (forward slash)
+- `uid` is the unique identifier of the related entity
+
+**Examples:**
+
+To-one relationship:
+```javascript
+relations: {
+    parentDocument: "Client/service.client.123"
+}
+```
+
+To-many relationship:
+```javascript
+relations: {
+    costs: [
+        "Cost/service.cost.1",
+        "Cost/service.cost.2"
+    ]
+}
+```
+
+**Common relation properties:**
+- `parentDocument` - Links Invoice/Estimate to a Client
+- `parent` - Links Cost to an Invoice/Estimate
+- `costs` - Links Invoice/Estimate to multiple Cost items
+- `payments` - Links Invoice to Payment records
+
+**Complete example with relationships:**
+```javascript
+return {
+    entities: {
+        Client: [{
+            attributes: {
+                uid: "service.client.100",
+                organization: "ACME Corp"
+            }
+        }],
+
+        Invoice: [{
+            attributes: {
+                uid: "service.invoice.200",
+                name: "INV-001"
+            },
+            relations: {
+                parentDocument: "Client/service.client.100",  // Links to client above
+                costs: [
+                    "Cost/service.cost.1",
+                    "Cost/service.cost.2"
+                ]
+            }
+        }],
+
+        Cost: [
+            {
+                attributes: {
+                    uid: "service.cost.1",
+                    name: "Web Development",
+                    rate: 100
+                },
+                relations: {
+                    parent: "Invoice/service.invoice.200"  // Links back to invoice
+                }
+            },
+            {
+                attributes: {
+                    uid: "service.cost.2",
+                    name: "Design Work",
+                    rate: 80
+                },
+                relations: {
+                    parent: "Invoice/service.invoice.200"
+                }
+            }
+        ]
+    }
+};
+```
 
 ## Error Handling
 
