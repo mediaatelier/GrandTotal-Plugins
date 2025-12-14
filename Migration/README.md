@@ -159,6 +159,15 @@ if (apiResponse.error) {
 }
 ```
 
+## Localization
+
+Migration plugins support full localization. See the [main README Localization section](../README.md#localization) for complete documentation on:
+- Directory structure (`.lproj` folders)
+- Localizable.strings format
+- Using localization in JavaScript (`localize()` function)
+- Localizing Info.plist values
+- Best practices and language codes
+
 ## Testing
 
 1. Copy plugin to `~/Library/Application Support/GrandTotal/PlugIns/`
