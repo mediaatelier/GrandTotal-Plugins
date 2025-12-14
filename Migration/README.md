@@ -1,6 +1,6 @@
 # Migration Plugins for GrandTotal
 
-Migration plugins allow users to import data from external accounting and invoicing services into GrandTotal. These plugins appear in the **GrandTotal → Migrate data from** menu.
+Migration plugins allow users to import baseline data (clients, products, catalog items) from external accounting and invoicing services into GrandTotal. These plugins appear in the **GrandTotal → Migrate data from** menu.
 
 ## Key Characteristics
 
@@ -8,6 +8,21 @@ Migration plugins allow users to import data from external accounting and invoic
 - **No settings required**: Migration plugins do not use the settings system
 - **No icons needed**: Unlike other plugin types, migration plugins do not require icon files
 - **MenuName required**: Must specify a MenuName in Info.plist for menu display
+- **Baseline data only**: Should import clients and products, NOT invoices/estimates from other systems
+
+## What to Import
+
+**DO import:**
+- **Clients** - Customer and contact information
+- **CatalogItem** - Product catalog, services, standard items
+- **Projects** - Project information (if applicable)
+
+**DO NOT import:**
+- **Invoices** - Invoices created in other systems should remain there
+- **Estimates** - Quotes/estimates created in other systems should remain there
+- **Payments** - Payment records from other systems
+
+**Why?** Documents created in other systems will look different when imported into GrandTotal. They should remain in their original system. Migration is about setting up GrandTotal with your baseline data so you can start creating new documents going forward.
 
 ## Plugin Structure
 
@@ -82,7 +97,7 @@ The plugin's `index.js` must return a dictionary with an `entities` key containi
 function migrate() {
     // Fetch data from external API
     const clients = fetchClients();
-    const invoices = fetchInvoices();
+    const products = fetchProducts();
 
     return {
         entities: {
@@ -100,18 +115,15 @@ function migrate() {
                 }
             })),
 
-            Invoice: invoices.map(invoice => ({
+            CatalogItem: products.map(product => ({
                 attributes: {
-                    uid: "service.invoice." + invoice.id,
-                    name: invoice.number,
-                    date: invoice.date
-                },
-                relations: {
-                    parentDocument: "Client/service.client." + invoice.clientId
+                    uid: "service.product." + product.id,
+                    name: product.name,
+                    itemDescription: product.description,
+                    unitPrice: parseFloat(product.price),
+                    tax: parseFloat(product.taxRate)
                 }
-            })),
-
-            Cost: extractLineItems(invoices)
+            }))
         }
     };
 }
@@ -126,13 +138,16 @@ migrate();
 
 ### Entity Types
 
-Supported entity types include:
+Entity types that **should be imported** in migration plugins:
 - `Client` - Customers and contacts
-- `Invoice` - Invoices
-- `Estimate` - Estimates/quotes
-- `Cost` - Line items
-- `CatalogItem` - Product catalog items
-- `Payment` - Payment records
+- `CatalogItem` - Product catalog items, services, standard line items
+- `Project` - Projects (optional, if your service uses projects)
+
+Entity types that **should NOT be imported** (documents created in other systems):
+- `Invoice` - Keep invoices in their original system
+- `Estimate` - Keep estimates/quotes in their original system
+- `Cost` - Line items (part of invoices, should not be imported separately)
+- `Payment` - Payment records (tied to invoices in original system)
 
 ### Entity Structure
 
@@ -143,37 +158,14 @@ Each entity has:
 
 ### Relationship Format
 
-**Important**: Relations must use the format `"EntityType/uid"` where:
-- `EntityType` is the entity name (e.g., `Client`, `Invoice`, `Cost`)
+Most migration plugins **do not need relationships** since they import independent entities (clients and catalog items). However, if you need to link entities (e.g., Projects to Clients), use this format:
+
+**Format**: Relations must use `"EntityType/uid"` where:
+- `EntityType` is the entity name (e.g., `Client`, `Project`)
 - `/` is the separator (forward slash)
 - `uid` is the unique identifier of the related entity
 
-**Examples:**
-
-To-one relationship:
-```javascript
-relations: {
-    parentDocument: "Client/service.client.123"
-}
-```
-
-To-many relationship:
-```javascript
-relations: {
-    costs: [
-        "Cost/service.cost.1",
-        "Cost/service.cost.2"
-    ]
-}
-```
-
-**Common relation properties:**
-- `parentDocument` - Links Invoice/Estimate to a Client
-- `parent` - Links Cost to an Invoice/Estimate
-- `costs` - Links Invoice/Estimate to multiple Cost items
-- `payments` - Links Invoice to Payment records
-
-**Complete example with relationships:**
+**Example** (linking a Project to a Client):
 ```javascript
 return {
     entities: {
@@ -184,45 +176,20 @@ return {
             }
         }],
 
-        Invoice: [{
+        Project: [{
             attributes: {
-                uid: "service.invoice.200",
-                name: "INV-001"
+                uid: "service.project.1",
+                name: "Website Redesign"
             },
             relations: {
-                parentDocument: "Client/service.client.100",  // Links to client above
-                costs: [
-                    "Cost/service.cost.1",
-                    "Cost/service.cost.2"
-                ]
+                parentDocument: "Client/service.client.100"  // Links to client above
             }
-        }],
-
-        Cost: [
-            {
-                attributes: {
-                    uid: "service.cost.1",
-                    name: "Web Development",
-                    rate: 100
-                },
-                relations: {
-                    parent: "Invoice/service.invoice.200"  // Links back to invoice
-                }
-            },
-            {
-                attributes: {
-                    uid: "service.cost.2",
-                    name: "Design Work",
-                    rate: 80
-                },
-                relations: {
-                    parent: "Invoice/service.invoice.200"
-                }
-            }
-        ]
+        }]
     }
 };
 ```
+
+**Note:** Most migration plugins only import Clients and CatalogItems, which don't require relationships.
 
 ## Error Handling
 
