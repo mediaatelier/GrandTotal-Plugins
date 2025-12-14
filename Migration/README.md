@@ -1,6 +1,13 @@
 # Migration Plugins for GrandTotal
 
-Migration plugins allow users to import data from external accounting and invoicing services into GrandTotal.
+Migration plugins allow users to import data from external accounting and invoicing services into GrandTotal. These plugins appear in the **GrandTotal → Migrate data from** menu.
+
+## Key Characteristics
+
+- **Menu placement**: Appear in "GrandTotal → Migrate data from" menu
+- **No settings required**: Migration plugins do not use the settings system
+- **No icons needed**: Unlike other plugin types, migration plugins do not require icon files
+- **MenuName required**: Must specify a MenuName in Info.plist for menu display
 
 ## Plugin Structure
 
@@ -47,10 +54,23 @@ Migrate ServiceName.grandtotalplugin/
 
 ### Required Keys
 
-- **CFBundleIdentifier**: Must follow pattern `com.mediaatelier.migrate.{ServiceName}` where `{ServiceName}` matches the last component
-- **types**: Must contain `"migration"`
-- **MenuName**: Display name shown in the "Migrate data from" menu (e.g., "SevDesk", "LexOffice")
+- **CFBundleIdentifier**: Unique identifier for your plugin (e.g., `com.mediaatelier.migrate.ServiceName`)
+- **CFBundleVersion**: Version string (e.g., "1.0")
+- **GrandTotalMinimumVersion**: Minimum GrandTotal version required (e.g., 9)
+- **types**: Must contain `"migration"` - this identifies the plugin as a migration plugin
+- **MenuName**: Display name shown in the "Migrate data from" menu (e.g., "SevDesk", "Invoice Ninja")
 - **APIKeyURL**: URL where users can find or generate their API key
+
+### Optional Keys
+
+- **copyright**: Copyright notice (e.g., "© 2025 Your Name")
+
+### Keys NOT Used by Migration Plugins
+
+Migration plugins do not use:
+- **Settings**: No settings UI is shown
+- **Icon files**: No icon display in menus
+- **Menu hierarchy keys**: Migration plugins always appear in the fixed "Migrate data from" menu
 
 ## index.js Implementation
 
@@ -144,8 +164,9 @@ if (apiResponse.error) {
 1. Copy plugin to `~/Library/Application Support/GrandTotal/PlugIns/`
 2. Launch GrandTotal
 3. Open a document
-4. File → Migrate data from → [Your Service Name]
-5. Enter API key and test import
+4. GrandTotal → Migrate data from → [Your Service Name]
+5. Enter API key when prompted
+6. Verify that data imports correctly
 
 ## Example: Complete Plugin
 

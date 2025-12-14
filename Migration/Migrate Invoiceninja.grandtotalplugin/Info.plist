@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.mediaatelier.llm.invoiceninja</string>
+	<string>com.mediaatelier.migrate.invoiceninja</string>
 	<key>copyright</key>
 	<string>© 2025 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
