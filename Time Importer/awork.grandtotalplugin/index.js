@@ -40,6 +40,40 @@ function urlForEndPoint(theEndPoint,pageSize,page)
 }
 
 
+function extractHourlyRateFromTags(tags)
+{
+	if (!tags || !Array.isArray(tags))
+	{
+		return null;
+	}
+
+	for (var i = 0; i < tags.length; i++)
+	{
+		var tagName = tags[i].name;
+		if (!tagName)
+		{
+			continue;
+		}
+
+		// Match patterns like "100/h", "65.80/h", "76,60/h", "100 / h"
+		// Allow optional spaces around the slash, decimal with . or ,
+		var match = tagName.match(/^(\d+[.,]?\d*)\s*\/\s*h$/i);
+		if (match)
+		{
+			// Replace comma with dot for parsing and convert to number
+			var rateString = match[1].replace(",", ".");
+			var rate = parseFloat(rateString);
+			if (!isNaN(rate))
+			{
+				return rate;
+			}
+		}
+	}
+
+	return null;
+}
+
+
 function httpGetJSON(theUrl)
 {
 	header = {"Authorization":"Bearer " + token};
@@ -47,14 +81,47 @@ function httpGetJSON(theUrl)
 
 	if (string.length == 0)
 	{
-		return null;
+		return {grandtotal_error: "authentication"};
 	}
 
 	try {
 		var parsed = JSON.parse(string);
+
+		// Check for awork API error format: server_error with code and description
+		if (parsed.server_error) {
+			var errorCode = parsed.server_error.code;
+			var errorDesc = parsed.server_error.description;
+
+			// Handle specific error codes
+			if (errorCode == "plan-inactive") {
+				return {grandtotal_error: "subscription", details: errorDesc};
+			}
+			if (errorCode == "unauthorized" || errorCode == "invalid-token" || parsed.http_error == 401) {
+				return {grandtotal_error: "authentication", details: errorDesc};
+			}
+			if (parsed.http_error == 403) {
+				return {grandtotal_error: "forbidden", details: errorDesc};
+			}
+
+			// Generic API error with description
+			return {grandtotal_error: "api", code: errorCode, details: errorDesc};
+		}
+
+		// Check for other error response formats
+		if (parsed.error || parsed.message || parsed.status >= 400) {
+			if (parsed.status == 401 || parsed.status == 403) {
+				return {grandtotal_error: "authentication"};
+			}
+			return {grandtotal_error: "api", details: parsed.message || parsed.error};
+		}
+
 		return parsed;
 	} catch (e) {
-		return null;
+		// If we can't parse JSON, it might be an HTML error page (common with auth failures)
+		if (string.includes("401") || string.includes("Unauthorized") || string.includes("403") || string.includes("Forbidden")) {
+			return {grandtotal_error: "authentication"};
+		}
+		return {grandtotal_error: "parse"};
 	}
 }
 
@@ -77,11 +144,61 @@ function timedEntries()
 
 		if (!aEntries)
 		{
-			return "Check your settings, please";
+			return "Unable to connect to awork API. Please check your internet connection.";
 		}
 		if (aEntries["grandtotal_error"])
 		{
-			return "Check your settings, please";
+			if (aEntries["grandtotal_error"] == "authentication")
+			{
+				var msg = "Authentication failed. Please check your API token in the plugin settings.";
+				if (aEntries["details"])
+				{
+					msg += " Error: " + aEntries["details"];
+				}
+				else
+				{
+					msg += " Your token may be invalid or expired.";
+				}
+				return msg;
+			}
+			else if (aEntries["grandtotal_error"] == "subscription")
+			{
+				var msg = "awork subscription error";
+				if (aEntries["details"])
+				{
+					msg += ": " + aEntries["details"];
+				}
+				msg += " Please check your awork account status.";
+				return msg;
+			}
+			else if (aEntries["grandtotal_error"] == "forbidden")
+			{
+				var msg = "Access forbidden";
+				if (aEntries["details"])
+				{
+					msg += ": " + aEntries["details"];
+				}
+				msg += " Your API token may not have the required permissions.";
+				return msg;
+			}
+			else if (aEntries["grandtotal_error"] == "parse")
+			{
+				return "Unable to parse API response. The awork API may have changed or returned an unexpected format.";
+			}
+			else if (aEntries["grandtotal_error"] == "api")
+			{
+				var msg = "API error";
+				if (aEntries["code"])
+				{
+					msg += " (" + aEntries["code"] + ")";
+				}
+				if (aEntries["details"])
+				{
+					msg += ": " + aEntries["details"];
+				}
+				return msg;
+			}
+			return "Error communicating with awork API. Please check your settings.";
 		}
 
 		for(aIndex in aEntries)
@@ -95,17 +212,40 @@ function timedEntries()
 			}
 
 			var aItem = {};
+			var hourlyRate = defaultRate;
+
 			if (aEntry["project"])
 			{
 				aItem["project"] = aEntry["project"]["name"];
 				if (aEntry["project"]["company"])
 				{
 					aItem["client"] = aEntry["project"]["company"]["name"];
+
+					// Check for hourly rate in company tags
+					var companyRate = extractHourlyRateFromTags(aEntry["project"]["company"]["tags"]);
+					if (companyRate !== null)
+					{
+						hourlyRate = companyRate;
+					}
+				}
+
+				// Project tags can override company rate
+				var projectRate = extractHourlyRateFromTags(aEntry["project"]["tags"]);
+				if (projectRate !== null)
+				{
+					hourlyRate = projectRate;
 				}
 			}
 			if (aEntry["task"])
 			{
 				aItem["category"] = aEntry["task"]["name"];
+
+				// Task tags can override project/company rate
+				var taskRate = extractHourlyRateFromTags(aEntry["task"]["tags"]);
+				if (taskRate !== null)
+				{
+					hourlyRate = taskRate;
+				}
 			}
 			aItem["uid"] = "io.awork." + aEntry["id"];
 			aItem["notes"] = aEntry["note"];
@@ -118,7 +258,7 @@ function timedEntries()
 					aItem["user"] += " " + aEntry["user"]["lastName"];
 				}
 			}
-			aItem["cost"] = defaultRate * (aItem["minutes"] / 60);
+			aItem["cost"] = hourlyRate * (aItem["minutes"] / 60);
 			if (aEntry["startTimeUtc"])
 			{
 				// Combine UTC date and time: extract date from startDateUtc, combine with startTimeUtc
