@@ -51,7 +51,7 @@ function createIDLookUp(theJSON)
 	for (aEntry in theJSON)
 	{
 		var aItemResult = {};
-		result[theJSON[aEntry]["id"]] = theJSON[aEntry];
+		result[theJSON[aEntry].id] = theJSON[aEntry];
 
 	}
 	
@@ -59,9 +59,10 @@ function createIDLookUp(theJSON)
 }
 
 
-function urlForEndPoint(theEndPoint)
+function urlForEndPoint(theEndPoint, version)
 {
-	return "https://my.clockodo.com/api/v2/" + theEndPoint;
+	version = version || "v2"; // default to v2 for backward compatibility
+	return "https://my.clockodo.com/api/" + version + "/" + theEndPoint;
 }
 
 
@@ -97,21 +98,21 @@ function timedEntries()
 	var aStartDate = new Date();
 	aStartDate.setDate(aEndDate.getDate() - 365);
 	var aStartDateString = aStartDate.yyyymmddhhss();
-	var aTestdate = new Date()
+	var aTestdate = new Date();
 	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
 	
 	
 	
-	var aUser = httpGetJSON( urlForEndPoint("aggregates/users/me"));
+	var aUser = httpGetJSON( urlForEndPoint("aggregates/users/me", "v2"));
 	
-	if (!aUser["user"])
+	if (!aUser.user)
 	{
 		return "Check your settings, please";
 	}
 	
 	
-	var aProjects = httpGetJSON( urlForEndPoint("projects"));
-	aProjects = aProjects["projects"];
+	var aProjects = httpGetJSON( urlForEndPoint("projects", "v4"));
+	aProjects = aProjects.data;
 	var aProjectsLookup = createIDLookUp(aProjects);
 	
 	
@@ -120,17 +121,17 @@ function timedEntries()
 	var page = 1;
 	do
 	{
-		var aItems = httpGetJSON( urlForEndPoint("entries") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page + "&enhanced_list=true&filter[billable]=1");
-		aPaging = aItems["paging"];
-		
+		var aItems = httpGetJSON( urlForEndPoint("entries", "v2") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page + "&enhanced_list=true&filter[billable]=1");
+		aPaging = aItems.paging;
+
 		if (!aPaging)
 		{
 			displayUserNotification(localize("Too many requests for clockodo"),localize("Please wait or switch to another service"));
 			break;
 		}
 
-		
-		aEntries = aItems["entries"];
+
+		aEntries = aItems.entries;
 		for (aIndex in aEntries)
 		{
 			var aItemResult = {};
@@ -138,19 +139,19 @@ function timedEntries()
 			
 			
 
-			aRate = aEntry["hourly_rate"];
+			aRate = aEntry.hourly_rate;
 
-			aItemResult["startDate"] = aEntry["time_since"];
-			aItemResult["uid"] = "com.clockodo." + aEntry["id"];
-		
-			var aProjectID = aEntry["projects_id"];
+			aItemResult["startDate"] = aEntry.time_since;
+			aItemResult["uid"] = "com.clockodo." + aEntry.id;
+
+			var aProjectID = aEntry.projects_id;
 			var aProject =  aProjectsLookup[aProjectID];
 			var aRevenueFactor = 1; // Default to 1 if no project
 		
 			if (aProject)
 			{
-				aRevenueFactor = aProject["revenue_factor"];
-				var aBudget = aProject["budget_money"];
+				aRevenueFactor = aProject.revenue_factor;
+				var aBudget = aProject.budget ? aProject.budget.amount : null;
 				if (aBudget) //// only do this when there is a budget
 				{
 					if ((!aRevenueFactor || aRevenueFactor == 0)) 
@@ -161,42 +162,42 @@ function timedEntries()
 			
 			}
 			if (aProjectID) {
-				projectName = aEntry["projects_name"];
-				subprojectName = aEntry["subprojects_name"];
+				projectName = aEntry.projects_name;
+				subprojectName = aEntry.subprojects_name;
     			if (subprojectName && subprojectName.length > 0) {
         			projectName += " - " + subprojectName;
    				}
 				aItemResult["project"] = projectName;
 			}
-			if (aEntry["customers_id"])
+			if (aEntry.customers_id)
 			{
-				aItemResult["client"] = aEntry["customers_name"];
+				aItemResult["client"] = aEntry.customers_name;
 			}
-			if (aEntry["services_id"])
+			if (aEntry.services_id)
 			{
-				aItemResult["category"] = aEntry["services_name"];;
+				aItemResult["category"] = aEntry.services_name;
 			}
-			if (aEntry["revenue"])
+			if (aEntry.revenue)
 			{
-				aItemResult["cost"] = aEntry["revenue"];
+				aItemResult["cost"] = aEntry.revenue;
 			}
-			if (aEntry["text"])
+			if (aEntry.text)
 			{
-				aItemResult["notes"] = aEntry["text"];
+				aItemResult["notes"] = aEntry.text;
 			}
-			if (aEntry["users_name"])
+			if (aEntry.users_name)
 			{
-				aItemResult["user"] = aEntry["users_name"];
+				aItemResult["user"] = aEntry.users_name;
 			}
-			if (aEntry["duration"] > 0 && ! aEntry["lumpSum"])
+			if (aEntry.duration > 0 && ! aEntry.lumpSum)
 			{
-				aItemResult["minutes"] = Math.round(aEntry["duration"] / 60);
+				aItemResult["minutes"] = Math.round(aEntry.duration / 60);
 				{
 					aItemResult["cost"] = (aItemResult["minutes"] / 60) * aRate;
 				}
 			}
-			aItemResult["url"] = "https://my.clockodo.com/en/entries/editentry?id=" + aEntry["id"];
-			if (aEntry["billable"] == 1)
+			aItemResult["url"] = "https://my.clockodo.com/en/entries/editentry?id=" + aEntry.id;
+			if (aEntry.billable == 1)
 			{
 				result.push(aItemResult);
 			}
@@ -204,7 +205,7 @@ function timedEntries()
 		
 		page++;
 		
-	} while (aPaging["count_pages"] > aPaging["current_page"] && page < 5)
+	} while (aPaging.count_pages > aPaging.current_page && page < 5)
 
 
 	return result;
