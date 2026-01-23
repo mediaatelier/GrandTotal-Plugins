@@ -147,23 +147,26 @@ function timedEntries()
 			var aProjectID = aEntry.projects_id;
 			var aProject =  aProjectsLookup[aProjectID];
 			var aRevenueFactor = 1; // Default to 1 if no project
-		
+
 			if (aProject)
 			{
 				aRevenueFactor = aProject.revenue_factor;
-				var aBudget = aProject.budget ? aProject.budget.amount : null;
-				if (aBudget) //// only do this when there is a budget
-				{
-					if ((!aRevenueFactor || aRevenueFactor == 0)) 
-					{
-						continue; // nothing to bill
-					}
-				}
-			
+				// Removed hard budget check - show all entries regardless of budget type
+
 			}
 			if (aProjectID) {
 				projectName = aEntry.projects_name;
 				subprojectName = aEntry.subprojects_name;
+
+				// Add lump sum service name to subproject if available
+				if (aEntry.lumpsum_services_name) {
+					if (subprojectName && subprojectName.length > 0) {
+						subprojectName += " - " + aEntry.lumpsum_services_name;
+					} else {
+						subprojectName = aEntry.lumpsum_services_name;
+					}
+				}
+
     			if (subprojectName && subprojectName.length > 0) {
         			projectName += " - " + subprojectName;
    				}
@@ -196,7 +199,10 @@ function timedEntries()
 					aItemResult["cost"] = (aItemResult["minutes"] / 60) * aRate;
 				}
 			}
-			aItemResult["url"] = "https://my.clockodo.com/en/entries/editentry?id=" + aEntry.id;
+
+			// Extract date from time_since for link (format: YYYY-MM-DD)
+			var entryDate = aEntry.time_since ? aEntry.time_since.substring(0, 10) : "";
+			aItemResult["url"] = "https://my.clockodo.com/de/entries/?day=" + entryDate + "&view=week";
 			if (aEntry.billable == 1)
 			{
 				result.push(aItemResult);
