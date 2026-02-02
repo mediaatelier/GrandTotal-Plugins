@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>icon.png</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.codish.daylio</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>API URL</string>
+			<key>name</key>
+			<string>apiURL</string>
+			<key>type</key>
+			<string>string</string>
+			<key>default</key>
+			<string>https://office-manager.codish.de/api.php</string>
+			<key>placeholder</key>
+			<string>https://ihre-domain.de/api.php</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>API Key</string>
+			<key>name</key>
+			<string>apiKey</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>API Secret</string>
+			<key>name</key>
+			<string>apiSecret</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Nur nicht abgerechnete Eintraege laden</string>
+			<key>name</key>
+			<string>unbilledOnly</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>buttonlabel</key>
+			<string>Minuten</string>
+			<key>default</key>
+			<real>1</real>
+			<key>label</key>
+			<string>Runden auf</string>
+			<key>name</key>
+			<string>roundTo</string>
+			<key>type</key>
+			<string>integer</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Eintraege aelter als 1 Jahr laden</string>
+			<key>name</key>
+			<string>loadAll</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Geben Sie Ihre Office-Manager API-Zugangsdaten ein. Die API-URL, den API-Key und das API-Secret finden Sie in Ihrem Office-Manager unter Einstellungen &gt; API-Zugang.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>7</real>
+	<key>copyright</key>
+	<string>(c) 2026 CODISH Stephan Härtl</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+</dict>
+</plist>
