@@ -1,5 +1,15 @@
 ## GrandTotal Pasteboard Plugins
-### Convert the contents of NSPasteboard to invoice (or estimate) items
+
+### Plugin Type
+
+```xml
+<key>types</key>
+<array>
+    <string>pasteItems</string>
+</array>
+```
+
+Not visible in the UI. Imports pasteboards from other apps and converts them to invoice (or estimate) items.
  * Declare the pasteboard types you support in the info.plist. 
  * In the js, get the contents of the types from the pasteBoard["PasteBoardType"] object (xml contents is translated to json if possible.)
  * Create GrandTotal objects using insertRecord("Cost"). Allowed entities are Cost, Title, SubTotal, PageBreak, Note

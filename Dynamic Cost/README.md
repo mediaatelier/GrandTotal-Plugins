@@ -1,6 +1,15 @@
 ## GrandTotal Dynamic Cost Plugins
 
-Installed in the Dynamic Cost item of GrandTotal 7 or newer
+Dynamic Cost is a cost type that can be added to invoices. Available in GrandTotal 7 or newer.
+
+### Plugin Type
+
+```xml
+<key>types</key>
+<array>
+    <string>DynamicCost</string>
+</array>
+```
 
 Methods
 

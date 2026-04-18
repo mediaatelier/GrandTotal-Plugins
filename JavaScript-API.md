@@ -246,7 +246,8 @@ loadURLtoURL(sourceURL, destinationPath)       // Download file
 ### Dialogs
 
 ```javascript
-alert(message, info, ["Button1", "Button2"])   // Show alert, returns button index
+window.alert(message, info, ["Button1", "Button2"])   // Show alert, returns button index
+window.prompt(message, defaultValue)                   // Show input dialog, returns string or null
 ```
 
 ### Notifications

@@ -14,6 +14,15 @@ Always verify compliance with the latest version of your target e-invoice standa
 
 ## How E-Invoice Plugins Work
 
+### Plugin Type
+
+```xml
+<key>types</key>
+<array>
+    <string>e-invoice</string>
+</array>
+```
+
 Installed in the client settings, these plugins generate electronic invoice files (typically XML) that are either embedded in the PDF or attached to emails.
 
 The plugin must return an array of files:
