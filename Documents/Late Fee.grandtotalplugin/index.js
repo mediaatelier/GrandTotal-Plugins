@@ -29,8 +29,11 @@ function createReminder()
 	payment.notes = localize("Late Fee");
 	
 	var followUpTypes = fetchRecords("FollowUpType");
-	filteredFollowUpTypes = followUpTypes.filter("name LIKE '" + localize("Reminder") + "'");
+	var filteredFollowUpTypes = followUpTypes.filter("name LIKE '" + localize("Reminder") + "'");
 	var followUpType = filteredFollowUpTypes.records()[0];
+	if (!followUpType) {
+		return;
+	}
 	var reminder = insertRecord("FollowUp");
 	reminder.parentDocument = invoice;
 	reminder.followUpType = followUpType;
