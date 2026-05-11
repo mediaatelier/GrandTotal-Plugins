@@ -103,9 +103,9 @@ function timedEntries()
 	
 	
 	
-	var aUser = httpGetJSON( urlForEndPoint("aggregates/users/me", "v2"));
-	
-	if (!aUser.user)
+	var aUser = httpGetJSON( urlForEndPoint("users/me", "v4"));
+
+	if (!aUser.data)
 	{
 		return "Check your settings, please";
 	}
