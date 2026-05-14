@@ -53,6 +53,7 @@ This document lists all entities with their attributes and relationships.
 - **checkSum**: NSString
 - **comment**: NSString
 - **costPrice**: NSNumber
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **defaultQuantity**: NSNumber
 - **discount**: NSNumber
@@ -82,6 +83,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -93,7 +95,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -115,6 +117,7 @@ This document lists all entities with their attributes and relationships.
 - **city**: NSString
 - **clientID**: NSString
 - **countryCode**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **department**: NSString
 - **doNotClone**: NSNumber
@@ -150,12 +153,14 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
+- **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
 - **childs**: To-Many → Container (inverse: parent)
 - **clientGroup**: To-One → ClientGroup (inverse: clients)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -210,6 +215,7 @@ This document lists all entities with their attributes and relationships.
 - **city**: NSString
 - **clientID**: NSString
 - **countryCode**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **department**: NSString
 - **doNotClone**: NSNumber
@@ -244,11 +250,13 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
+- **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
 - **childs**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -297,6 +305,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **checkSum**: NSString
 - **costPrice**: NSNumber
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **discount**: NSNumber
 - **doNotClone**: NSNumber
@@ -324,6 +333,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -334,7 +344,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -357,6 +367,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -388,6 +399,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -506,6 +518,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -525,6 +538,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -573,6 +587,7 @@ This document lists all entities with their attributes and relationships.
 - **checkSum**: NSString
 - **cost**: NSNumber
 - **costPrice**: NSNumber
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **discount**: NSNumber
 - **doNotClone**: NSNumber
@@ -602,6 +617,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -612,7 +628,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -635,6 +651,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -662,6 +679,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -686,6 +704,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -707,6 +726,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -731,6 +751,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -752,6 +773,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -797,6 +819,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -816,6 +839,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -845,6 +869,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -872,6 +897,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -926,6 +952,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **excludeFromTotal**: NSNumber
@@ -947,6 +974,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -955,7 +983,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1008,6 +1036,65 @@ This document lists all entities with their attributes and relationships.
 
 ---
 
+## InboundInvoice
+
+**Inherits from:** Sendable
+
+### Attributes
+
+- **archived**: NSNumber
+- **cachedBalance**: NSNumber
+- **cachedCost**: NSNumber
+- **cachedCostWithTaxes**: NSNumber
+- **checkSum**: NSString
+- **completeMode**: NSNumber
+- **customRangeEnd**: NSDate
+- **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
+- **dateCreation**: NSDate
+- **dateDue**: NSDate
+- **dateSent**: NSDate
+- **deliveryType**: NSNumber
+- **discount**: NSNumber
+- **doNotClone**: NSNumber
+- **footnote**: NSString
+- **internalReference**: NSString
+- **isDefault**: NSNumber
+- **lead**: NSString
+- **name**: NSString
+- **notes**: NSString
+- **payInterval**: NSNumber
+- **rate**: NSNumber
+- **reference**: NSString
+- **subject**: NSString
+- **toDo**: NSNumber
+- **uid**: NSString
+- **useCustomRange**: NSNumber
+- **useGrossPrices**: NSNumber
+
+### Relationships
+
+- **childs**: To-Many → Container (inverse: parent)
+- **contact**: To-One → Contact (inverse: assignedDocuments)
+- **currency**: To-One → Currency (inverse: documents)
+- **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
+- **derivates**: To-Many → Base (inverse: source)
+- **documentLabels**: To-Many → DocumentLabel (inverse: documents)
+- **documents**: To-Many → Document (inverse: parentDocument)
+- **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
+- **layout**: To-One → Layout (inverse: documents)
+- **metaValues**: To-Many → MetaValue (inverse: document)
+- **parent**: To-One → Container (inverse: childs)
+- **parentDocument**: To-One → Document (inverse: documents)
+- **paymentType**: To-One → PaymentType (inverse: documents)
+- **source**: To-One → Base (inverse: derivates)
+- **statementLayout**: To-One → Layout (inverse: statementDocuments)
+- **storage**: To-One → SendableStorage (inverse: sendable)
+- **teamMember**: To-One → TeamMember (inverse: memberDocuments)
+
+---
+
 ## InternalNote
 
 **Inherits from:** Note
@@ -1016,6 +1103,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1035,6 +1123,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1043,7 +1132,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1065,6 +1154,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -1096,6 +1186,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1121,6 +1212,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1140,6 +1232,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1148,7 +1241,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1220,6 +1313,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1241,6 +1335,7 @@ This document lists all entities with their attributes and relationships.
 - **costs**: To-Many → Cost (inverse: language)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1343,6 +1438,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1362,6 +1458,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1370,7 +1467,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1386,6 +1483,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1406,6 +1504,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1414,7 +1513,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1430,6 +1529,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1449,6 +1549,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1457,7 +1558,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1479,6 +1580,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -1511,6 +1613,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1537,6 +1640,7 @@ This document lists all entities with their attributes and relationships.
 - **amount**: NSNumber
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1556,6 +1660,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1616,6 +1721,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateEnd**: NSDate
@@ -1648,6 +1754,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1679,6 +1786,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateEnd**: NSDate
@@ -1712,6 +1820,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1771,6 +1880,7 @@ This document lists all entities with their attributes and relationships.
 - **city**: NSString
 - **clientID**: NSString
 - **countryCode**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **department**: NSString
 - **doNotClone**: NSNumber
@@ -1805,11 +1915,13 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
+- **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
 - **childs**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1834,6 +1946,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1854,6 +1967,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1877,6 +1991,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -1896,6 +2011,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -1904,7 +2020,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -1926,6 +2042,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -1953,6 +2070,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -2006,6 +2124,7 @@ This document lists all entities with their attributes and relationships.
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
 - **dateSent**: NSDate
@@ -2034,6 +2153,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -2082,6 +2202,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -2101,6 +2222,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -2109,7 +2231,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -2126,6 +2248,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **checkSum**: NSString
 - **costPrice**: NSNumber
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **discount**: NSNumber
 - **displayType**: NSNumber
@@ -2155,6 +2278,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -2165,7 +2289,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
@@ -2246,6 +2370,7 @@ This document lists all entities with their attributes and relationships.
 - **city**: NSString
 - **clientID**: NSString
 - **countryCode**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **department**: NSString
 - **doNotClone**: NSNumber
@@ -2281,11 +2406,13 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
+- **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
 - **childs**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -2311,6 +2438,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
 - **internalReference**: NSString
@@ -2330,6 +2458,7 @@ This document lists all entities with their attributes and relationships.
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
 - **derivates**: To-Many → Base (inverse: source)
 - **documentLabels**: To-Many → DocumentLabel (inverse: documents)
 - **documents**: To-Many → Document (inverse: parentDocument)
@@ -2338,7 +2467,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
 - **parent**: To-One → Container (inverse: childs)
-- **parentDocument**: To-One → Document (inverse: documents)
+- **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
 - **statementLayout**: To-One → Layout (inverse: statementDocuments)
