@@ -1,11 +1,9 @@
-
 migrate();
-
 
 function httpGetJSON(theUrl) {
 	var header = {
-		"Authorization": "Bearer " + token,
-		"Accept": "application/json"
+		Authorization: "Bearer " + token,
+		Accept: "application/json"
 	};
 
 	var string = loadURL("GET", theUrl, header);
@@ -20,7 +18,6 @@ function httpGetJSON(theUrl) {
 	var result = JSON.parse(string);
 	return result;
 }
-
 
 function fetchAllContactsPaginated() {
 	var allContacts = [];
@@ -57,18 +54,15 @@ function fetchAllContactsPaginated() {
 	return allContacts;
 }
 
-
 function fetchArticles() {
 	var url = "https://api.bexio.com/2.0/article";
 	return httpGetJSON(url);
 }
 
-
 function fetchContactRelations() {
 	var url = "https://api.bexio.com/2.0/contact_relation";
 	return httpGetJSON(url);
 }
-
 
 function mapBexioContactToClient(contact, relations) {
 	var attributes = {
@@ -195,7 +189,6 @@ function mapBexioContactToClient(contact, relations) {
 	return entity;
 }
 
-
 function mapBexioArticleToItem(article) {
 	var attributes = {
 		uid: "bexio.article." + article.id,
@@ -223,10 +216,10 @@ function mapBexioArticleToItem(article) {
 	// Tax rate
 	if (article.tax_income_id) {
 		var taxMap = {
-			"1": 8.1,
-			"2": 2.6,
-			"3": 0,
-			"4": 3.8
+			1: 8.1,
+			2: 2.6,
+			3: 0,
+			4: 3.8
 		};
 		attributes.taxRate = taxMap[String(article.tax_income_id)] || 8.1;
 	}
@@ -250,7 +243,6 @@ function mapBexioArticleToItem(article) {
 		attributes: attributes
 	};
 }
-
 
 function migrate() {
 	// Fetch contacts

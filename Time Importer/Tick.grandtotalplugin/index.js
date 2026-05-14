@@ -30,62 +30,46 @@
 	
 */
 
-
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+Date.prototype.yyyymmdd = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
 };
-
 
 timedEntries();
 
+function httpGetJSON(theUrl) {
+	header = { Authorization: "Token token=" + token, "User-Agent": "GrandTotal (info@mediaatelier.com)" };
+	string = loadURL("GET", theUrl, header);
 
-function httpGetJSON(theUrl)
-{
-	header = {Authorization:'Token token=' + token, 'User-Agent': 'GrandTotal (info@mediaatelier.com)'};
-	string = loadURL("GET",theUrl,header);
-			
-	if (string.length == 0)
-	{
+	if (string.length == 0) {
 		return null;
 	}
 	var result = null;
-	try
-	{
+	try {
 		result = JSON.parse(string);
-	}
-	catch(e)
-	{
+	} catch (e) {
 		result = string;
 	}
 	return result;
 }
 
-
-function createIDLookUp(theJSON)
-{
+function createIDLookUp(theJSON) {
 	var result = {};
-	for (aEntry in theJSON)
-	{
+	for (aEntry in theJSON) {
 		var aItemResult = {};
 		result[theJSON[aEntry]["id"]] = theJSON[aEntry];
 	}
 	return result;
 }
 
-
-function urlForEndPoint(theEndPoint)
-{
+function urlForEndPoint(theEndPoint) {
 	return "https://www.tickspot.com/" + subscriptionID + "/api/v2/" + theEndPoint;
 }
 
-
-function timedEntries()
-{
-	if (defaultRate == 0)
-	{
+function timedEntries() {
+	if (defaultRate == 0) {
 		return localize("Set rate");
 	}
 	var aEndDate = new Date();
@@ -93,47 +77,50 @@ function timedEntries()
 	var aStartDate = new Date();
 	aStartDate.setDate(aEndDate.getDate() - 364);
 	var aStartDateString = aStartDate.yyyymmdd();
-	
+
 	var result = [];
 	var aProjects = httpGetJSON(urlForEndPoint("projects.json"));
-		
-	if (typeof aProjects == 'string')
-	{
+
+	if (typeof aProjects == "string") {
 		return aProjects;
 	}
-	
+
 	if (aProjects["grandtotal_error"]) {
 		return aProjects["grandtotal_error"];
 	}
-	
-	var aProjectsLookup =  createIDLookUp(aProjects);
+
+	var aProjectsLookup = createIDLookUp(aProjects);
 	var aClients = httpGetJSON(urlForEndPoint("clients.json"));
-	var aClientsLookup =  createIDLookUp(aClients);
-	
+	var aClientsLookup = createIDLookUp(aClients);
+
 	var aUsers = httpGetJSON(urlForEndPoint("users.json"));
-	var aUsersLookup =  createIDLookUp(aUsers);
+	var aUsersLookup = createIDLookUp(aUsers);
 
 	var aTasks = httpGetJSON(urlForEndPoint("tasks.json"));
-	var aTasksLookup =  createIDLookUp(aTasks);
-	
-	var aEntriesURL =  urlForEndPoint("entries.json") + "?start_date='"+ aStartDateString + "'&end_date='"+ aEndDateString +"'&billable=true";
+	var aTasksLookup = createIDLookUp(aTasks);
+
+	var aEntriesURL =
+		urlForEndPoint("entries.json") +
+		"?start_date='" +
+		aStartDateString +
+		"'&end_date='" +
+		aEndDateString +
+		"'&billable=true";
 	var aEntries = httpGetJSON(aEntriesURL);
-	
-	var aTestdate = new Date()
-	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
-	
-	for (aEntry in aEntries)
-	{
+
+	var aTestdate = new Date();
+	var aOffset = (aTestdate.getTimezoneOffset() / 60) * -1;
+
+	for (aEntry in aEntries) {
 		var aEntryObject = aEntries[aEntry];
-		
+
 		var aItemResult = {};
 		aItemResult["startDate"] = aEntryObject["date"] + "T00:00:00+" + aOffset;
-		if (aEntryObject["notes"])
-		{
+		if (aEntryObject["notes"]) {
 			aItemResult["notes"] = aEntryObject["notes"];
 		}
 		aItemResult["minutes"] = Math.round(aEntryObject["hours"] * 60);
-		aItemResult["user"] = aUsersLookup[(aEntryObject["user_id"])]["first_name"];
+		aItemResult["user"] = aUsersLookup[aEntryObject["user_id"]]["first_name"];
 		var aTaskObject = aTasksLookup[aEntryObject["task_id"]];
 		aItemResult["category"] = aTaskObject["name"];
 		var aProjectObject = aProjectsLookup[aTaskObject["project_id"]];

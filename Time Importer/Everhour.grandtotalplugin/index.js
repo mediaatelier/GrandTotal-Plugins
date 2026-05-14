@@ -30,50 +30,36 @@
 	
 */
 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+Date.prototype.yyyymmdd = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
 };
 
-
-
-
-function urlForEndPoint(theEndPoint)
-{
+function urlForEndPoint(theEndPoint) {
 	return "https://api.everhour.com/" + theEndPoint;
 }
 
-
-
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
-	header = {"X-Api-Key":token};
-	string = loadURL("GET",theUrl,header);
+function httpGetJSON(theUrl) {
+	header = { "X-Api-Key": token };
+	string = loadURL("GET", theUrl, header);
 
-	if (string.length == 0)
-	{
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-
-
-function makeISODate(str)
-{
-	return str.replace(/\s/g, 'T') + "Z";
+function makeISODate(str) {
+	return str.replace(/\s/g, "T") + "Z";
 }
 
-
-function createLookup(array)
-{
+function createLookup(array) {
 	var result = {};
-	for(aIndex in array)
-	{
+	for (aIndex in array) {
 		aEntry = array[aIndex];
 		aID = aEntry["id"];
 		result[aID] = aEntry;
@@ -81,43 +67,36 @@ function createLookup(array)
 	return result;
 }
 
-
-
-function timedEntries()
-{
+function timedEntries() {
 	var aEndDate = new Date();
 	var aEndDateString = aEndDate.yyyymmdd();
 	var aStartDate = new Date();
 	aStartDate.setDate(aEndDate.getDate() - 180);
 	var aStartDateString = aStartDate.yyyymmdd();
-	
-	var aClients = httpGetJSON( urlForEndPoint("clients"));
+
+	var aClients = httpGetJSON(urlForEndPoint("clients"));
 	var aClientsLookup = createLookup(aClients);
 	//log (aClientsLookup);
-	
-	var aProjects = httpGetJSON( urlForEndPoint("projects"));
+
+	var aProjects = httpGetJSON(urlForEndPoint("projects"));
 	var aProjectsLookup = createLookup(aProjects);
 	//log (aProjectsLookup);
-	
-	var aUsers = httpGetJSON( urlForEndPoint("team/users"));
+
+	var aUsers = httpGetJSON(urlForEndPoint("team/users"));
 	var aUsersLookup = createLookup(aUsers);
 	//log (aUsersLookup);
-	
-		
+
 	var aEntries = httpGetJSON(urlForEndPoint("team/time") + "?from=" + aStartDateString + "&to=" + aEndDateString);
-	if (!aEntries)
-	{
+	if (!aEntries) {
 		return "Check your settings, please";
 	}
-	
-	if (aEntries["grandtotal_error"])
-	{
+
+	if (aEntries["grandtotal_error"]) {
 		return aEntries["grandtotal_error"];
 	}
-	
+
 	var result = [];
-	for(aIndex in aEntries)
-	{
+	for (aIndex in aEntries) {
 		var aEntry = aEntries[aIndex];
 		var aID = aEntry["id"];
 		var aItem = {};
@@ -126,45 +105,37 @@ function timedEntries()
 
 		var aRate = 0;
 		var aProjects = aEntry["task"]["projects"];
-		
 
-		if (aProjects)
-		{
+		if (aProjects) {
 			var aProjectID = aProjects[0];
 			var aProject = aProjectsLookup[aProjectID];
-			if (!aProject["rate"])
-			{
+			if (!aProject["rate"]) {
 				continue; /// not billable
 			}
 			aItem["project"] = aProject["name"];
 			var aClientID = aProject["client"];
 			var aClient = aClientsLookup[aClientID];
 			aItem["client"] = aClient["name"];
-			
+
 			var aRateType = aProject["rate"]["type"];
 
-			if (aRateType == "user_rate")
-			{
+			if (aRateType == "user_rate") {
 				aRate = aUser["rate"];
-			}
-			else if (aRateType == "project_rate")
-			{
+			} else if (aRateType == "project_rate") {
 				aRate = aProject["rate"]["rate"];
 			}
 		}
-		
+
 		aItem["user"] = aUser["name"];
 		aItem["startDate"] = aEntry["date"] + "T00:00:00";
 		aItem["minutes"] = aEntry["time"] / 60;
 		aItem["category"] = aEntry["task"]["name"];
-		aItem["cost"] = aRate / 100 * aEntry["time"] / 3600; 
+		aItem["cost"] = ((aRate / 100) * aEntry["time"]) / 3600;
 		aItem["notes"] = aEntry["comment"];
 		aItem["url"] = "https://app.everhour.com/#/time(view:" + aEntry["task"]["id"] + ")";
 
 		result.push(aItem);
 	}
-	
 
 	return result;
-
 }

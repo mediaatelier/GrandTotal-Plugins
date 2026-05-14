@@ -33,9 +33,13 @@
 timedEntries();
 
 function timedEntries() {
-	var dataPath = grandtotal.fileManager.homeDirectory + "/Library/Application Support/com.catforce.timemator.macos/Data/timemator.storedata";
+	var dataPath =
+		grandtotal.fileManager.homeDirectory +
+		"/Library/Application Support/com.catforce.timemator.macos/Data/timemator.storedata";
 	if (!grandtotal.fileManager.fileExists(dataPath)) {
-		dataPath = grandtotal.fileManager.homeDirectory + "/Library/Containers/com.catforce.timemator.macos/Data/Library/Application\ Support/com.catforce.timemator.macos/Data/timemator.storedata";
+		dataPath =
+			grandtotal.fileManager.homeDirectory +
+			"/Library/Containers/com.catforce.timemator.macos/Data/Library/Application\ Support/com.catforce.timemator.macos/Data/timemator.storedata";
 	}
 	var db = grandtotal.SQLite.openDatabase(dataPath);
 	if (!db) {

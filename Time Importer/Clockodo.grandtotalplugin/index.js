@@ -30,68 +30,67 @@
 	
 */
 
-Date.prototype.yyyymmddhhss = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   var hh =  this.getHours().toString();
-   var min =  this.getMinutes().toString();
-   var ss =  this.getSeconds().toString();
+Date.prototype.yyyymmddhhss = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	var hh = this.getHours().toString();
+	var min = this.getMinutes().toString();
+	var ss = this.getSeconds().toString();
 
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]) + "T" + (hh[1]?hh:"0"+hh[0]) + ":"
-   + (min[1]?min:"0"+min[0]) + ":" + (ss[1]?ss:"0"+ss[0]) + "Z"
-   ; // padding
+	return (
+		yyyy +
+		"-" +
+		(mm[1] ? mm : "0" + mm[0]) +
+		"-" +
+		(dd[1] ? dd : "0" + dd[0]) +
+		"T" +
+		(hh[1] ? hh : "0" + hh[0]) +
+		":" +
+		(min[1] ? min : "0" + min[0]) +
+		":" +
+		(ss[1] ? ss : "0" + ss[0]) +
+		"Z"
+	); // padding
 };
 
-
-function createIDLookUp(theJSON)
-{
+function createIDLookUp(theJSON) {
 	var result = {};
-	
-	for (aEntry in theJSON)
-	{
+
+	for (aEntry in theJSON) {
 		var aItemResult = {};
 		result[theJSON[aEntry].id] = theJSON[aEntry];
-
 	}
-	
+
 	return result;
 }
 
-
-function urlForEndPoint(theEndPoint, version)
-{
+function urlForEndPoint(theEndPoint, version) {
 	version = version || "v2"; // default to v2 for backward compatibility
 	return "https://my.clockodo.com/api/" + version + "/" + theEndPoint;
 }
 
-
-
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
-	header = {"X-ClockodoApiUser":email,"X-ClockodoApiKey":token, "X-Clockodo-External-Application": "GrandTotal;info@mediaatelier.com"};
-	string = loadURL("GET",theUrl,header);
-	
-	if (string.length == 0)
-	{
+function httpGetJSON(theUrl) {
+	header = {
+		"X-ClockodoApiUser": email,
+		"X-ClockodoApiKey": token,
+		"X-Clockodo-External-Application": "GrandTotal;info@mediaatelier.com"
+	};
+	string = loadURL("GET", theUrl, header);
+
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-
-function makeISODate(str)
-{
-	return str.replace(/\s/g, 'T') + "Z";
+function makeISODate(str) {
+	return str.replace(/\s/g, "T") + "Z";
 }
 
-
-
-
-function timedEntries()
-{
+function timedEntries() {
 	var aEndDate = new Date();
 	aEndDate.setDate(aEndDate.getDate() + 1);
 	var aEndDateString = aEndDate.yyyymmddhhss();
@@ -99,45 +98,46 @@ function timedEntries()
 	aStartDate.setDate(aEndDate.getDate() - 365);
 	var aStartDateString = aStartDate.yyyymmddhhss();
 	var aTestdate = new Date();
-	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
-	
-	
-	
-	var aUser = httpGetJSON( urlForEndPoint("users/me", "v4"));
+	var aOffset = (aTestdate.getTimezoneOffset() / 60) * -1;
 
-	if (!aUser.data)
-	{
+	var aUser = httpGetJSON(urlForEndPoint("users/me", "v4"));
+
+	if (!aUser.data) {
 		return "Check your settings, please";
 	}
-	
-	
-	var aProjects = httpGetJSON( urlForEndPoint("projects", "v4"));
+
+	var aProjects = httpGetJSON(urlForEndPoint("projects", "v4"));
 	aProjects = aProjects.data;
 	var aProjectsLookup = createIDLookUp(aProjects);
-	
-	
+
 	var result = [];
 	var paging = {};
 	var page = 1;
-	do
-	{
-		var aItems = httpGetJSON( urlForEndPoint("entries", "v2") + "?time_since=" + aStartDateString + "&time_until=" + aEndDateString  + "&page=" + page + "&enhanced_list=true&filter[billable]=1");
+	do {
+		var aItems = httpGetJSON(
+			urlForEndPoint("entries", "v2") +
+				"?time_since=" +
+				aStartDateString +
+				"&time_until=" +
+				aEndDateString +
+				"&page=" +
+				page +
+				"&enhanced_list=true&filter[billable]=1"
+		);
 		aPaging = aItems.paging;
 
-		if (!aPaging)
-		{
-			displayUserNotification(localize("Too many requests for clockodo"),localize("Please wait or switch to another service"));
+		if (!aPaging) {
+			displayUserNotification(
+				localize("Too many requests for clockodo"),
+				localize("Please wait or switch to another service")
+			);
 			break;
 		}
 
-
 		aEntries = aItems.entries;
-		for (aIndex in aEntries)
-		{
+		for (aIndex in aEntries) {
 			var aItemResult = {};
 			var aEntry = aEntries[aIndex];
-			
-			
 
 			aRate = aEntry.hourly_rate;
 
@@ -145,14 +145,12 @@ function timedEntries()
 			aItemResult["uid"] = "com.clockodo." + aEntry.id;
 
 			var aProjectID = aEntry.projects_id;
-			var aProject =  aProjectsLookup[aProjectID];
+			var aProject = aProjectsLookup[aProjectID];
 			var aRevenueFactor = 1; // Default to 1 if no project
 
-			if (aProject)
-			{
+			if (aProject) {
 				aRevenueFactor = aProject.revenue_factor;
 				// Removed hard budget check - show all entries regardless of budget type
-
 			}
 			if (aProjectID) {
 				projectName = aEntry.projects_name;
@@ -167,33 +165,27 @@ function timedEntries()
 					}
 				}
 
-    			if (subprojectName && subprojectName.length > 0) {
-        			projectName += " - " + subprojectName;
-   				}
+				if (subprojectName && subprojectName.length > 0) {
+					projectName += " - " + subprojectName;
+				}
 				aItemResult["project"] = projectName;
 			}
-			if (aEntry.customers_id)
-			{
+			if (aEntry.customers_id) {
 				aItemResult["client"] = aEntry.customers_name;
 			}
-			if (aEntry.services_id)
-			{
+			if (aEntry.services_id) {
 				aItemResult["category"] = aEntry.services_name;
 			}
-			if (aEntry.revenue)
-			{
+			if (aEntry.revenue) {
 				aItemResult["cost"] = aEntry.revenue;
 			}
-			if (aEntry.text)
-			{
+			if (aEntry.text) {
 				aItemResult["notes"] = aEntry.text;
 			}
-			if (aEntry.users_name)
-			{
+			if (aEntry.users_name) {
 				aItemResult["user"] = aEntry.users_name;
 			}
-			if (aEntry.duration > 0 && ! aEntry.lumpSum)
-			{
+			if (aEntry.duration > 0 && !aEntry.lumpSum) {
 				aItemResult["minutes"] = Math.round(aEntry.duration / 60);
 				{
 					aItemResult["cost"] = (aItemResult["minutes"] / 60) * aRate;
@@ -203,16 +195,13 @@ function timedEntries()
 			// Extract date from time_since for link (format: YYYY-MM-DD)
 			var entryDate = aEntry.time_since ? aEntry.time_since.substring(0, 10) : "";
 			aItemResult["url"] = "https://my.clockodo.com/de/entries/?day=" + entryDate + "&view=week";
-			if (aEntry.billable == 1)
-			{
+			if (aEntry.billable == 1) {
 				result.push(aItemResult);
 			}
 		}
-		
-		page++;
-		
-	} while (aPaging.count_pages > aPaging.current_page && page < 5)
 
+		page++;
+	} while (aPaging.count_pages > aPaging.current_page && page < 5);
 
 	return result;
 }

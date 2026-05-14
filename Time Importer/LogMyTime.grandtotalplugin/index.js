@@ -30,73 +30,69 @@
 	
 */
 
+Date.prototype.myISO = function () {
+	var tzo = -this.getTimezoneOffset(),
+		dif = tzo >= 0 ? "+" : "-",
+		pad = function (num) {
+			var norm = Math.abs(Math.floor(num));
+			return (norm < 10 ? "0" : "") + norm;
+		};
 
-Date.prototype.myISO = function() 
-{
-    var tzo = -this.getTimezoneOffset(),
-        dif = tzo >= 0 ? '+' : '-',
-        pad = function(num) {
-            var norm = Math.abs(Math.floor(num));
-            return (norm < 10 ? '0' : '') + norm;
-        };
-        
-    
-    return this.getFullYear() 
-        + '-' + pad(this.getMonth()+1)
-        + '-' + pad(this.getDate())
-        + 'T' + pad(this.getHours())
-        + ':' + pad(this.getMinutes()) 
-        + ':' + pad(this.getSeconds()) 
-        + dif + pad(tzo / 60) 
-        + ':' + pad(tzo % 60);
-}
+	return (
+		this.getFullYear() +
+		"-" +
+		pad(this.getMonth() + 1) +
+		"-" +
+		pad(this.getDate()) +
+		"T" +
+		pad(this.getHours()) +
+		":" +
+		pad(this.getMinutes()) +
+		":" +
+		pad(this.getSeconds()) +
+		dif +
+		pad(tzo / 60) +
+		":" +
+		pad(tzo % 60)
+	);
+};
 
-
-Date.prototype.addHours = function(h) {    
-   this.setTime(this.getTime() + (h*60*60*1000)); 
-   return this;   
-}
-
+Date.prototype.addHours = function (h) {
+	this.setTime(this.getTime() + h * 60 * 60 * 1000);
+	return this;
+};
 
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
-	header = {"X-LogMyTimeApiKey":token,"accept": "application/json"};
-	string = loadURL("GET",theUrl,header);
-	
-	if (string.length == 0)
-	{
+function httpGetJSON(theUrl) {
+	header = { "X-LogMyTimeApiKey": token, accept: "application/json" };
+	string = loadURL("GET", theUrl, header);
+
+	if (string.length == 0) {
 		return null;
 	}
 	try {
 		return JSON.parse(string);
-	}
-	catch(err) {
+	} catch (err) {
 		return null;
 	}
 }
 
-
-function createIDLookUp(theJSON)
-{
+function createIDLookUp(theJSON) {
 	var result = {};
-	for (aEntry in theJSON)
-	{
+	for (aEntry in theJSON) {
 		var aItemResult = {};
 		result[theJSON[aEntry]["ID"]] = theJSON[aEntry];
 	}
 	return result;
 }
 
-
-function timedEntries()
-{
-	var aTestdate = new Date()
+function timedEntries() {
+	var aTestdate = new Date();
 	var aOffset = aTestdate.getTimezoneOffset() / 60;
 
 	var result = [];
-	
+
 	var aClients = httpGetJSON("https://api.logmytime.de/v1/api.svc/Clients");
 	if (aClients["grandtotal_error"]) {
 		return aClients["grandtotal_error"];
@@ -104,36 +100,37 @@ function timedEntries()
 	if (aClients["error"]) {
 		return aClients["error"]["message"]["value"];
 	}
-		
+
 	var aClientsLookup = createIDLookUp(aClients["d"]["results"]);
-	
+
 	var aProjects = httpGetJSON("https://api.logmytime.de/v1/api.svc/Projects");
 	var aProjectsLookup = createIDLookUp(aProjects["d"]["results"]);
-	
+
 	var aUsers = httpGetJSON("https://api.logmytime.de/v1/api.svc/Users");
 	var aUsersLookup = createIDLookUp(aUsers["d"]["results"]);
-	
+
 	var aTasks = httpGetJSON("https://api.logmytime.de/v1/api.svc/Tasks");
 	var aTasksLookup = createIDLookUp(aTasks["d"]["results"]);
 
-	var aTimeEntries = httpGetJSON("https://api.logmytime.de/v1/api.svc/TimeEntries?$filter=Billable eq true&orderby=StartTime desc");
+	var aTimeEntries = httpGetJSON(
+		"https://api.logmytime.de/v1/api.svc/TimeEntries?$filter=Billable eq true&orderby=StartTime desc"
+	);
 	aTimeEntries = aTimeEntries["d"]["results"];
-	for (aTimeEntryIndex in aTimeEntries)
-	{
+	for (aTimeEntryIndex in aTimeEntries) {
 		var aItem = {};
 		var aTimeEntry = aTimeEntries[aTimeEntryIndex];
-		if (!aTimeEntry["RevenuePerHour"])	{
+		if (!aTimeEntry["RevenuePerHour"]) {
 			return localize("No Rates defined");
 		}
 		var aRate = aTimeEntry["RevenuePerHour"] + 0;
-			
+
 		var aProject = aProjectsLookup[aTimeEntry["ProjectID"]];
 		var aClient = aClientsLookup[aProject["ClientID"]];
 		var aUser = aUsersLookup[aTimeEntry["UserID"]];
 		var aTask = aTasksLookup[aTimeEntry["TaskID"]];
-		
-		var aStartTime = aTimeEntry["StartTime"].replace(/[\/]/g,"");
-		
+
+		var aStartTime = aTimeEntry["StartTime"].replace(/[\/]/g, "");
+
 		var aStartDate = eval("new " + aStartTime);
 		aStartDate.addHours(aOffset);
 
@@ -153,9 +150,9 @@ function timedEntries()
 		if (aTimeEntry["Comment"]) {
 			aItem["notes"] = aTimeEntry["Comment"];
 		}
-		
+
 		aItem["minutes"] = Math.round(aTimeEntry["DurationSeconds"] / 60);
-		aItem["cost"] = aRate * (aItem["minutes"] / 60)
+		aItem["cost"] = aRate * (aItem["minutes"] / 60);
 		aItem["uid"] = "de.logmytime." + aTimeEntry["ID"];
 
 		result.push(aItem);

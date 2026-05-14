@@ -15,18 +15,13 @@
 
 doExport();
 
-function doExport()
-{
-
+function doExport() {
 	createFolderAtURL(url);
 
-	for (document of items)
-	{
+	for (document of items) {
 		// Document Properties
-		aInvoiceNumber	= document.name;
+		aInvoiceNumber = document.name;
 		aFileURL = url + "/" + aInvoiceNumber + ".pdf";
-		loadURLtoURL(document.url,aFileURL);
+		loadURLtoURL(document.url, aFileURL);
 	}
-
 }
-

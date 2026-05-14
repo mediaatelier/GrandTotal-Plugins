@@ -13,140 +13,109 @@
 	
 */
 
-if (pluginType() == "sendtomenu")
-{
+if (pluginType() == "sendtomenu") {
 	doExport();
-}
-else
-{
+} else {
 	showPluginSettings();
 }
 
-
-function doExport()
-{
-	var lines = [];	
+function doExport() {
+	var lines = [];
 	var fields = contentsOfCSVFile(PluginDirectory + "Template.txt")[0];
-	
-	// lines.push(fields); // No headers
-	
 
-	for (document of items)
-	{
+	// lines.push(fields); // No headers
+
+	for (document of items) {
 		// Document Properties
-		
-		if (!document["recipient"])
-		{
+
+		if (!document["recipient"]) {
 			continue;
 		}
-		
-		
-		aClientNumber	= document["recipient"]["clientNumber"];
-		aEmailAddress	= document["recipient"]["email"];
-		aPOAddressLine1	= document["recipient"]["street"];
-		aPOCity			= document["recipient"]["city"];
-		aPOPostalCode	= document["recipient"]["zip"];
-		aPORegion		= document["recipient"]["state"];
-		aPOCountry		= document["recipient"]["countryCode"];
-		aClientName		= document["recipient"]["name"];
 
+		aClientNumber = document["recipient"]["clientNumber"];
+		aEmailAddress = document["recipient"]["email"];
+		aPOAddressLine1 = document["recipient"]["street"];
+		aPOCity = document["recipient"]["city"];
+		aPOPostalCode = document["recipient"]["zip"];
+		aPORegion = document["recipient"]["state"];
+		aPOCountry = document["recipient"]["countryCode"];
+		aClientName = document["recipient"]["name"];
 
-		aInvoiceNumber	= document["name"];
-		aReference		= document["reference"];
-		aInvoiceDate	= document["dateSent"];
-		aDueDate		= document["dateDue"];
-		aTotal			= document["grossAsString"];
-		aCurrency		= document["currency"];
-		aInvoiceDiscount= document["discountAsString"];
-		aInvoiceSubject	= document["subject"];
-		aInvoiceProject	= document["project"];
-		
-		if (mode == 1)
-		{
-			aInvoiceDate	= document["datePaid"];
+		aInvoiceNumber = document["name"];
+		aReference = document["reference"];
+		aInvoiceDate = document["dateSent"];
+		aDueDate = document["dateDue"];
+		aTotal = document["grossAsString"];
+		aCurrency = document["currency"];
+		aInvoiceDiscount = document["discountAsString"];
+		aInvoiceSubject = document["subject"];
+		aInvoiceProject = document["project"];
+
+		if (mode == 1) {
+			aInvoiceDate = document["datePaid"];
 		}
 
-	
-
-		aInvoiceDate 	= aInvoiceDate.toLocaleString("de-DE",{ year: 'numeric', month: '2-digit', day: '2-digit' });
-		aDueDate = aDueDate.toISOString().split('T')[0];
+		aInvoiceDate = aInvoiceDate.toLocaleString("de-DE", { year: "numeric", month: "2-digit", day: "2-digit" });
+		aDueDate = aDueDate.toISOString().split("T")[0];
 
 		// Item Properties
-		
-		for (item of document["taxes"])
-		{	
-					
-			
-			aGrossAmount 	= item["grossAsString"];
-			aTaxPercentage 	= item["taxPercentage"];
-			aCreditAccount 	= credit_0_Account;
-			aTaxName		= "U" + aTaxPercentage.toString() + "B";
-			if (aTaxPercentage == 0)
-			{
+
+		for (item of document["taxes"]) {
+			aGrossAmount = item["grossAsString"];
+			aTaxPercentage = item["taxPercentage"];
+			aCreditAccount = credit_0_Account;
+			aTaxName = "U" + aTaxPercentage.toString() + "B";
+			if (aTaxPercentage == 0) {
 				aTaxName = "";
 			}
 
-			if (aTaxPercentage == 8.1)
-			{
-				aCreditAccount	= credit_8_1_Account;
+			if (aTaxPercentage == 8.1) {
+				aCreditAccount = credit_8_1_Account;
+			} else if (aTaxPercentage == 2.5) {
+				aCreditAccount = credit_2_5_Account;
 			}
-			else if (aTaxPercentage == 2.5)
-			{
-				aCreditAccount	= credit_2_5_Account;
-			}
-			
-			
+
 			line = [];
-			
+
 			var text = aInvoiceNumber;
-			if (aInvoiceSubject)
-			{
+			if (aInvoiceSubject) {
 				text = text + " | " + aInvoiceSubject;
 			}
-			if (aInvoiceProject)
-			{
+			if (aInvoiceProject) {
 				text = text + " | " + aInvoiceProject;
 			}
-			if (aClientName)
-			{
+			if (aClientName) {
 				text = text + " | " + aClientName;
 			}
-			
-			
-			if (aCurrency == "CHF")
-			{
+
+			if (aCurrency == "CHF") {
 				var factor = 0.05;
-			   	aGrossAmount = Math.round(aGrossAmount / factor) * factor;
+				aGrossAmount = Math.round(aGrossAmount / factor) * factor;
 			}
-			
-			addFieldValue(line,"Firma_id",companyID,fields);
-			addFieldValue(line,"Datum",aInvoiceDate,fields);
-			addFieldValue(line,"BelegNr",aInvoiceNumber,fields);
-			addFieldValue(line,"Text",text,fields);
-			addFieldValue(line,"Währung",aCurrency,fields);
-			addFieldValue(line,"KontoSoll",debitAccount,fields);
-			addFieldValue(line,"KontoHaben",aCreditAccount,fields);
-			addFieldValue(line,"Betrag",aGrossAmount,fields);
-			addFieldValue(line,"Steuersatz",aTaxName,fields);
+
+			addFieldValue(line, "Firma_id", companyID, fields);
+			addFieldValue(line, "Datum", aInvoiceDate, fields);
+			addFieldValue(line, "BelegNr", aInvoiceNumber, fields);
+			addFieldValue(line, "Text", text, fields);
+			addFieldValue(line, "Währung", aCurrency, fields);
+			addFieldValue(line, "KontoSoll", debitAccount, fields);
+			addFieldValue(line, "KontoHaben", aCreditAccount, fields);
+			addFieldValue(line, "Betrag", aGrossAmount, fields);
+			addFieldValue(line, "Steuersatz", aTaxName, fields);
 
 			lines.push(line);
 		}
 	}
-	
-	writeCSVToURL(lines,url,30,"\t","\r");	 // MacOSRomanEncoding 	
 
+	writeCSVToURL(lines, url, 30, "\t", "\r"); // MacOSRomanEncoding
 }
 
-
-function addFieldValue(array,field,value,fields)
-{
+function addFieldValue(array, field, value, fields) {
 	var index = fields.indexOf(field);
-	for (i = 0;i<index;i++)
-	{
-		if (!array[i])
-		{
-			array[i] = 	"";
+	for (i = 0; i < index; i++) {
+		if (!array[i]) {
+			array[i] = "";
 		}
 	}
-	array[index] = 	value;
+	array[index] = value;
 }

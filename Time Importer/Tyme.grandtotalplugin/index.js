@@ -47,94 +47,105 @@ if (pluginType() === "estimates" || pluginType() === "invoices") {
 }
 
 function sendToTyme() {
-    var tyme3Path = NSHomeDirectory + "/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/GrandTotal/offers/";
-    var offer = query().record().valueForKey("interchangeRecord");
-    var fileName = Math.random().toString(36).slice(-5) + ".plist";
-    var URL = tyme3Path + fileName;
+	var tyme3Path =
+		NSHomeDirectory +
+		"/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/GrandTotal/offers/";
+	var offer = query().record().valueForKey("interchangeRecord");
+	var fileName = Math.random().toString(36).slice(-5) + ".plist";
+	var URL = tyme3Path + fileName;
 
-    var categoryName = offer.clientName;
-    var projectName = offer.project === "" ? offer.subject : offer.project;
-    var tasks = [];
-    var parentTask = null;
+	var categoryName = offer.clientName;
+	var projectName = offer.project === "" ? offer.subject : offer.project;
+	var tasks = [];
+	var parentTask = null;
 
-    offer.allItems.forEach((item, index) => {
-        var task = {
-            "name": item.name,
-            "plannedDuration": ((item.quantity * item.rate) / item.rate) * 60.0 * 60.0,
-            "hourlyRate": item.rate,
-            "subtasks": []
-        };
+	offer.allItems.forEach((item, index) => {
+		var task = {
+			name: item.name,
+			plannedDuration: ((item.quantity * item.rate) / item.rate) * 60.0 * 60.0,
+			hourlyRate: item.rate,
+			subtasks: []
+		};
 
-        if (item.entityName.toLowerCase() == "title") {
-            parentTask = task;
-            tasks.push(parentTask);
-        } else {
-            if (parentTask !== null) {
-                parentTask.subtasks.push(task);
-            } else {
-                tasks.push(task);
-            }
-        }
-    });
+		if (item.entityName.toLowerCase() == "title") {
+			parentTask = task;
+			tasks.push(parentTask);
+		} else {
+			if (parentTask !== null) {
+				parentTask.subtasks.push(task);
+			} else {
+				tasks.push(task);
+			}
+		}
+	});
 
-    var plistData = {};
-    plistData.categories = [{
-        "name": categoryName,
-        projects: [{
-            "name": projectName,
-            "tasks": tasks
-        }]
-    }];
+	var plistData = {};
+	plistData.categories = [
+		{
+			name: categoryName,
+			projects: [
+				{
+					name: projectName,
+					tasks: tasks
+				}
+			]
+		}
+	];
 
-    writeToURL(plistData, URL);
-    launchURL("tyme://grandtotal/offer/" + fileName);
+	writeToURL(plistData, URL);
+	launchURL("tyme://grandtotal/offer/" + fileName);
 }
 
 function timedEntries() {
-    var tyme2Path = NSHomeDirectory + "/Library/Containers/de.lgerckens.Tyme2/Data/Library/Application Support/GrandtotalData/";
-    var tyme3Path = NSHomeDirectory + "/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/GrandTotal/data/";
-    var tyme3StateURL = NSHomeDirectoryURL + "/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application%20Support/GrandTotal/state/";
+	var tyme2Path =
+		NSHomeDirectory + "/Library/Containers/de.lgerckens.Tyme2/Data/Library/Application Support/GrandtotalData/";
+	var tyme3Path =
+		NSHomeDirectory +
+		"/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/GrandTotal/data/";
+	var tyme3StateURL =
+		NSHomeDirectoryURL +
+		"/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application%20Support/GrandTotal/state/";
 
-    // write the billed urls
+	// write the billed urls
 
-    try {
-        var billedUIDs = getBilledUIDs("");
-        var billedURL = tyme3StateURL + "billed.plist";
-        writeToURL(billedUIDs, billedURL);
-    } catch (exception) {
-        log(exception);
-    }
+	try {
+		var billedUIDs = getBilledUIDs("");
+		var billedURL = tyme3StateURL + "billed.plist";
+		writeToURL(billedUIDs, billedURL);
+	} catch (exception) {
+		log(exception);
+	}
 
-    try {
-        var paidUIDs = getPaidUIDs("");
-        var paidURL = tyme3StateURL + "paid.plist";
-        writeToURL(paidUIDs, paidURL);
-    } catch (exception) {
-        log(exception);
-    }
+	try {
+		var paidUIDs = getPaidUIDs("");
+		var paidURL = tyme3StateURL + "paid.plist";
+		writeToURL(paidUIDs, paidURL);
+	} catch (exception) {
+		log(exception);
+	}
 
-    var path = tyme2Path
+	var path = tyme2Path;
 
-    if (fileExists(tyme3Path)) {
-        path = tyme3Path
-    }
+	if (fileExists(tyme3Path)) {
+		path = tyme3Path;
+	}
 
-    var folderContents = contentsOfDirectory(path);
-    var str = "[";
+	var folderContents = contentsOfDirectory(path);
+	var str = "[";
 
-    for (var i = 0; i < folderContents.length; i++) {
-        var content = contentsOfFile(folderContents[i]);
+	for (var i = 0; i < folderContents.length; i++) {
+		var content = contentsOfFile(folderContents[i]);
 
-        if (content && content.length > 0) {
-            content = content.replace(new RegExp('\n', 'g'), '\\n');
-            str += content;
+		if (content && content.length > 0) {
+			content = content.replace(new RegExp("\n", "g"), "\\n");
+			str += content;
 
-            if (i < folderContents.length - 1) {
-                str += ",";
-            }
-        }
-    }
+			if (i < folderContents.length - 1) {
+				str += ",";
+			}
+		}
+	}
 
-    str += "]";
-    return str;
+	str += "]";
+	return str;
 }

@@ -30,149 +30,113 @@
 	
 */
 
-
-
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
+function httpGetJSON(theUrl) {
 	try {
-        sleep(1); /// Paymo quota limit introduced in July 2021
-	}
-		catch (exception) {
-	}
-	header = {Authorization:'Basic ' + base64Encode(token + ':api_token')};
-	string = loadURL("GET",theUrl,header);
+		sleep(1); /// Paymo quota limit introduced in July 2021
+	} catch (exception) {}
+	header = { Authorization: "Basic " + base64Encode(token + ":api_token") };
+	string = loadURL("GET", theUrl, header);
 
-	if (string.length == 0)
-	{
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-
-function createIDLookUp(theJSON)
-{
+function createIDLookUp(theJSON) {
 	var result = {};
-	
-	for (aEntry in theJSON)
-	{
+
+	for (aEntry in theJSON) {
 		var aItemResult = {};
 		result[theJSON[aEntry]["id"]] = theJSON[aEntry];
-
 	}
-	
+
 	return result;
 }
 
-
-function timedEntries()
-{
-	
-
+function timedEntries() {
 	var result = [];
 	var aProjects = httpGetJSON("https://app.paymoapp.com/api/projects?where=active=true&billable=true");
-	
-	if (aProjects["grandtotal_error"])
-		return aProjects["grandtotal_error"];
-		
-	if (aProjects["message"])
-	{
+
+	if (aProjects["grandtotal_error"]) return aProjects["grandtotal_error"];
+
+	if (aProjects["message"]) {
 		return aProjects["message"];
 	}
-	
+
 	var aClients = httpGetJSON("https://app.paymoapp.com/api/clients");
-	var aClientsLookup =  createIDLookUp(aClients["clients"]);
-	
-	
+	var aClientsLookup = createIDLookUp(aClients["clients"]);
+
 	var aUsers = httpGetJSON("https://app.paymoapp.com/api/users");
-	var aUsersLookup =  createIDLookUp(aUsers["users"]);
+	var aUsersLookup = createIDLookUp(aUsers["users"]);
 
 	var aTasks = httpGetJSON("https://app.paymoapp.com/api/tasks");
-	var aTasksLookup =  createIDLookUp(aTasks["tasks"]);
-	
+	var aTasksLookup = createIDLookUp(aTasks["tasks"]);
+
 	var aCompany = httpGetJSON("https://app.paymoapp.com/api/company");
 	var aCompanyRate = 0;
-	if (aCompany["company"])
-	{
+	if (aCompany["company"]) {
 		aCompanyRate = aCompany["company"]["default_price_per_hour"];
 	}
-	
 
 	var aProjectObjects = aProjects["projects"];
-	
 
-	for (aProject in aProjectObjects)
-	{
+	for (aProject in aProjectObjects) {
 		var aProjectObject = aProjectObjects[aProject];
 		var aProjectName = aProjectObject["name"];
 		var aProjectRate = aProjectObject["price_per_hour"];
 		var aClientID = aProjectObject["client_id"];
 
-		
 		var aEntries = httpGetJSON("https://app.paymoapp.com/api/entries?where=project_id=" + aProjectObject["id"]);
-		if (!aEntries)
-		{
+		if (!aEntries) {
 			return "Check your settings, please";
 		}
-	
+
 		var aEntryObjects = aEntries["entries"];
-		
-		
-		for (aEntry in aEntryObjects)
-		{
+
+		for (aEntry in aEntryObjects) {
 			var aItemResult = {};
 			var aUser = aUsersLookup[aEntryObjects[aEntry]["user_id"]];
 			var aBillingType = aProjectObject["hourly_billing_mode"];
 
-					
 			aItemResult["notes"] = aEntryObjects[aEntry]["description"];
 			aItemResult["project"] = aProjectName;
 			aItemResult["client"] = aClientsLookup[aClientID]["name"];
 			aItemResult["user"] = aUser["name"];
-			
+
 			aItemResult["minutes"] = aEntryObjects[aEntry]["duration"] / 60;
-			aItemResult["cost"] = aProjectRate * aItemResult["minutes"] / 60;
-			
+			aItemResult["cost"] = (aProjectRate * aItemResult["minutes"]) / 60;
+
 			aItemResult["startDate"] = aEntryObjects[aEntry]["start_time"];
 			aItemResult["endDate"] = aEntryObjects[aEntry]["end_time"];
-			
-			if (!aItemResult["startDate"])
-			{
+
+			if (!aItemResult["startDate"]) {
 				aItemResult["startDate"] = aEntryObjects[aEntry]["date"] + "T00:00:00";
 			}
-			
+
 			var aTask = aTasksLookup[aEntryObjects[aEntry]["task_id"]] || {};
 			aItemResult["category"] = aTask["name"] || "No Task";
-			var aRate = aUserRate = aUser["price_per_hour"];
+			var aRate = (aUserRate = aUser["price_per_hour"]);
 
-			
-			if (aBillingType == "task")
-			{
+			if (aBillingType == "task") {
 				aRate = aTask["price_per_hour"];
-			}
-			else if (aBillingType == "project")
-			{
+			} else if (aBillingType == "project") {
 				aRate = aProjectObject["price_per_hour"];
+			} else if (aBillingType == "company") {
+				aRate = aCompanyRate;
 			}
-			else if (aBillingType == "company")
-			{
-				aRate = aCompanyRate
-			}
-			
-			aItemResult["cost"] = aRate * (aItemResult["minutes"] / 60);
-			
-			aMinutes = aItemResult["minutes"];
-			if (aMinutes > 0 && roundTo > 0)
-			{
-				aRate = aItemResult["cost"] / (aMinutes / 60);
-				aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
-				aItemResult["minutes"] = aMinutes;
-				aItemResult["cost"] =  aMinutes / 60 * aRate;
-			}
-			
 
+			aItemResult["cost"] = aRate * (aItemResult["minutes"] / 60);
+
+			aMinutes = aItemResult["minutes"];
+			if (aMinutes > 0 && roundTo > 0) {
+				aRate = aItemResult["cost"] / (aMinutes / 60);
+				aMinutes = Math.ceil(aMinutes / roundTo) * roundTo;
+				aItemResult["minutes"] = aMinutes;
+				aItemResult["cost"] = (aMinutes / 60) * aRate;
+			}
 
 			aItemResult["uid"] = "com.paymoapp." + aEntryObjects[aEntry]["id"];
 

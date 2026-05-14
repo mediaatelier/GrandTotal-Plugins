@@ -35,16 +35,11 @@
 	
 */
 
-
-
 timedEntries();
 
-
-function timedEntries()
-{
-	var aItems = findFiles("kMDItemFSName == 'timeEdition.edb'","modificationDate");
-	if (aItems.length == 0)
-	{
+function timedEntries() {
+	var aItems = findFiles("kMDItemFSName == 'timeEdition.edb'", "modificationDate");
+	if (aItems.length == 0) {
 		return localize("Data not found.");
 	}
 	var aItem = aItems[aItems.length - 1];
@@ -59,18 +54,14 @@ function timedEntries()
 		aLine["project"] = aItem["projectNAME"];
 		aLine["category"] = aItem["taskNAME"];
 		aLine["notes"] = aItem["comments"];
-		aLine["startDate"] = aItem["fromTime"].replace(" ","T");
-		aLine["endDate"] = aItem["toTime"].replace(" ","T");
+		aLine["startDate"] = aItem["fromTime"].replace(" ", "T");
+		aLine["endDate"] = aItem["toTime"].replace(" ", "T");
 		var minutes = aItem["dauer"] / 60000;
 		minutes = Math.ceil(minutes);
 		aLine["minutes"] = minutes;
-		aLine["cost"] = aItem["rate"] * (minutes / 60) ;
+		aLine["cost"] = aItem["rate"] * (minutes / 60);
 		aLine["uid"] = "com.timeEditon." + aItem["_id"];
 		aResult.push(aLine);
-	} 
+	}
 	return aResult;
 }
-
-
-
-

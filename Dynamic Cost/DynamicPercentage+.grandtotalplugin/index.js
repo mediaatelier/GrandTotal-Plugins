@@ -1,14 +1,8 @@
-
-
 changed();
 
-
-
-
-function changed()
-{
+function changed() {
 	var result = {};
-	result["cost"] = quantity / 100 * unitPrice;
+	result["cost"] = (quantity / 100) * unitPrice;
 	result["unit"] = "%";
-	return result; 
+	return result;
 }

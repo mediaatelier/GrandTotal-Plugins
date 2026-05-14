@@ -30,99 +30,75 @@
 	
 */
 
-
-
 importinvoices();
 
-
-function importinvoices()
-{
-	
-
+function importinvoices() {
 	var url = grandtotal.fileManager.openFileDialog("xlsx");
 	if (!url) {
 		return;
 	}
-		
+
 	var lines = contentsOfXLSFile(url);
-	for (line of lines)
-	{
-		if (line[0] == "client_id")
-		{
+	for (line of lines) {
+		if (line[0] == "client_id") {
 			continue; // header
 		}
-		
-		var params  						= {};
-		
-		params["clientID"]					= line[0];
-		params["clientName"]				= line[1];
-		params["invoiceDate"] 				= line[2];
-		params["amount"]					= line[3];
-		params["itemName"]					= line[5];
-		params["clientStreet"]				= line[6];
-		params["clientAdditionalAddress"]	= line[7];
-		params["clientZipCode"]				= line[8];
-		params["clientCity"]				= line[9];
-		params["clientCountry"]				= line[10];
-		params["vat"]						= line[11];
-		
-		
+
+		var params = {};
+
+		params["clientID"] = line[0];
+		params["clientName"] = line[1];
+		params["invoiceDate"] = line[2];
+		params["amount"] = line[3];
+		params["itemName"] = line[5];
+		params["clientStreet"] = line[6];
+		params["clientAdditionalAddress"] = line[7];
+		params["clientZipCode"] = line[8];
+		params["clientCity"] = line[9];
+		params["clientCountry"] = line[10];
+		params["vat"] = line[11];
 
 		var client = createClientForParams(params);
-		
-		
-		invoice = fetchRecordWithPredicate("Invoice","client.uid LIKE '" + client.uid + "' AND dateSent == NULL");
+
+		invoice = fetchRecordWithPredicate("Invoice", "client.uid LIKE '" + client.uid + "' AND dateSent == NULL");
 		if (!invoice) {
 			invoice = insertRecord("Invoice");
 		}
-		invoice.subject 		= params["invoiceDate"];
-		invoice.parentDocument	= client;
+		invoice.subject = params["invoiceDate"];
+		invoice.parentDocument = client;
 		item = insertRecord("Cost");
-		item.unitPrice 		= params["amount"];
-		item.name 			= params["itemName"];
-		item.parent		 	= invoice;
-		if (params["vat"] == 0)
-		{
-			item.itemGroup		= fetchRecordWithPredicate("ItemGroup","name LIKE[cd] 'zahlungsdienstleistungen'");
-		}
-		else
-		{
-			item.itemGroup		= fetchRecordWithPredicate("ItemGroup","name LIKE[cd] 'dienstleistungen'");
+		item.unitPrice = params["amount"];
+		item.name = params["itemName"];
+		item.parent = invoice;
+		if (params["vat"] == 0) {
+			item.itemGroup = fetchRecordWithPredicate("ItemGroup", "name LIKE[cd] 'zahlungsdienstleistungen'");
+		} else {
+			item.itemGroup = fetchRecordWithPredicate("ItemGroup", "name LIKE[cd] 'dienstleistungen'");
 		}
 	}
-	
 }
 
-
-function createClientForParams(params)
-{
+function createClientForParams(params) {
 	var results = fetchRecords("Client");
-	for (client of results.records())
-	{
-		if (client.valueForCustomField("matchID") == params["clientID"])
-		{
+	for (client of results.records()) {
+		if (client.valueForCustomField("matchID") == params["clientID"]) {
 			return client;
 		}
 	}
 	result = insertRecord("Client");
-	result.organization	= params["clientName"];
-	result.department	= params["clientAdditionalAddress"];
-	result.city			= params["clientCity"];
-	result.address		= params["clientStreet"];
-	result.zip			= params["clientZipCode"];
-	result.countryName	= params["clientCountry"];
-	result.setValueForCustomField(params["clientID"],"matchID");
-	
-	if (result.countryCode == "DE")
-	{
-		result.clientGroup		= fetchRecordWithPredicate("ClientGroup","name LIKE[cd] 'inland'");
-	}
-	else
-	{
-		result.clientGroup		= fetchRecordWithPredicate("ClientGroup","name LIKE[cd] 'ausland'");
+	result.organization = params["clientName"];
+	result.department = params["clientAdditionalAddress"];
+	result.city = params["clientCity"];
+	result.address = params["clientStreet"];
+	result.zip = params["clientZipCode"];
+	result.countryName = params["clientCountry"];
+	result.setValueForCustomField(params["clientID"], "matchID");
+
+	if (result.countryCode == "DE") {
+		result.clientGroup = fetchRecordWithPredicate("ClientGroup", "name LIKE[cd] 'inland'");
+	} else {
+		result.clientGroup = fetchRecordWithPredicate("ClientGroup", "name LIKE[cd] 'ausland'");
 	}
 
 	return result;
 }
-
-

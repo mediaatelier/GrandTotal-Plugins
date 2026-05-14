@@ -32,53 +32,40 @@
 
 timedEntries();
 
-
-function urlForEndPoint(theEndPoint)
-{
+function urlForEndPoint(theEndPoint) {
 	return "https://api.harvestapp.com/api/v2/" + theEndPoint + "?per_page=100";
 }
 
+function httpGetJSON(theUrl) {
+	header = { "Harvest-Account-ID": accountID, Authorization: "Bearer " + token, "User-Agent": "GrandTotal" };
+	string = loadURL("GET", theUrl, header);
 
-function httpGetJSON(theUrl)
-{
-	header = {"Harvest-Account-ID":accountID,"Authorization":"Bearer " + token,"User-Agent":"GrandTotal"};
-	string = loadURL("GET",theUrl,header);
-
-	if (string.length == 0)
-	{
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-
-function timedEntries()
-{
+function timedEntries() {
 	var aEntries = httpGetJSON(urlForEndPoint("time_entries"));
-	if (!aEntries)
-	{
+	if (!aEntries) {
 		return "Check your settings, please";
 	}
-	if (aEntries["grandtotal_error"])
-	{
+	if (aEntries["grandtotal_error"]) {
 		return "Check your settings, please";
 	}
 	var result = [];
-	
+
 	do {
-	
 		var aEntriesArray = aEntries["time_entries"];
-		for(aIndex in aEntriesArray)
-		{
+		for (aIndex in aEntriesArray) {
 			var aEntry = aEntriesArray[aIndex];
 			var aItem = {};
-			
-			if (!aEntry["billable"])
-			{
+
+			if (!aEntry["billable"]) {
 				continue;
 			}
-			if (aEntry["is_running"])
-			{
+			if (aEntry["is_running"]) {
 				continue;
 			}
 			aItem["client"] = aEntry["client"]["name"];
@@ -94,11 +81,10 @@ function timedEntries()
 			result.push(aItem);
 		}
 		var aNextpage = aEntries["links"]["next"];
-		if (aNextpage)
-		{
+		if (aNextpage) {
 			aEntries = httpGetJSON(aNextpage);
 		}
 	} while (aNextpage);
-	
+
 	return result;
 }

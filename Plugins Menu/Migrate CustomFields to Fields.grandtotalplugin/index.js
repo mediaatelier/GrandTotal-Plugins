@@ -118,26 +118,26 @@ function parseWeight(value) {
 
 	// Determine decimal separator from the last occurrence
 	// Check if the last comma or period appears later in the string
-	var lastCommaPos = value.lastIndexOf(',');
-	var lastPeriodPos = value.lastIndexOf('.');
+	var lastCommaPos = value.lastIndexOf(",");
+	var lastPeriodPos = value.lastIndexOf(".");
 
 	var numericValue;
 
 	if (lastCommaPos > lastPeriodPos) {
 		// Comma is the decimal separator
 		// Remove periods (thousand separators) and replace comma with period
-		numericValue = parseFloat(value.replace(/\./g, '').replace(/,/g, '.'));
+		numericValue = parseFloat(value.replace(/\./g, "").replace(/,/g, "."));
 	} else if (lastPeriodPos > lastCommaPos) {
 		// Period is the decimal separator
 		// Remove commas (thousand separators)
-		numericValue = parseFloat(value.replace(/,/g, ''));
+		numericValue = parseFloat(value.replace(/,/g, ""));
 	} else if (lastCommaPos === -1 && lastPeriodPos === -1) {
 		// No decimal separator
 		numericValue = parseFloat(value);
 	} else {
 		// Only one separator exists
 		if (lastCommaPos !== -1) {
-			numericValue = parseFloat(value.replace(/,/g, '.'));
+			numericValue = parseFloat(value.replace(/,/g, "."));
 		} else {
 			numericValue = parseFloat(value);
 		}

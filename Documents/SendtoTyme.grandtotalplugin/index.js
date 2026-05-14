@@ -57,45 +57,51 @@
 send();
 
 function send() {
-    var tyme3Path = NSHomeDirectory + "/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/GrandTotal/offers/";
-    var offer = query().record().valueForKey("interchangeRecord");
-    var fileName = Math.random().toString(36).slice(-5) + ".plist";
-    var URL = tyme3Path + fileName;
+	var tyme3Path =
+		NSHomeDirectory +
+		"/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/GrandTotal/offers/";
+	var offer = query().record().valueForKey("interchangeRecord");
+	var fileName = Math.random().toString(36).slice(-5) + ".plist";
+	var URL = tyme3Path + fileName;
 
-    var categoryName = offer.clientName;
-    var projectName = offer.project === "" ? offer.subject : offer.project;
-    var tasks = [];
-    var parentTask = null;
+	var categoryName = offer.clientName;
+	var projectName = offer.project === "" ? offer.subject : offer.project;
+	var tasks = [];
+	var parentTask = null;
 
-    offer.allItems.forEach((item, index) => {
-        var task = {
-            "name": item.name,
-            "plannedDuration": ((item.quantity * item.rate) / item.rate) * 60.0 * 60.0,
-            "hourlyRate": item.rate,
-            "subtasks": []
-        };
+	offer.allItems.forEach((item, index) => {
+		var task = {
+			name: item.name,
+			plannedDuration: ((item.quantity * item.rate) / item.rate) * 60.0 * 60.0,
+			hourlyRate: item.rate,
+			subtasks: []
+		};
 
-        if (item.entityName.toLowerCase() == "title") {
-            parentTask = task;
-            tasks.push(parentTask);
-        } else {
-            if (parentTask !== null) {
-                parentTask.subtasks.push(task);
-            } else {
-                tasks.push(task);
-            }
-        }
-    });
+		if (item.entityName.toLowerCase() == "title") {
+			parentTask = task;
+			tasks.push(parentTask);
+		} else {
+			if (parentTask !== null) {
+				parentTask.subtasks.push(task);
+			} else {
+				tasks.push(task);
+			}
+		}
+	});
 
-    var plistData = {};
-    plistData.categories = [{
-        "name": categoryName,
-        projects: [{
-            "name": projectName,
-            "tasks": tasks
-        }]
-    }];
+	var plistData = {};
+	plistData.categories = [
+		{
+			name: categoryName,
+			projects: [
+				{
+					name: projectName,
+					tasks: tasks
+				}
+			]
+		}
+	];
 
-    writeToURL(plistData, URL);
-    launchURL("tyme://grandtotal/offer/" + fileName);
+	writeToURL(plistData, URL);
+	launchURL("tyme://grandtotal/offer/" + fileName);
 }

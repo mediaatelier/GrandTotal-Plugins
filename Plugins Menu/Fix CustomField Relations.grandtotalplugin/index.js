@@ -18,32 +18,32 @@ function run() {
 		{
 			customFieldSetUID: "com.mediaatelier.GrandTotal.customFieldSet.sendable",
 			customFieldUIDs: [
-				"TKxGzB6BQcObGLtUzUXL0A",  // Approntamento
-				"0eMNXpS4TqGtvJnG8gobHA",  // Bestell Nr.
-				"GiB8B5zNRIm_wgMCDuTJnw",  // Ritiro
-				"PMEwbKuYRGiD_AGGmIRx2Q",  // Liefertermin
-				"75AVzyUwT-uWpUubjxFccA",  // Artikel Nr.
-				"1-2TxmLNR9C5pLLOlzKViQ",  // Provision - Monat
-				"L87bO9AHS9qrfrC4HKbp2A",  // Lieferadresse
-				"Ufj8i5WOTOK6w7aRh-xSuQ",  // Anlieferoption
-				"hkLBxmkpS6-R1bm6XiAJJg"   // Anfrage Nr.
+				"TKxGzB6BQcObGLtUzUXL0A", // Approntamento
+				"0eMNXpS4TqGtvJnG8gobHA", // Bestell Nr.
+				"GiB8B5zNRIm_wgMCDuTJnw", // Ritiro
+				"PMEwbKuYRGiD_AGGmIRx2Q", // Liefertermin
+				"75AVzyUwT-uWpUubjxFccA", // Artikel Nr.
+				"1-2TxmLNR9C5pLLOlzKViQ", // Provision - Monat
+				"L87bO9AHS9qrfrC4HKbp2A", // Lieferadresse
+				"Ufj8i5WOTOK6w7aRh-xSuQ", // Anlieferoption
+				"hkLBxmkpS6-R1bm6XiAJJg" // Anfrage Nr.
 			]
 		},
 		{
 			customFieldSetUID: "com.mediaatelier.GrandTotal.customFieldSet.client",
 			customFieldUIDs: [
-				"R8YHEkJaRPC7UbO-l3s77g",  // Produkt
-				"FuExbp8VQ62TT52wfCB-BQ",  // Anmerkungen
-				"o0WPD_QDRsO84PNvcKptAw",  // PV - Interesse?
-				"s7_bLeY1TOGguwfsGA69vw",  // Mobil
-				"yvmUzXKKT2KfNZ3M_x-lPg",  // Festnetz
-				"81ka3mCTRMCGUyTNjxVzpg",  // Bundesland
-				"EZXCFqkERea9dbB9q2cvzg",  // Besuch
-				"hUO_foSXT5Sl86MUTJ0tYg",  // Handlese
-				"CgFHjV-YRpWGbsqv6hhbKw",  // Webseite
-				"lLDwIVNOT5uLzE2_0do1kA",  // HA
-				"PN5_bkXbQvKJOwqcQ-dG8w",  // Lieferadresse
-				"e6cW2LhsQUeI0tJs0bNCCw"   // VDP
+				"R8YHEkJaRPC7UbO-l3s77g", // Produkt
+				"FuExbp8VQ62TT52wfCB-BQ", // Anmerkungen
+				"o0WPD_QDRsO84PNvcKptAw", // PV - Interesse?
+				"s7_bLeY1TOGguwfsGA69vw", // Mobil
+				"yvmUzXKKT2KfNZ3M_x-lPg", // Festnetz
+				"81ka3mCTRMCGUyTNjxVzpg", // Bundesland
+				"EZXCFqkERea9dbB9q2cvzg", // Besuch
+				"hUO_foSXT5Sl86MUTJ0tYg", // Handlese
+				"CgFHjV-YRpWGbsqv6hhbKw", // Webseite
+				"lLDwIVNOT5uLzE2_0do1kA", // HA
+				"PN5_bkXbQvKJOwqcQ-dG8w", // Lieferadresse
+				"e6cW2LhsQUeI0tJs0bNCCw" // VDP
 			]
 		}
 	];

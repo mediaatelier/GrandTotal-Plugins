@@ -30,157 +30,134 @@
 	
 */
 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+Date.prototype.yyyymmdd = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
 };
-
-
 
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
-	header = {Authorization:'Bearer ' + token};
-	string = loadURL("GET",theUrl,header);
+function httpGetJSON(theUrl) {
+	header = { Authorization: "Bearer " + token };
+	string = loadURL("GET", theUrl, header);
 
-	if (string.length == 0)
-	{
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-
-function createIDLookUp(theJSON)
-{
+function createIDLookUp(theJSON) {
 	var result = {};
-	
-	for (aEntry in theJSON)
-	{
+
+	for (aEntry in theJSON) {
 		var aItemResult = {};
 		result[theJSON[aEntry]["id"]] = theJSON[aEntry];
 	}
 	return result;
 }
 
-
-function loadPages(theURL,key)
-{
+function loadPages(theURL, key) {
 	result = [];
 	page = 0;
-	if (theURL.indexOf("?") !== -1)
-	{
+	if (theURL.indexOf("?") !== -1) {
 		theURL = theURL + "&page=";
-	}
-	else
-	{
+	} else {
 		theURL = theURL + "?page=";
 	}
-	do
-	{
-		page ++
+	do {
+		page++;
 		data = httpGetJSON(theURL + page);
 		items = data[key];
-		if (items)
-		{
+		if (items) {
 			result = result.concat(items);
 		}
 		meta = data["meta"];
 		if (!meta) {
 			break;
 		}
-	}
-	while (meta["last_page"] > page)
-	
+	} while (meta["last_page"] > page);
+
 	return result;
 }
 
-
-function timedEntries()
-{
-	if (defaultRate == 0)
-	{
+function timedEntries() {
+	if (defaultRate == 0) {
 		return localize("Set rate");
 	}
-	
+
 	var result = [];
 	var aOrganizationsData = httpGetJSON("https://api.keeping.nl/v1/organisations");
 
-	if (aOrganizationsData["server_error"])
-	{
+	if (aOrganizationsData["server_error"]) {
 		return aOrganizationsData["server_error"]["error"]["message"];
 	}
 	var aOrganizations = aOrganizationsData["organisations"];
 	var aOrganization = aOrganizations[0];
-	
-	for (i in aOrganizations)
-	{
+
+	for (i in aOrganizations) {
 		var aCheckOrganization = aOrganizations[i];
 
-		if (aCheckOrganization["name"].indexOf(organization) !== -1 || aCheckOrganization["url"].indexOf(organization))
-		{
+		if (
+			aCheckOrganization["name"].indexOf(organization) !== -1 ||
+			aCheckOrganization["url"].indexOf(organization)
+		) {
 			aOrganization = aCheckOrganization;
 		}
 	}
-	
-	
-	var aOrganizationID = aOrganization["id"];
-	
-	var aProjects = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/projects","projects");
-	var aProjectsLookup = createIDLookUp(aProjects);
-	
-	/// this call fails currently. Maybe it will be fixed
-	var aUsers = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/users","users");
-	var aUsersLookup = createIDLookUp(aUsers);
-		
-	var aTasks = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/tasks","tasks");
-	var aTasksLookup = createIDLookUp(aTasks);
-	
-	var date = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
-		
-	var aTimes = loadPages("https://api.keeping.nl/v1/"+ aOrganizationID + "/report/time-entries?from=" + date.yyyymmdd(),"time_entries");
 
-	for (i in aTimes)
-	{
+	var aOrganizationID = aOrganization["id"];
+
+	var aProjects = loadPages("https://api.keeping.nl/v1/" + aOrganizationID + "/projects", "projects");
+	var aProjectsLookup = createIDLookUp(aProjects);
+
+	/// this call fails currently. Maybe it will be fixed
+	var aUsers = loadPages("https://api.keeping.nl/v1/" + aOrganizationID + "/users", "users");
+	var aUsersLookup = createIDLookUp(aUsers);
+
+	var aTasks = loadPages("https://api.keeping.nl/v1/" + aOrganizationID + "/tasks", "tasks");
+	var aTasksLookup = createIDLookUp(aTasks);
+
+	var date = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+
+	var aTimes = loadPages(
+		"https://api.keeping.nl/v1/" + aOrganizationID + "/report/time-entries?from=" + date.yyyymmdd(),
+		"time_entries"
+	);
+
+	for (i in aTimes) {
 		var aTime = aTimes[i];
-		
-		if (aTime["ongoing"] == 1)
-		{
+
+		if (aTime["ongoing"] == 1) {
 			continue;
 		}
 		var aItemResult = {};
-		
+
 		aProject = aProjectsLookup[aTime["project_id"]];
 		aTask = aTasksLookup[aTime["task_id"]];
 		aUser = aUsersLookup[aTime["user_id"]];
 
-		if (aProject)
-		{
-			aClient = aProject["client"];		
+		if (aProject) {
+			aClient = aProject["client"];
 			aItemResult["project"] = aProject["name"];
-			if (aClient)
-			{
+			if (aClient) {
 				aItemResult["client"] = aClient["name"];
 			}
 		}
-		if (aTask)
-		{
+		if (aTask) {
 			aItemResult["category"] = aTask["name"];
 		}
 		aItemResult["minutes"] = Math.round(aTime["hours"] * 60);
-		if (aUser)
-		{
+		if (aUser) {
 			aItemResult["user"] = aUser["first_name"] + " " + aUser["surname"];
 		}
 		aItemResult["startDate"] = aTime["start"];
 		aItemResult["endDate"] = aTime["end"];
-		aItemResult["cost"] = aItemResult["minutes"] / 60 * defaultRate;
-		
-		if (aTime["note"])
-		{
+		aItemResult["cost"] = (aItemResult["minutes"] / 60) * defaultRate;
+
+		if (aTime["note"]) {
 			aItemResult["notes"] = aTime["note"];
 		}
 

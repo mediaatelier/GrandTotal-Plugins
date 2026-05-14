@@ -12,53 +12,42 @@
 
 paste();
 
-
-function paste()
-{
+function paste() {
 	result = new Array();
 	paths = pasteBoard["NSFilenamesPboardType"];
-	
-	
-	for (index in paths)
-	{
+
+	for (index in paths) {
 		path = paths[index];
-		filename = path.substring(path.lastIndexOf('/')+1);
-		
+		filename = path.substring(path.lastIndexOf("/") + 1);
+
 		attributes = spotlightAttributes(path);
 		description = "";
-				
-		if (attributes["kMDItemTitle"])
-		{
+
+		if (attributes["kMDItemTitle"]) {
 			filename = attributes["kMDItemTitle"];
 		}
-		if (attributes["kMDItemNumberOfPages"])
-		{
-			description += attributes["kMDItemNumberOfPages"] +" "+localize("Pages") + "\n";
+		if (attributes["kMDItemNumberOfPages"]) {
+			description += attributes["kMDItemNumberOfPages"] + " " + localize("Pages") + "\n";
 		}
-		if (attributes["kMDItemPixelWidth"])
-		{
+		if (attributes["kMDItemPixelWidth"]) {
 			description += attributes["kMDItemPixelWidth"] + "x" + attributes["kMDItemPixelHeight"] + "\n";
 		}
-		if (attributes["kMDItemDurationSeconds"])
-		{
+		if (attributes["kMDItemDurationSeconds"]) {
 			description += Math.round(attributes["kMDItemDurationSeconds"]) + " " + localize("Seconds") + "\n";
 		}
-		if (attributes["kMDItemDescription"])
-		{
+		if (attributes["kMDItemDescription"]) {
 			description += "<i>" + attributes["kMDItemDescription"] + "</i>" + "\n";
 		}
-		if (attributes["kMDItemKeywords"])
-		{
+		if (attributes["kMDItemKeywords"]) {
 			description += localize("Keywords") + ": " + attributes["kMDItemKeywords"] + "\n";
 		}
-		
-		
+
 		aRec = insertRecord("Cost");
-		aRec.setValueForKey(filename,"name");
-		aRec.setValueForKey(description,"notes");
-		aRec.setValueForKey(timeUnit,"unit");
-		aRec.setValueForKey(hourlyRate,"unitPrice");
-		aRec.setValueForKey(fileModificationDate(path),"dateCreation");
+		aRec.setValueForKey(filename, "name");
+		aRec.setValueForKey(description, "notes");
+		aRec.setValueForKey(timeUnit, "unit");
+		aRec.setValueForKey(hourlyRate, "unitPrice");
+		aRec.setValueForKey(fileModificationDate(path), "dateCreation");
 
 		result.push(aRec);
 	}

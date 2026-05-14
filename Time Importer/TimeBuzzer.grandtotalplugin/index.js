@@ -41,44 +41,36 @@
 
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
-	header = {Authorization:'APIKey ' + token};
-	string = loadURL("GET",theUrl,header);
-	if (string.length == 0)
-	{
+function httpGetJSON(theUrl) {
+	header = { Authorization: "APIKey " + token };
+	string = loadURL("GET", theUrl, header);
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-function timedEntries()
-{
-	if (!token || token.length == 0)
-	{
+function timedEntries() {
+	if (!token || token.length == 0) {
 		return localize("API Key required");
 	}
 
-	if (defaultRate == 0)
-	{
+	if (defaultRate == 0) {
 		return localize("Set rate");
 	}
 
 	// Get account info for users
 	var account = httpGetJSON("https://my.timebuzzer.com/open-api/account");
-	if (!account || !account.users)
-	{
+	if (!account || !account.users) {
 		return localize("Error loading account");
 	}
 
 	// Create lookup for users by ID
 	var usersLookup = {};
-	for (var i = 0; i < account.users.length; i++)
-	{
+	for (var i = 0; i < account.users.length; i++) {
 		var user = account.users[i];
 		var userName = user.firstName;
-		if (user.lastName)
-		{
+		if (user.lastName) {
 			userName += " " + user.lastName;
 		}
 		usersLookup[user.id] = userName;
@@ -86,15 +78,13 @@ function timedEntries()
 
 	// Get all tiles (projects/clients/tasks)
 	var tiles = httpGetJSON("https://my.timebuzzer.com/open-api/tiles");
-	if (!tiles)
-	{
+	if (!tiles) {
 		return localize("Error loading tiles");
 	}
 
 	// Create lookup for tiles by ID
 	var tilesLookup = {};
-	for (var i = 0; i < tiles.length; i++)
-	{
+	for (var i = 0; i < tiles.length; i++) {
 		var tile = tiles[i];
 		tilesLookup[tile.id] = tile;
 	}
@@ -102,31 +92,26 @@ function timedEntries()
 	// Get activities
 	var response = httpGetJSON("https://my.timebuzzer.com/open-api/activities?count=5000");
 
-	if (!response)
-	{
+	if (!response) {
 		return localize("Error loading activities");
 	}
 
-	if (response["grandtotal_error"])
-	{
+	if (response["grandtotal_error"]) {
 		return response["grandtotal_error"];
 	}
 
-	if (!response.activities)
-	{
+	if (!response.activities) {
 		return localize("No activities found");
 	}
 
 	var result = [];
 	var activities = response.activities;
 
-	for (var i = 0; i < activities.length; i++)
-	{
+	for (var i = 0; i < activities.length; i++) {
 		var activity = activities[i];
 
 		// Skip non-billable activities
-		if (activity.billed === true)
-		{
+		if (activity.billed === true) {
 			continue;
 		}
 
@@ -139,8 +124,7 @@ function timedEntries()
 		var minutes = Math.round(durationMs / 60000);
 
 		// Apply rounding if specified
-		if (minutes > 0 && roundTo > 0)
-		{
+		if (minutes > 0 && roundTo > 0) {
 			minutes = Math.ceil(minutes / roundTo) * roundTo;
 		}
 
@@ -150,22 +134,18 @@ function timedEntries()
 		item.uid = "com.timebuzzer." + activity.id;
 
 		// Map user
-		if (activity.userId && usersLookup[activity.userId])
-		{
+		if (activity.userId && usersLookup[activity.userId]) {
 			item.user = usersLookup[activity.userId];
 		}
 
 		// Parse tile hierarchy to extract client and project
 		var tileNames = [];
-		if (activity.tiles && activity.tiles.length > 0)
-		{
+		if (activity.tiles && activity.tiles.length > 0) {
 			// Get all tiles in the hierarchy
-			for (var j = 0; j < activity.tiles.length; j++)
-			{
+			for (var j = 0; j < activity.tiles.length; j++) {
 				var tileId = activity.tiles[j];
 				var tile = tilesLookup[tileId];
-				if (tile)
-				{
+				if (tile) {
 					tileNames.push({
 						name: tile.name,
 						layer: tile.layer
@@ -174,24 +154,20 @@ function timedEntries()
 			}
 
 			// Sort by layer to get proper hierarchy
-			tileNames.sort(function(a, b) {
+			tileNames.sort(function (a, b) {
 				return a.layer - b.layer;
 			});
 
 			// Extract client and project based on hierarchy
-			if (tileNames.length >= 2)
-			{
+			if (tileNames.length >= 2) {
 				item.client = tileNames[0].name;
 				item.project = tileNames[1].name;
 
 				// If there are more levels, use them as category
-				if (tileNames.length >= 3)
-				{
+				if (tileNames.length >= 3) {
 					item.category = tileNames[2].name;
 				}
-			}
-			else if (tileNames.length == 1)
-			{
+			} else if (tileNames.length == 1) {
 				item.project = tileNames[0].name;
 				item.client = "";
 			}
@@ -199,7 +175,7 @@ function timedEntries()
 
 		// Calculate cost
 		var rate = defaultRate;
-		item.cost = rate * minutes / 60;
+		item.cost = (rate * minutes) / 60;
 
 		result.push(item);
 	}

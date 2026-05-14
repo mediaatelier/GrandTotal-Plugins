@@ -12,39 +12,32 @@
 
 paste();
 
-
-function paste()
-{
+function paste() {
 	result = new Array();
 	string = pasteBoard["NSStringPboardType"];
 	lines = string.split("\r");
-	
-	
-	for (index in lines)
-	{
+
+	for (index in lines) {
 		line = lines[index];
 		items = line.split(" ");
-		if (!items.includes("EUR"))
-		{
+		if (!items.includes("EUR")) {
 			continue;
 		}
 		count = items.length;
-		if (count < 4)
-		{
+		if (count < 4) {
 			continue;
 		}
-		cost = items[count-2];
-		cost = cost.replaceAll(".","");
-		cost = cost.replaceAll(",",".");
-		
-		titleitems = items.slice(0,count-3);
+		cost = items[count - 2];
+		cost = cost.replaceAll(".", "");
+		cost = cost.replaceAll(",", ".");
+
+		titleitems = items.slice(0, count - 3);
 		title = titleitems.join(" ");
-		
-		
+
 		aRec = insertRecord("Cost");
-		aRec.setValueForKey(title,"name");
-		aRec.setValueForKey(parseFloat(cost),"unitPrice");
-	/*	aRec.setValueForKey(hourlyRate,"unitPrice");
+		aRec.setValueForKey(title, "name");
+		aRec.setValueForKey(parseFloat(cost), "unitPrice");
+		/*	aRec.setValueForKey(hourlyRate,"unitPrice");
 		aRec.setValueForKey(fileModificationDate(path),"dateCreation");
 */
 		result.push(aRec);

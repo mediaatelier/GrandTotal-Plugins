@@ -1,23 +1,24 @@
-
 migrate();
-
 
 function httpGetJSON(theUrl) {
 	var header = {
 		"X-API-TOKEN": token,
 		"X-Requested-With": "XMLHttpRequest",
-		"Accept": "application/json"
+		Accept: "application/json"
 	};
 
 	var response = loadURL("GET", theUrl, header);
 
 	// Check if response is an error object (not a string)
-	if (typeof response === 'object' && response !== null) {
+	if (typeof response === "object" && response !== null) {
 		// Check for HTTP errors (403, 401, etc.)
 		if (response.server_error) {
 			return {
 				server_error: true,
-				message: "API Error: " + (response.server_error.message || "Authentication failed. Please check your API token and Base URL.")
+				message:
+					"API Error: " +
+					(response.server_error.message ||
+						"Authentication failed. Please check your API token and Base URL.")
 			};
 		}
 
@@ -33,7 +34,10 @@ function httpGetJSON(theUrl) {
 		if (response.http_error) {
 			return {
 				server_error: true,
-				message: "HTTP Error " + response.http_error + ": Authentication failed. Please check your API token and Base URL."
+				message:
+					"HTTP Error " +
+					response.http_error +
+					": Authentication failed. Please check your API token and Base URL."
 			};
 		}
 	}
@@ -48,16 +52,21 @@ function httpGetJSON(theUrl) {
 	var result = JSON.parse(response);
 
 	// Check for API error message in response
-	if (result.message && (result.message.indexOf("Unauthenticated") !== -1 || result.message.indexOf("Invalid token") !== -1)) {
+	if (
+		result.message &&
+		(result.message.indexOf("Unauthenticated") !== -1 || result.message.indexOf("Invalid token") !== -1)
+	) {
 		return {
 			server_error: true,
-			message: "Authentication failed: " + result.message + "\n\nPlease check:\n1. Your API token is correct\n2. The Base URL matches your Invoice Ninja installation\n3. You have API access enabled"
+			message:
+				"Authentication failed: " +
+				result.message +
+				"\n\nPlease check:\n1. Your API token is correct\n2. The Base URL matches your Invoice Ninja installation\n3. You have API access enabled"
 		};
 	}
 
 	return result;
 }
-
 
 function fetchAllClientsPaginated(baseUrl) {
 	var allClients = [];
@@ -100,7 +109,6 @@ function fetchAllClientsPaginated(baseUrl) {
 	return allClients;
 }
 
-
 function fetchAllProductsPaginated(baseUrl) {
 	var allProducts = [];
 	var page = 1;
@@ -139,7 +147,6 @@ function fetchAllProductsPaginated(baseUrl) {
 	return allProducts;
 }
 
-
 function fetchCountryMapping(baseUrl) {
 	var url = baseUrl + "/api/v1/statics";
 	var response = httpGetJSON(url);
@@ -163,7 +170,6 @@ function fetchCountryMapping(baseUrl) {
 	return mapping;
 }
 
-
 function mapInvoiceNinjaClientToClient(client, countryMapping) {
 	var attributes = {
 		uid: "invoiceninja.client." + client.id
@@ -176,9 +182,10 @@ function mapInvoiceNinjaClientToClient(client, countryMapping) {
 
 	// Contact information from primary contact
 	if (client.contacts && client.contacts.length > 0) {
-		var primaryContact = client.contacts.find(function(c) {
-			return c.is_primary;
-		}) || client.contacts[0];
+		var primaryContact =
+			client.contacts.find(function (c) {
+				return c.is_primary;
+			}) || client.contacts[0];
 
 		if (primaryContact.first_name) {
 			attributes.firstName = primaryContact.first_name;
@@ -252,7 +259,6 @@ function mapInvoiceNinjaClientToClient(client, countryMapping) {
 	};
 }
 
-
 function mapInvoiceNinjaProductToItem(product) {
 	var attributes = {
 		uid: "invoiceninja.product." + product.id,
@@ -311,7 +317,6 @@ function mapInvoiceNinjaProductToItem(product) {
 		attributes: attributes
 	};
 }
-
 
 function migrate() {
 	// Base URL Configuration

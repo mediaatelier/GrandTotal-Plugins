@@ -30,45 +30,30 @@
 	
 */
 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+Date.prototype.yyyymmdd = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
 };
-
-
-
-
 
 timedEntries();
 
-function httpGetJSON(theUrl)
-{
-	
-	header = {"X-Api-Key":token};
-	string = loadURL("GET",theUrl,header);
-	if (string.length == 0)
-	{
+function httpGetJSON(theUrl) {
+	header = { "X-Api-Key": token };
+	string = loadURL("GET", theUrl, header);
+	if (string.length == 0) {
 		return null;
 	}
-	
-	try
-	{
- 	  grandtotal.sleep(0.05);
-	} 
-	catch (error)
-	{
-	}
 
-	
+	try {
+		grandtotal.sleep(0.05);
+	} catch (error) {}
+
 	return JSON.parse(string);
 }
 
-
-
-function timedEntries()
-{
+function timedEntries() {
 	var aEndDate = new Date();
 	var aEndDateString = aEndDate.yyyymmdd();
 	var aStartDate = new Date();
@@ -78,312 +63,260 @@ function timedEntries()
 	var result = [];
 	var aArray = httpGetJSON("https://api.clockify.me/api/v1/user");
 
-	if (aArray["grandtotal_error"])
-	{
+	if (aArray["grandtotal_error"]) {
 		return aArray["grandtotal_error"];
 	}
-		
-	if (!aArray)
-	{
+
+	if (!aArray) {
 		return "Check your settings, please";
 	}
-	
-	
+
 	var aUserID = aArray["id"];
 	var aWorkspaceID = aArray["activeWorkspace"];
-	
+
 	var aWorkspaces = httpGetJSON("https://api.clockify.me/api/v1/workspaces/");
 	var aWorkspaceName = "";
 	var aWorkspaceHourlyRate = 0;
-	
-	
-	for (aWorkspaceIndex in aWorkspaces)
-	{
+
+	for (aWorkspaceIndex in aWorkspaces) {
 		var aWorkspace = aWorkspaces[aWorkspaceIndex];
-		
-		if (aWorkspace["id"] == aWorkspaceID)
-		{
+
+		if (aWorkspace["id"] == aWorkspaceID) {
 			aWorkspaceName = aWorkspace["name"];
-			if (aWorkspace["hourlyRate"])
-			{
+			if (aWorkspace["hourlyRate"]) {
 				aWorkspaceHourlyRate = aWorkspace["hourlyRate"]["amount"];
 			}
 		}
 	}
 
-
-	
 	var page = 1;
 	var aUserLookup = {};
-	
-	do 
-	{
-		var aUsers = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/users?page="+page);
 
-		for(aUserIndex in aUsers)
-		{
+	do {
+		var aUsers = httpGetJSON("https://api.clockify.me/api/v1/workspaces/" + aWorkspaceID + "/users?page=" + page);
+
+		for (aUserIndex in aUsers) {
 			aUser = aUsers[aUserIndex];
 			aUserID = aUser["id"];
 			aUserLookup[aUserID] = aUser;
 		}
-		page ++;
-	}
-	while (aUsers.length != 0);
-
-
+		page++;
+	} while (aUsers.length != 0);
 
 	var page = 1;
 	var aClientLookup = {};
-	do 
-	{
-		var aClients = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/clients?page-size=5000&page="+page);
-		for(aClientIndex in aClients)
-		{
+	do {
+		var aClients = httpGetJSON(
+			"https://api.clockify.me/api/v1/workspaces/" + aWorkspaceID + "/clients?page-size=5000&page=" + page
+		);
+		for (aClientIndex in aClients) {
 			aClient = aClients[aClientIndex];
 			aClientID = aClient["id"];
 			aClientLookup[aClientID] = aClient;
 		}
-		page ++;
-	}
-	while (aClients.length != 0);
-	
-	
+		page++;
+	} while (aClients.length != 0);
+
 	var page = 1;
 	var aProjectLookup = {};
 	var aTasksLookup = {};
-	do 
-	{
-		var aProjects = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects?page-size=5000&page="+page);
-		for(aProjectIndex in aProjects)
-		{
+	do {
+		var aProjects = httpGetJSON(
+			"https://api.clockify.me/api/v1/workspaces/" + aWorkspaceID + "/projects?page-size=5000&page=" + page
+		);
+		for (aProjectIndex in aProjects) {
 			aProject = aProjects[aProjectIndex];
 			aProjectID = aProject["id"];
 			aProjectLookup[aProjectID] = aProject;
-			var aTasks = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/projects/"+aProjectID+"/tasks?page-size=5000");
-			for(aTasksIndex in aTasks)
-			{
+			var aTasks = httpGetJSON(
+				"https://api.clockify.me/api/v1/workspaces/" +
+					aWorkspaceID +
+					"/projects/" +
+					aProjectID +
+					"/tasks?page-size=5000"
+			);
+			for (aTasksIndex in aTasks) {
 				aTask = aTasks[aTasksIndex];
 				aTaskID = aTask["id"];
 				aTasksLookup[aTaskID] = aTask;
 			}
 		}
-		page ++;
+		page++;
+	} while (aProjects.length != 0);
 
-	}
-	while (aProjects.length != 0);
-		
-	
 	var aTagsLookup = {};
 	var page = 1;
-	do 
-	{
-		var aTags = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/tags?page-size=5000&page="+page);
-		for(aTagsIndex in aTags)
-		{
+	do {
+		var aTags = httpGetJSON(
+			"https://api.clockify.me/api/v1/workspaces/" + aWorkspaceID + "/tags?page-size=5000&page=" + page
+		);
+		for (aTagsIndex in aTags) {
 			aTag = aTags[aTagsIndex];
 			aTagID = aTag["id"];
 			aTagsLookup[aTagID] = aTag;
 		}
-		page ++;
+		page++;
+	} while (aTags.length != 0);
 
-	}
-	while (aTags.length != 0);
-	
-
-	
-	
-	for (aUserIndex in aUserLookup)
-	{
+	for (aUserIndex in aUserLookup) {
 		aUser = aUserLookup[aUserIndex];
 		aUserName = aUser["name"];
-		aUserID =  aUser["id"];
-		
-		
-		
+		aUserID = aUser["id"];
+
 		//// Expenses
-	
-	
-		
+
 		var page = 1;
-		do 
-		{
-			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/expenses/?page="+page +"&userId="+ aUserID);
-			for(aEntriesIndex in aEntries)
-			{
+		do {
+			var aEntries = httpGetJSON(
+				"https://api.clockify.me/api/v1/workspaces/" +
+					aWorkspaceID +
+					"/expenses/?page=" +
+					page +
+					"&userId=" +
+					aUserID
+			);
+			for (aEntriesIndex in aEntries) {
 				aEntry = aEntries[aEntriesIndex];
-			
-			
-				if (aEntry.expenses)
-				{
-					for(aExpense of aEntry.expenses)
-					{
+
+				if (aEntry.expenses) {
+					for (aExpense of aEntry.expenses) {
 						aItem = {};
-										
+
 						if (aExpense.billable == 0) {
 							continue;
 						}
-					
+
 						aItem.startDate = aExpense.date;
 						aItem.uid = "me.clockify." + aExpense.id;
 						aItem.notes = aExpense.notes;
 
 						var aProject = aExpense.project;
-						if (aProject)
-						{
+						if (aProject) {
 							aItem.project = aProject.name;
 							aItem.client = aProject.clientName;
 						}
-					
+
 						var aCategory = aExpense.category;
-						if (aCategory)
-						{
+						if (aCategory) {
 							aItem.category = aCategory.name;
 						}
-					
+
 						aItem.cost = aExpense.total / 100;
-						aItem["user"] =  aUserName + " ("+ aWorkspaceName +")";
+						aItem["user"] = aUserName + " (" + aWorkspaceName + ")";
 
 						result.push(aItem);
-
 					}
 				}
 			}
-			page ++;
-
-		}
-		while (aEntries.length != 0 && page < 3);
+			page++;
+		} while (aEntries.length != 0 && page < 3);
 
 		//// Time Entries
 
-
 		var page = 1;
-		do 
-		{
-	
-			var aEntries = httpGetJSON("https://api.clockify.me/api/v1/workspaces/"+aWorkspaceID+"/user/"+aUserID+"/time-entries/?page-size=5000&is-active=true&page="+page);
-			for(aEntriesIndex in aEntries)
-			{
+		do {
+			var aEntries = httpGetJSON(
+				"https://api.clockify.me/api/v1/workspaces/" +
+					aWorkspaceID +
+					"/user/" +
+					aUserID +
+					"/time-entries/?page-size=5000&is-active=true&page=" +
+					page
+			);
+			for (aEntriesIndex in aEntries) {
 				aItem = {};
 				aEntry = aEntries[aEntriesIndex];
 				if (aEntry["billable"] == 0) {
 					continue;
 				}
-				if (!aEntry["timeInterval"])
-				{
+				if (!aEntry["timeInterval"]) {
 					continue;
 				}
 				if (!aEntry["timeInterval"]["duration"]) {
 					continue;
 				}
-		
+
 				aEntryID = "me.clockify." + aEntry["id"];
 				aNotes = aEntry["description"];
-		
-		
+
 				aProjectID = aEntry["projectId"];
-		
+
 				aProject = aProjectLookup[aProjectID];
 				aRate = 0;
 				aProjectName = "";
-				aClientName = ""
-				
+				aClientName = "";
+
 				aTask = null;
 				aTaskID = aEntry["taskId"];
 				aTaskName = "";
-				
 
 				if (aTaskID) {
 					aTask = aTasksLookup[aTaskID];
-					if (aTask)
-					{
+					if (aTask) {
 						aTaskName = aTask["name"];
 					}
 				}
-				
-		
 
-				if (aProject)
-				{
+				if (aProject) {
 					aProjectName = aProject["name"];
 					aClientName = aProject["clientName"];
 					aProjectRate = 0;
-					if (aProject["hourlyRate"])
-					{
-						aProjectRate =  aProject["hourlyRate"]["amount"];
+					if (aProject["hourlyRate"]) {
+						aProjectRate = aProject["hourlyRate"]["amount"];
 					}
-					if(aProject['billable'] == 1 && aProjectRate == 0)
-					{
+					if (aProject["billable"] == 1 && aProjectRate == 0) {
 						aRate = aWorkspaceHourlyRate / 100;
-					}
-					else
-					{
+					} else {
 						aRate = aProjectRate / 100;
 					}
-
 				}
-							
-				
-				if (aTask)
-				{
-					if (aTask["hourlyRate"])
-					{
-						aTaskRate =  aTask["hourlyRate"]["amount"];
+
+				if (aTask) {
+					if (aTask["hourlyRate"]) {
+						aTaskRate = aTask["hourlyRate"]["amount"];
 						aRate = aTaskRate / 100;
 					}
 				}
-				
-				if (aEntry.hourlyRate)
-				{
-				
+
+				if (aEntry.hourlyRate) {
 					aRate = aEntry.hourlyRate.amount / 100;
 				}
-				
-				
+
 				var aCostRate = 30;
-			
 
-				for (aMembershipIndex in aUser["memberships"])
-				{
+				for (aMembershipIndex in aUser["memberships"]) {
 					var aMembership = aUser["memberships"][aMembershipIndex];
-					
 
-					if (aMembership["membershipType"] == "WORKSPACE" && aRate == 0 && aMembership["hourlyRate"])
-					{
-						aMembershipRate =  aMembership["hourlyRate"]["amount"]
-				 		aRate = aMembershipRate / 100;
-				 		
-				 		if (aMembership["costRate"])
-				 		{
-				 			aMembershipCostRate =  aMembership["costRate"]["amount"];
-				 			aCostRate = aMembershipCostRate / 100;
-				 		}
+					if (aMembership["membershipType"] == "WORKSPACE" && aRate == 0 && aMembership["hourlyRate"]) {
+						aMembershipRate = aMembership["hourlyRate"]["amount"];
+						aRate = aMembershipRate / 100;
+
+						if (aMembership["costRate"]) {
+							aMembershipCostRate = aMembership["costRate"]["amount"];
+							aCostRate = aMembershipCostRate / 100;
+						}
 					}
-					
-					
-				 	if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"])
-				 	{
-				 		aMembershipRate =  aMembership["hourlyRate"]["amount"]
-				 		aRate = aMembershipRate / 100;
-				 		
-				 		if (aMembership["costRate"])
-				 		{
-				 			aMembershipCostRate =  aMembership["costRate"]["amount"];
-				 			aCostRate = aMembershipCostRate / 100;
-				 		}
-				 	}
+
+					if (aMembership["targetId"] == aProjectID && aMembership["hourlyRate"]) {
+						aMembershipRate = aMembership["hourlyRate"]["amount"];
+						aRate = aMembershipRate / 100;
+
+						if (aMembership["costRate"]) {
+							aMembershipCostRate = aMembership["costRate"]["amount"];
+							aCostRate = aMembershipCostRate / 100;
+						}
+					}
 				}
-		
-				
+
 				aTagNames = "";
 				aTagIDs = aEntry["tagIds"];
 				aTagNames = [];
-				for (aTagIDsIndex in aTagIDs)
-				{
+				for (aTagIDsIndex in aTagIDs) {
 					aTagID = aTagIDs[aTagIDsIndex];
 					aTagName = aTagsLookup[aTagID]["name"];
 					aTagNames.push(aTagName);
 				}
-		
+
 				aItem["label"] = aTagNames.join(", ");
 				aItem["startDate"] = aEntry["timeInterval"]["start"];
 				var aDurations = parseIntegerComponents(aEntry["timeInterval"]["duration"]);
@@ -395,45 +328,37 @@ function timedEntries()
 					aMinutes += aDurations["M"];
 				}
 				if (aDurations["S"]) {
-					if (aDurations["S"] > 0)
-					{
+					if (aDurations["S"] > 0) {
 						aMinutes += 1;
 					}
 				}
-				
-		
-				
+
 				aItem["uid"] = aEntryID;
 				aItem["project"] = aProjectName;
 				aItem["client"] = aClientName;
 				aItem["minutes"] = aMinutes;
 				aItem["category"] = aTaskName;
-				aItem["cost"] = aRate * aMinutes / 60;
+				aItem["cost"] = (aRate * aMinutes) / 60;
 				aItem["costPrice"] = aCostRate;
-		
+
 				aMinutes = aItem["minutes"];
-				if (aMinutes > 0 && roundTo > 0)
-				{
+				if (aMinutes > 0 && roundTo > 0) {
 					aRate = aItem["cost"] / (aMinutes / 60);
-					aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
+					aMinutes = Math.ceil(aMinutes / roundTo) * roundTo;
 					aItem["minutes"] = aMinutes;
-					aItem["cost"] =  aMinutes / 60 * aRate;
+					aItem["cost"] = (aMinutes / 60) * aRate;
 				}
-			
-			
+
 				if (aNotes) {
 					aItem["notes"] = aNotes;
 				}
-				aItem["user"] =  aUserName + " ("+ aWorkspaceName +")";
-								
+				aItem["user"] = aUserName + " (" + aWorkspaceName + ")";
+
 				result.push(aItem);
 			}
-			page ++;
-		}
-		while (aEntries.length != 0 && page < 3);	
+			page++;
+		} while (aEntries.length != 0 && page < 3);
 	}
-	
 
 	return result;
-	
 }

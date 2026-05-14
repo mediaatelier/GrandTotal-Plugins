@@ -30,88 +30,70 @@
 	
 */
 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+Date.prototype.yyyymmdd = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
 };
 
-if (pluginType() == "timeexporter")
-{
+if (pluginType() == "timeexporter") {
 	exportTimedEntries();
-}
-else
-{
+} else {
 	importTimedEntries();
 }
 
-
-
-function httpPostJSON(theUrl,body)
-{
-	header = {Authorization:'Bearer ' + token,'content-type':'application/json'};
-	string = loadURL("POST",theUrl,header,body);
-	if (string.length == 0)
-	{
+function httpPostJSON(theUrl, body) {
+	header = { Authorization: "Bearer " + token, "content-type": "application/json" };
+	string = loadURL("POST", theUrl, header, body);
+	if (string.length == 0) {
 		return null;
 	}
 	return JSON.parse(string);
 }
 
-
-
-function importTimedEntries()
-{
-
+function importTimedEntries() {
 	var startDate = new Date();
 	startDate.setFullYear(startDate.getFullYear() - 1);
 	startCursor = "";
-	
-	
-	query = { "query": "{teams { nodes { id, name }}}" }
-	response = httpPostJSON("https://1.clockograph.com/api/graphql",query);
+
+	query = { query: "{teams { nodes { id, name }}}" };
+	response = httpPostJSON("https://1.clockograph.com/api/graphql", query);
 	if (response["grandtotal_error"]) {
 		return localize("Please check your settings");
 	}
-	
-	
-	teamID = response["data"]["teams"]["nodes"][0]["id"];
-	
 
-		
+	teamID = response["data"]["teams"]["nodes"][0]["id"];
+
 	var result = [];
 
-	do
-	{
-		query = {  "query": "query recordTimesByTeamId($teamId: ID, $startsGte: String, $before: String) { recordTimesByTeamId(teamId:$teamId, startsAt:{gte:$startsGte}, last:1000, before:$before) { nodes { id, startsAt, duration, note, labels { name }, rate, price, isRunning, task { name, project { name, client { name } } }, creator { nickname } } pageInfo { startCursor hasPreviousPage } }}", 
-			
-			"variables": {"teamId" :teamID, "startsGte": startDate.toISOString(), "before": startCursor} };
-				
-	
-		response = httpPostJSON("https://1.clockograph.com/api/graphql",query);
-		
+	do {
+		query = {
+			query: "query recordTimesByTeamId($teamId: ID, $startsGte: String, $before: String) { recordTimesByTeamId(teamId:$teamId, startsAt:{gte:$startsGte}, last:1000, before:$before) { nodes { id, startsAt, duration, note, labels { name }, rate, price, isRunning, task { name, project { name, client { name } } }, creator { nickname } } pageInfo { startCursor hasPreviousPage } }}",
+
+			variables: { teamId: teamID, startsGte: startDate.toISOString(), before: startCursor }
+		};
+
+		response = httpPostJSON("https://1.clockograph.com/api/graphql", query);
+
 		rows = response["data"]["recordTimesByTeamId"]["nodes"];
 		pageInfo = response["data"]["recordTimesByTeamId"]["pageInfo"];
 
-	
-		for (var i = 0; i < rows.length; i++)
-		{
+		for (var i = 0; i < rows.length; i++) {
 			var aEntry = rows[i];
 			var aItemResult = {};
-		
-			if (aEntry["isRunning"])
-			{
+
+			if (aEntry["isRunning"]) {
 				continue;
 			}
-	
-			aItemResult["uid"] =  "1.clockograph.com." + aEntry["id"];
+
+			aItemResult["uid"] = "1.clockograph.com." + aEntry["id"];
 			aItemResult["minutes"] = aEntry["duration"];
 			aItemResult["startDate"] = aEntry["startsAt"];
 			aItemResult["notes"] = aEntry["note"];
-      aItemResult["rate"] = aEntry["rate"];
+			aItemResult["rate"] = aEntry["rate"];
 			aItemResult["cost"] = aEntry["price"];
-			aItemResult["label"] = aEntry["labels"].map(label => label.name).join(", ");
+			aItemResult["label"] = aEntry["labels"].map((label) => label.name).join(", ");
 			aItemResult["category"] = aEntry["task"]["name"];
 			aItemResult["project"] = aEntry["task"]["project"]["name"];
 			aItemResult["client"] = aEntry["task"]["project"]["client"]["name"];
@@ -120,7 +102,7 @@ function importTimedEntries()
 			result.push(aItemResult);
 		}
 		startCursor = pageInfo["startCursor"];
-	} while (pageInfo["hasPreviousPage"] == 1)
-	
+	} while (pageInfo["hasPreviousPage"] == 1);
+
 	return result;
 }

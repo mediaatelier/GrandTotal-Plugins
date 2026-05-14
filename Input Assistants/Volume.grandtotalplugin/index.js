@@ -22,30 +22,35 @@
 
 */
 
-
 update();
 
-
-function update()
-{
+function update() {
 	var result = {};
 	var volume = width * height * depth;
-	
+
 	var aNotes = valueForKeyPath("notes");
-	if (!aNotes)
-		aNotes = "";
-		
-	aNotes = removeItalic(aNotes)
-	
-	aLine = "" + formattedNumber(width)  +" "+ unit + " x " + formattedNumber(height)  +" "+ unit + " x " + formattedNumber(depth)  +" "+ unit;
-	aLine = "<i>"+ aLine + "</i>";
-	
-	if (aNotes.length > 0)
-		aNewNotes = aNotes + aLine;
-	else
-		aNewNotes = aLine;
-		
-	
+	if (!aNotes) aNotes = "";
+
+	aNotes = removeItalic(aNotes);
+
+	aLine =
+		"" +
+		formattedNumber(width) +
+		" " +
+		unit +
+		" x " +
+		formattedNumber(height) +
+		" " +
+		unit +
+		" x " +
+		formattedNumber(depth) +
+		" " +
+		unit;
+	aLine = "<i>" + aLine + "</i>";
+
+	if (aNotes.length > 0) aNewNotes = aNotes + aLine;
+	else aNewNotes = aLine;
+
 	result["notes"] = aNewNotes;
 	result["unit"] = unit + "³";
 	result["quantity"] = volume;
@@ -53,10 +58,7 @@ function update()
 	return result;
 }
 
-
-
-function removeItalic(s) 
-{
+function removeItalic(s) {
 	var regExp = /(\<i)\s*[^\>]*\>([^\<]*\<\/i>)?/gi;
-	return s.replace(regExp,"");
+	return s.replace(regExp, "");
 }

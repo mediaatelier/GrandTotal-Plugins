@@ -30,61 +30,47 @@
 	
 */
 
-
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+Date.prototype.yyyymmdd = function () {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
 };
-
 
 timedEntries();
 
-
-function httpGetJSON(theUrl)
-{
-	header = {XAPIKEY:token};
-	string = loadURL("GET",theUrl,header);
-	if (string.length == 0)
-	{
+function httpGetJSON(theUrl) {
+	header = { XAPIKEY: token };
+	string = loadURL("GET", theUrl, header);
+	if (string.length == 0) {
 		return null;
 	}
 	try {
 		return JSON.parse(string);
-	}
-	catch(err) {
+	} catch (err) {
 		return null;
 	}
 }
 
-
-function createIDLookUp(theJSON)
-{
+function createIDLookUp(theJSON) {
 	var result = {};
-	for (aEntry in theJSON)
-	{
+	for (aEntry in theJSON) {
 		var aItemResult = {};
 		result[theJSON[aEntry]["Id"]] = theJSON[aEntry];
-
 	}
 	return result;
 }
 
-
-function timedEntries()
-{
-
+function timedEntries() {
 	var baseUrl = "https://app.spiketime.de/api/v2";
 	var userEndpoint = "/user/list";
-	var aTestdate = new Date()
-	var aOffset = aTestdate.getTimezoneOffset() / 60 * -1;
+	var aTestdate = new Date();
+	var aOffset = (aTestdate.getTimezoneOffset() / 60) * -1;
 
 	var result = [];
-	
+
 	var aCustomers = httpGetJSON(`${baseUrl}/Customer`);
 	if (aCustomers["grandtotal_error"]) {
-		
 		var baseUrl = "https://www.spiketime.de/api";
 		var userEndpoint = "/user/all";
 		aCustomers = httpGetJSON(`${baseUrl}/Customer`);
@@ -95,17 +81,17 @@ function timedEntries()
 	if (aCustomers == null) {
 		return "Check your account settings";
 	}
-		
-	var aCustomersLookup =  createIDLookUp(aCustomers);
+
+	var aCustomersLookup = createIDLookUp(aCustomers);
 	var aProjects = httpGetJSON(`${baseUrl}/Project`);
-	var aProjectsLookup =  createIDLookUp(aProjects);
-	
+	var aProjectsLookup = createIDLookUp(aProjects);
+
 	var aRates = httpGetJSON(`${baseUrl}/Rate`);
-	var aRatesLookup =  createIDLookUp(aRates);
-		
+	var aRatesLookup = createIDLookUp(aRates);
+
 	var aUsers = httpGetJSON(`${baseUrl}${userEndpoint}`);
-	var aUsersLookup =  createIDLookUp(aUsers);
-	
+	var aUsersLookup = createIDLookUp(aUsers);
+
 	var aEndDate = new Date();
 	var aEndDateString = aEndDate.yyyymmdd();
 	var aStartDate = new Date();
@@ -114,11 +100,10 @@ function timedEntries()
 		aStartDate.setDate(aEndDate.getDate() - 720);
 	}
 	var aStartDateString = aStartDate.yyyymmdd();
-	
-	var aTimeEntries = httpGetJSON(`${baseUrl}/TimeEntry?DateFrom=`+ aStartDateString+ "&DateTo=" + aEndDateString);
-	
-	for (aTimeEntryIndex in aTimeEntries)
-	{
+
+	var aTimeEntries = httpGetJSON(`${baseUrl}/TimeEntry?DateFrom=` + aStartDateString + "&DateTo=" + aEndDateString);
+
+	for (aTimeEntryIndex in aTimeEntries) {
 		var aItem = {};
 		var aTimeEntry = aTimeEntries[aTimeEntryIndex];
 		var aRate = aTimeEntry["RateAmount"];
@@ -126,31 +111,25 @@ function timedEntries()
 
 		var aMinutes = aTimeEntry["DurationMinutes"];
 		var aProjectID = aTimeEntry["ProjectId"];
-		var aProject =  aProjectsLookup[aProjectID];
-		if (aProject)
-		{
+		var aProject = aProjectsLookup[aProjectID];
+		if (aProject) {
 			var aClientID = aProject["Customer_Id"];
 			var aCustomer = aCustomersLookup[aClientID];
 		}
 		var aUserID = aTimeEntry["UserId"];
 		var aUser = aUsersLookup[aUserID];
-		
-		var aRate =  aTimeEntry["RateAmount"];
-				
+
+		var aRate = aTimeEntry["RateAmount"];
+
 		var aRateID = aTimeEntry["RateId"];
-		if (aRateID)
-		{
+		if (aRateID) {
 			aRate = aRatesLookup[aRateID]["Amount"];
 			aItem["category"] = aRatesLookup[aRateID]["Name"];
 		}
 
-		
 		var aDate = aTimeEntry["DateTimeFrom"];
-		if (!aDate)
-			aDate = aTimeEntry["EntryDate"];
-		
+		if (!aDate) aDate = aTimeEntry["EntryDate"];
 
-		
 		if (aBillable == 0) {
 			continue;
 		}
@@ -163,7 +142,7 @@ function timedEntries()
 		}
 		aItem["minutes"] = aMinutes;
 		aItem["project"] = aProject["Name"];
-		aItem["cost"] = aRate *  (aMinutes / 60);
+		aItem["cost"] = aRate * (aMinutes / 60);
 		aItem["user"] = aUser["Name"];
 		aItem["client"] = aCustomer["Name"];
 		aItem["uid"] = "de.spiketime." + aTimeEntry["Id"];

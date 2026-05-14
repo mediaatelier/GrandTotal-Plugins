@@ -22,21 +22,17 @@
 
 */
 
-
-
 update();
 
-
-function update()
-{
+function update() {
 	var result = {};
-	
-	var daysName =  localize("Days");
-	if (days == 1)
-		daysName =  localize("Day");
-	
+
+	var daysName = localize("Days");
+	if (days == 1) daysName = localize("Day");
+
 	result["unitPrice"] = unitPrice * days;
-	result["notes"] = "" + days + " " + daysName + " " + localize("at") + " " + currency + " " + formattedNumber(unitPrice);
-	result["unit"] = localize("Pcs")
+	result["notes"] =
+		"" + days + " " + daysName + " " + localize("at") + " " + currency + " " + formattedNumber(unitPrice);
+	result["unit"] = localize("Pcs");
 	return result;
 }

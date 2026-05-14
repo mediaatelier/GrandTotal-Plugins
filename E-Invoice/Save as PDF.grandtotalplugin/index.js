@@ -5,16 +5,8 @@
 	
 */
 
-
-
 createFile();
 
-
-function createFile()
-{
+function createFile() {
 	return {};
 }
-
-
-
-

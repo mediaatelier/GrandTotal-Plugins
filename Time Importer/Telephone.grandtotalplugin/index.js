@@ -39,64 +39,48 @@
 	
 */
 
-
-
 timedEntries();
 
-function timedEntries()
-{
-	if (defaultRate == 0)
-	{
+function timedEntries() {
+	if (defaultRate == 0) {
 		return localize("Set rate");
 	}
 	var numberLookup = {};
-	var dir = grandtotal.fileManager.homeDirectory + "/Library/Containers/com.tlphn.Telephone/Data/Library/Application\ Support/com.tlphn.Telephone/CallHistories/";
+	var dir =
+		grandtotal.fileManager.homeDirectory +
+		"/Library/Containers/com.tlphn.Telephone/Data/Library/Application\ Support/com.tlphn.Telephone/CallHistories/";
 	var files = grandtotal.fileManager.contentsOfDirectory(dir);
 	var result = [];
-	for (f in files)
-	{
+	for (f in files) {
 		var path = files[f];
 		var items = grandtotal.fileManager.contentsOfPlistFile(path);
-			
-		for (i in items)
-		{
+
+		for (i in items) {
 			item = items[i];
 			var call = {};
 			call["startDate"] = item["date"];
-			if (numberLookup[item["user"]])
-			{
+			if (numberLookup[item["user"]]) {
 				call["client"] = numberLookup[item["user"]];
-			}
-			else
-			{
+			} else {
 				call["client"] = grandtotal.addressBook.findContactByNumber(item["user"]);
 				numberLookup[item["user"]] = call["client"];
 			}
 			aMinutes = item["duration"] / 60;
 			call["minutes"] = aMinutes;
 
-			if (aMinutes > 0 && roundTo > 0)
-			{
-				aMinutes = Math.ceil(aMinutes/roundTo) * roundTo;
+			if (aMinutes > 0 && roundTo > 0) {
+				aMinutes = Math.ceil(aMinutes / roundTo) * roundTo;
 				call["minutes"] = aMinutes;
 			}
-			call["cost"] = defaultRate * call["minutes"] / 60;
+			call["cost"] = (defaultRate * call["minutes"]) / 60;
 			call["uid"] = "com.tlphn.Telephone." + item["date"].getTime();
-			if (item["incoming"])
-			{
+			if (item["incoming"]) {
 				call["category"] = localize("Incoming Call");
-			}
-			else
-			{
+			} else {
 				call["category"] = localize("Outgoing Call");
-
 			}
 			result.push(call);
 		}
-
 	}
- 	return result;
+	return result;
 }
-
-
-
