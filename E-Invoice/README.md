@@ -44,6 +44,25 @@ pdf  - The file is embedded in the PDF
 mail - The file is attached alongside the PDF
 ```
 
+### Input Data
+
+The plugin receives the invoice as a global `document` object (the
+clipboard representation of a single GrandTotal document — the same
+structure a [Send To Menu](../Send%20To%20Menu/README.md) plugin gets per
+array item, but **one object, not an array**). It exposes `sender`,
+`recipient`, `taxes`, `invoiceItems`, `itemGroups`, currency/amount fields
+and their `*AsString` variants.
+
+For a complete, anonymized example see
+[`sample-document.json`](sample-document.json):
+
+```javascript
+var seller = document["sender"];
+var buyer  = document["recipient"];
+var items  = document["invoiceItems"];
+var total  = document["grossAsString"];
+```
+
 ## Validation Required
 
 Before using any e-invoice plugin in production:
