@@ -45,7 +45,7 @@ This document lists all entities with their attributes and relationships.
 
 ## CatalogItem
 
-**Inherits from:** Cost
+**Inherits from:** Cost → Item → Document → Container → Base
 
 ### Attributes
 
@@ -79,7 +79,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -94,7 +94,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: costs)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -106,7 +106,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Client
 
-**Inherits from:** Contact
+**Inherits from:** Contact → Document → Container → Base
 
 ### Attributes
 
@@ -155,7 +155,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **clientGroup**: To-One → ClientGroup (inverse: clients)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
@@ -168,7 +168,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: contacts)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -179,7 +179,7 @@ This document lists all entities with their attributes and relationships.
 
 ## ClientGroup
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -193,10 +193,10 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **clients**: To-Many → Client (inverse: clientGroup)
 - **derivates**: To-Many → Base (inverse: source)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 - **taxRules**: To-Many → TaxRule (inverse: clientGroup)
 
@@ -204,7 +204,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Contact
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -252,7 +252,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -264,7 +264,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: contacts)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -289,16 +289,16 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
 
 ## Cost
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -329,7 +329,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -343,7 +343,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: costs)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -355,7 +355,7 @@ This document lists all entities with their attributes and relationships.
 
 ## CreditNote
 
-**Inherits from:** Invoice
+**Inherits from:** Invoice → Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -395,7 +395,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -406,7 +406,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **parentInvoice**: To-One → Invoice (inverse: childInvoices)
 - **paymentType**: To-One → PaymentType (inverse: documents)
@@ -419,7 +419,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Currency
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -437,10 +437,10 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
 - **documents**: To-Many → Document (inverse: currency)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
@@ -512,7 +512,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Document
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -534,7 +534,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -545,7 +545,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -579,7 +579,7 @@ This document lists all entities with their attributes and relationships.
 
 ## DynamicCost
 
-**Inherits from:** Cost
+**Inherits from:** Cost → Item → Document → Container → Base
 
 ### Attributes
 
@@ -613,7 +613,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -627,7 +627,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: costs)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -639,7 +639,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Estimate
 
-**Inherits from:** Sendable
+**Inherits from:** Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -675,7 +675,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -686,7 +686,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -698,7 +698,7 @@ This document lists all entities with their attributes and relationships.
 
 ## ExternalFile
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -722,7 +722,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -733,7 +733,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -745,7 +745,7 @@ This document lists all entities with their attributes and relationships.
 
 ## ExternalFileGroup
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -769,7 +769,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -780,7 +780,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -813,7 +813,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Financial
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -835,7 +835,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -846,7 +846,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -857,7 +857,7 @@ This document lists all entities with their attributes and relationships.
 
 ## FollowUp
 
-**Inherits from:** Sendable
+**Inherits from:** Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -893,7 +893,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -905,7 +905,7 @@ This document lists all entities with their attributes and relationships.
 - **followUpType**: To-One → FollowUpType (inverse: followUps)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -946,7 +946,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Group
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -970,7 +970,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -982,7 +982,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1038,7 +1038,7 @@ This document lists all entities with their attributes and relationships.
 
 ## InboundInvoice
 
-**Inherits from:** Sendable
+**Inherits from:** Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -1074,7 +1074,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1085,7 +1085,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1097,7 +1097,7 @@ This document lists all entities with their attributes and relationships.
 
 ## InternalNote
 
-**Inherits from:** Note
+**Inherits from:** Note → Item → Document → Container → Base
 
 ### Attributes
 
@@ -1119,7 +1119,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1131,7 +1131,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1142,7 +1142,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Invoice
 
-**Inherits from:** Sendable
+**Inherits from:** Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -1182,7 +1182,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1193,7 +1193,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **parentInvoice**: To-One → Invoice (inverse: childInvoices)
 - **paymentType**: To-One → PaymentType (inverse: documents)
@@ -1206,7 +1206,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Item
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -1228,7 +1228,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1240,7 +1240,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1251,7 +1251,7 @@ This document lists all entities with their attributes and relationships.
 
 ## ItemGroup
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -1266,11 +1266,11 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **costs**: To-Many → Cost (inverse: itemGroup)
 - **derivates**: To-Many → Base (inverse: source)
 - **importRules**: To-Many → ImportRule (inverse: itemGroup)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 - **taxGroup**: To-One → TaxGroup (inverse: itemGroups)
 
@@ -1278,7 +1278,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Key
 
-**Inherits from:** Preference
+**Inherits from:** Preference → Container → Base
 
 ### Attributes
 
@@ -1298,16 +1298,16 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
 
 ## Language
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -1329,7 +1329,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **contacts**: To-Many → Contact (inverse: language)
 - **costs**: To-Many → Cost (inverse: language)
@@ -1342,7 +1342,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1402,7 +1402,7 @@ This document lists all entities with their attributes and relationships.
 
 ## MetaValue
 
-**Inherits from:** Preference
+**Inherits from:** Preference → Container → Base
 
 ### Attributes
 
@@ -1422,17 +1422,17 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
 - **document**: To-One → Document (inverse: metaValues)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
 
 ## Note
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -1454,7 +1454,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1466,7 +1466,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1477,7 +1477,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Option
 
-**Inherits from:** Title
+**Inherits from:** Title → Item → Document → Container → Base
 
 ### Attributes
 
@@ -1500,7 +1500,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1512,7 +1512,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1523,7 +1523,7 @@ This document lists all entities with their attributes and relationships.
 
 ## PageBreak
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -1545,7 +1545,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1557,7 +1557,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1568,7 +1568,7 @@ This document lists all entities with their attributes and relationships.
 
 ## PartialInvoice
 
-**Inherits from:** Invoice
+**Inherits from:** Invoice → Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -1609,7 +1609,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1620,7 +1620,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **parentInvoice**: To-One → Invoice (inverse: childInvoices)
 - **paymentType**: To-One → PaymentType (inverse: documents)
@@ -1633,7 +1633,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Payment
 
-**Inherits from:** Financial
+**Inherits from:** Financial → Document → Container → Base
 
 ### Attributes
 
@@ -1656,7 +1656,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1667,7 +1667,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1678,7 +1678,7 @@ This document lists all entities with their attributes and relationships.
 
 ## PaymentType
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -1699,17 +1699,17 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
 - **documents**: To-Many → Document (inverse: paymentType)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
 
 ## PermanentInvoice
 
-**Inherits from:** Invoice
+**Inherits from:** Invoice → Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -1750,7 +1750,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1761,7 +1761,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **parentInvoice**: To-One → Invoice (inverse: childInvoices)
 - **paymentType**: To-One → PaymentType (inverse: documents)
@@ -1774,7 +1774,7 @@ This document lists all entities with their attributes and relationships.
 
 ## PermanentInvoiceRepetition
 
-**Inherits from:** PermanentInvoice
+**Inherits from:** PermanentInvoice → Invoice → Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -1816,7 +1816,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1827,7 +1827,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **parentInvoice**: To-One → Invoice (inverse: childInvoices)
 - **paymentType**: To-One → PaymentType (inverse: documents)
@@ -1840,7 +1840,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Preference
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -1860,16 +1860,16 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
 
 ## Profile
 
-**Inherits from:** Contact
+**Inherits from:** Contact → Document → Container → Base
 
 ### Attributes
 
@@ -1917,7 +1917,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1929,7 +1929,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: contacts)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1940,7 +1940,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Project
 
-**Inherits from:** Document
+**Inherits from:** Document → Container → Base
 
 ### Attributes
 
@@ -1963,7 +1963,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1974,7 +1974,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -1985,7 +1985,7 @@ This document lists all entities with their attributes and relationships.
 
 ## SectionEnd
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -2007,7 +2007,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2019,7 +2019,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -2030,7 +2030,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Sendable
 
-**Inherits from:** Financial
+**Inherits from:** Financial → Document → Container → Base
 
 ### Attributes
 
@@ -2066,7 +2066,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2077,7 +2077,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -2112,7 +2112,7 @@ This document lists all entities with their attributes and relationships.
 
 ## SendableTemplate
 
-**Inherits from:** Sendable
+**Inherits from:** Sendable → Financial → Document → Container → Base
 
 ### Attributes
 
@@ -2149,7 +2149,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2160,7 +2160,7 @@ This document lists all entities with their attributes and relationships.
 - **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -2172,7 +2172,7 @@ This document lists all entities with their attributes and relationships.
 
 ## SmartList
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -2187,16 +2187,16 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 
 ---
 
 ## SubTotal
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -2218,7 +2218,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2230,7 +2230,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -2241,7 +2241,7 @@ This document lists all entities with their attributes and relationships.
 
 ## SummaryCost
 
-**Inherits from:** Cost
+**Inherits from:** Cost → Item → Document → Container → Base
 
 ### Attributes
 
@@ -2274,7 +2274,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2288,7 +2288,7 @@ This document lists all entities with their attributes and relationships.
 - **language**: To-One → Language (inverse: costs)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -2300,7 +2300,7 @@ This document lists all entities with their attributes and relationships.
 
 ## TaxGroup
 
-**Inherits from:** Container
+**Inherits from:** Container → Base
 
 ### Attributes
 
@@ -2315,10 +2315,10 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **derivates**: To-Many → Base (inverse: source)
 - **itemGroups**: To-Many → ItemGroup (inverse: taxGroup)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
 - **taxRules**: To-Many → TaxRule (inverse: taxGroup)
 
@@ -2359,7 +2359,7 @@ This document lists all entities with their attributes and relationships.
 
 ## TeamMember
 
-**Inherits from:** Contact
+**Inherits from:** Contact → Document → Container → Base
 
 ### Attributes
 
@@ -2408,7 +2408,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2421,7 +2421,7 @@ This document lists all entities with their attributes and relationships.
 - **layout**: To-One → Layout (inverse: documents)
 - **memberDocuments**: To-Many → Document (inverse: teamMember)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents)
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
@@ -2432,7 +2432,7 @@ This document lists all entities with their attributes and relationships.
 
 ## Title
 
-**Inherits from:** Item
+**Inherits from:** Item → Document → Container → Base
 
 ### Attributes
 
@@ -2454,7 +2454,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **childs**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2466,7 +2466,7 @@ This document lists all entities with their attributes and relationships.
 - **image**: To-One → Image (inverse: items)
 - **layout**: To-One → Layout (inverse: documents)
 - **metaValues**: To-Many → MetaValue (inverse: document)
-- **parent**: To-One → Container (inverse: childs)
+- **parent**: To-One → Container (inverse: children)
 - **parentDocument**: To-One → Document (inverse: documents) ⚠️ **Do not use in create_records — will be ignored**
 - **paymentType**: To-One → PaymentType (inverse: documents)
 - **source**: To-One → Base (inverse: derivates)
