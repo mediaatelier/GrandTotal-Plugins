@@ -358,6 +358,14 @@ Each document in the `items` array has these properties:
 }
 ```
 
+> The structure above is simplified for readability. For a complete, real-world
+> example of the data GrandTotal passes to a Send To Menu plugin — including the
+> full `sender`/`recipient` profiles, `taxes`, `invoiceItems`, `itemGroups`,
+> embedded e-invoice XML and all `*AsString` fields — see
+> [`sample-payload.json`](sample-payload.json). It contains two anonymized
+> invoices (a private client and a company) as the `items` array is delivered to
+> `index.js`.
+
 ### Example: CSV Export
 
 ```javascript
