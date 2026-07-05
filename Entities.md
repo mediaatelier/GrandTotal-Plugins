@@ -128,6 +128,7 @@ This document lists all entities with their attributes and relationships.
 - **internalReference**: NSString
 - **isDefault**: NSNumber
 - **lastName**: NSString
+- **legalRegistrationID**: NSString
 - **middleName**: NSString
 - **name**: NSString
 - **notes**: NSString
@@ -225,6 +226,7 @@ This document lists all entities with their attributes and relationships.
 - **internalReference**: NSString
 - **isDefault**: NSNumber
 - **lastName**: NSString
+- **legalRegistrationID**: NSString
 - **middleName**: NSString
 - **name**: NSString
 - **notes**: NSString
@@ -1890,6 +1892,7 @@ This document lists all entities with their attributes and relationships.
 - **internalReference**: NSString
 - **isDefault**: NSNumber
 - **lastName**: NSString
+- **legalRegistrationID**: NSString
 - **middleName**: NSString
 - **name**: NSString
 - **notes**: NSString
@@ -2380,6 +2383,7 @@ This document lists all entities with their attributes and relationships.
 - **internalReference**: NSString
 - **isDefault**: NSNumber
 - **lastName**: NSString
+- **legalRegistrationID**: NSString
 - **middleName**: NSString
 - **name**: NSString
 - **notes**: NSString
