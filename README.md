@@ -20,6 +20,7 @@ GrandTotal supports several plugin types:
 - **[Migration](Migration/README.md)** - Import data from external services (Menu: GrandTotal → Migrate data from)
 - **[Time Importer](Time%20Importer/README.md)** - Import time tracking entries (Menu: File → Import Time Entries)
 - **[Send To Menu](Send%20To%20Menu/README.md)** - Export invoices to other applications (Menu: File → Send to)
+- **[Payment Links](Payment%20Links/README.md)** - Stripe payment links with QR code on the invoice and automatic payment booking
 - **Document Numbering** - Custom document numbering schemes
 - **Insert** - Insert content into documents
 - **E-Invoice** - Electronic invoice generation

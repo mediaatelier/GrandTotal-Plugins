@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.tiff</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.stripe</string>
+	<key>CFBundleVersion</key>
+	<string>1.2</string>
+	<key>FeatureIdentifier</key>
+	<string>GTFeaturePluginStripe</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Force SEPA Payments</string>
+			<key>name</key>
+			<string>forceSEPA</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Force iDEAL Payments</string>
+			<key>name</key>
+			<string>forceIDEAL</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Stripe Payment Methods Info</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>7</real>
+	<key>copyright</key>
+	<string>© 2022-2026 Stefan Fürst</string>
+	<key>types</key>
+	<array>
+		<string>com.mediaatelier.stripe.paymentlink</string>
+		<string>activateapplication</string>
+	</array>
+</dict>
+</plist>

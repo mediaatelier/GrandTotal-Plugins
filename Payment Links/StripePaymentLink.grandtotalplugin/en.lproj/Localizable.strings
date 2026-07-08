@@ -1,0 +1,5 @@
+"Enter your Stripe secret key" = "Enter your Stripe secret key. The payment link is entered in the user-defined field 'stripe_link' when sending a document";
+"StripePaymentLink" = "Stripe Payment Link";
+"Force SEPA Payments" = "Force SEPA Payments";
+"Force iDEAL Payments" = "Force iDEAL Payments";
+"Stripe Payment Methods Info" = "Stripe QR Code payments allow credit card payments by default. To keep fees low, cheaper services can be forced. These can also be combined.";
