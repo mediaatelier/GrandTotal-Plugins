@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>HOAI-Honorarrechnung</title>
+<style>
+	:root {
+		color-scheme: light dark;
+		--border: rgba(0, 0, 0, 0.12);
+		--muted: rgba(0, 0, 0, 0.55);
+		--accent: #000000;
+		--accent-contrast: #ffffff;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root { --border: rgba(255, 255, 255, 0.16); --muted: rgba(255, 255, 255, 0.55); --accent: #ffffff; --accent-contrast: #000000; }
+	}
+	* { box-sizing: border-box; }
+	body {
+		font: 13px/1.45 -apple-system, system-ui, sans-serif;
+		margin: 0;
+		padding: 20px 24px 16px;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+	h1 { font-size: 15px; margin: 0 0 14px; }
+	.grid {
+		display: grid;
+		grid-template-columns: max-content 1fr max-content 1fr;
+		gap: 8px 10px;
+		align-items: center;
+		margin-bottom: 14px;
+	}
+	label { text-align: right; color: var(--muted); }
+	input, select {
+		font: inherit;
+		padding: 3px 6px;
+		border: 1px solid var(--border);
+		border-radius: 5px;
+		background: transparent;
+		width: 100%;
+	}
+	select {
+		-webkit-appearance: none;
+		appearance: none;
+		border: none;
+		outline: none;
+		border-radius: 6px;
+		padding: 3px 24px 3px 9px;
+		background-color: rgba(0, 0, 0, 0.06);
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='14' viewBox='0 0 9 14'><path d='M1.5 5 4.5 2 7.5 5 M1.5 9 4.5 12 7.5 9' fill='none' stroke='%23666666' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+		background-repeat: no-repeat;
+		background-position: right 7px center;
+	}
+	@media (prefers-color-scheme: dark) {
+		select {
+			background-color: rgba(255, 255, 255, 0.14);
+			background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='14' viewBox='0 0 9 14'><path d='M1.5 5 4.5 2 7.5 5 M1.5 9 4.5 12 7.5 9' fill='none' stroke='%23bbbbbb' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+		}
+	}
+	input[type="number"] { text-align: right; }
+	table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 4px; }
+	th { text-align: left; font-weight: 600; color: var(--muted); padding: 4px 8px; border-bottom: 1px solid var(--border); }
+	#phasen th:nth-child(1) { width: 30px; }
+	#phasen th:nth-child(3) { width: 56px; }
+	#phasen th:nth-child(4) { width: 120px; }
+	#phasen th:nth-child(5) { width: 110px; }
+	th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+	td { padding: 3px 8px; border-bottom: 1px solid var(--border); }
+	td input[type="number"] { width: 64px; }
+	tr.off td:not(.check) { opacity: 0.35; }
+	.summary {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding: 10px 8px;
+		font-weight: 600;
+	}
+	.summary .base { font-weight: 400; color: var(--muted); }
+	.hint { color: var(--muted); font-size: 12px; margin: 2px 0 0; min-height: 16px; }
+
+	/* --- Honorarzonen-Ermittlung --- */
+	.zonecell { display: flex; gap: 6px; align-items: stretch; }
+	.zonecell select { flex: 1; }
+	.minibtn {
+		font: inherit;
+		padding: 3px 10px;
+		border: none;
+		border-radius: 6px;
+		background: rgba(0, 0, 0, 0.06);
+		color: var(--accent);
+		white-space: nowrap;
+	}
+	.minibtn:hover { background: rgba(0, 0, 0, 0.1); }
+	.overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.25);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10;
+	}
+	.overlay[hidden] { display: none; }
+	.card {
+		--card-bg: #ffffff;
+		background: var(--card-bg);
+		border-radius: 12px;
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+		padding: 20px 24px 16px;
+		width: 560px;
+	}
+	.card h2 { font-size: 14px; margin: 0 0 2px; }
+	.card .subtitle { color: var(--muted); font-size: 12px; margin: 0 0 16px; }
+	.merkmal {
+		display: grid;
+		grid-template-columns: 200px 1fr 36px;
+		gap: 12px;
+		align-items: center;
+		margin-bottom: 12px;
+	}
+	.merkmal .mlabel { color: var(--muted); text-align: right; }
+	.merkmal .pts { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+	input[type="range"] {
+		-webkit-appearance: none;
+		appearance: none;
+		padding: 0;
+		border: none;
+		height: 4px;
+		border-radius: 2px;
+		background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 50%), rgba(0, 0, 0, 0.15) var(--fill, 50%));
+	}
+	input[type="range"]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 17px;
+		height: 17px;
+		border-radius: 50%;
+		background: #ffffff;
+		box-shadow: 0 0.5px 2.5px rgba(0, 0, 0, 0.35), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+	}
+	.zonescale { margin: 16px 0 4px; }
+	.zoneresult {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 8px;
+	}
+	.zoneresult .total { color: var(--muted); }
+	.zoneresult .resolved { font-weight: 600; color: var(--accent); }
+	.segments { display: flex; gap: 4px; }
+	.segment {
+		flex: 1;
+		text-align: center;
+		padding: 5px 0 4px;
+		border-radius: 7px;
+		background: rgba(0, 0, 0, 0.05);
+		color: var(--muted);
+		transition: background 0.15s, color 0.15s;
+	}
+	.segment .roman { font-weight: 600; font-size: 13px; display: block; }
+	.segment .range { font-size: 10px; }
+	.segment.active { background: var(--accent); color: var(--accent-contrast); }
+	.segment.active .range { color: var(--accent-contrast); opacity: 0.7; }
+	.cardbuttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+	.cardbuttons button {
+		font: inherit;
+		padding: 4px 16px;
+		border: none;
+		border-radius: 6px;
+		background: rgba(0, 0, 0, 0.06);
+	}
+	.cardbuttons button.primary { background: var(--gt-tint, var(--accent)); color: #fff; }
+	@media (prefers-color-scheme: dark) {
+		.minibtn { background: rgba(255, 255, 255, 0.14); }
+		.minibtn:hover { background: rgba(255, 255, 255, 0.2); }
+		.card { --card-bg: #303030; }
+		input[type="range"] { background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 50%), rgba(255, 255, 255, 0.2) var(--fill, 50%)); }
+		.segment { background: rgba(255, 255, 255, 0.1); }
+		.cardbuttons button { background: rgba(255, 255, 255, 0.14); }
+		.cardbuttons button.primary { background: var(--gt-tint, var(--accent)); }
+	}
+</style>
+</head>
+<body>
+<h1 data-s="title"></h1>
+
+<div class="grid">
+	<label for="bild" data-s="serviceProfile"></label>
+	<select id="bild">
+		<option value="gebaeude" data-s="building"></option>
+		<option value="innenraeume" data-s="interiors"></option>
+	</select>
+
+	<label for="kosten" data-s="costs"></label>
+	<input type="number" id="kosten" min="0" step="1000" value="350000">
+
+	<label for="zone" data-s="zone"></label>
+	<div class="zonecell">
+		<select id="zone">
+			<option value="1">I</option>
+			<option value="2">II</option>
+			<option value="3" selected>III</option>
+			<option value="4">IV</option>
+			<option value="5">V</option>
+		</select>
+		<button type="button" id="zonefind" class="minibtn" data-s="determine"></button>
+	</div>
+
+	<label for="satz" data-s="rate"></label>
+	<select id="satz">
+		<option value="0" data-s="rateBase"></option>
+		<option value="0.25" data-s="rateQuarter"></option>
+		<option value="0.5" selected data-s="rateMiddle"></option>
+		<option value="0.75" data-s="rateThreeQuarter"></option>
+		<option value="1" data-s="rateTop"></option>
+	</select>
+
+	<label for="umbau" data-s="conversion"></label>
+	<input type="number" id="umbau" min="0" max="80" step="1" value="0">
+
+	<label for="nk" data-s="expenses"></label>
+	<input type="number" id="nk" min="0" max="25" step="0.5" value="0">
+</div>
+
+<table id="phasen">
+	<thead>
+		<tr>
+			<th></th>
+			<th data-s="phase"></th>
+			<th class="num">%</th>
+			<th class="num" data-s="completion"></th>
+			<th class="num" data-s="fee"></th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<div class="summary">
+	<span class="base" id="basisinfo"></span>
+	<span id="summe"></span>
+</div>
+<p class="hint" id="hinweis"></p>
+
+<div id="zonefinder" class="overlay" hidden>
+	<div class="card">
+		<h2 data-s="zoneFinderTitle"></h2>
+		<p class="subtitle" data-s="zoneFinderSubtitle"></p>
+		<div id="merkmale"></div>
+		<div class="zonescale">
+			<div class="zoneresult">
+				<span class="total" id="zfpoints"></span>
+				<span class="resolved" id="zfzone"></span>
+			</div>
+			<div class="segments" id="zfsegments"></div>
+		</div>
+		<div class="cardbuttons">
+			<button type="button" id="zfcancel" data-s="close"></button>
+			<button type="button" id="zfapply" class="primary" data-s="apply"></button>
+		</div>
+	</div>
+</div>
+
+<script>
+"use strict";
+
+/* Honorartafel § 35 HOAI (2013/2021): [anrechenbare Kosten, Zonengrenzen I-von … V-bis].
+   Zone n: von = Wert[n-1], bis = Wert[n]. Quelle: gesetze-im-internet.de/hoai_2013/__35.html */
+var TAFEL = [
+	[25000, 3120, 3657, 4339, 5412, 6094, 6631],
+	[35000, 4217, 4942, 5865, 7315, 8237, 8962],
+	[50000, 5804, 6801, 8071, 10066, 11336, 12333],
+	[75000, 8342, 9776, 11601, 14469, 16293, 17727],
+	[100000, 10790, 12644, 15005, 18713, 21074, 22928],
+	[150000, 15500, 18164, 21555, 26883, 30274, 32938],
+	[200000, 20037, 23480, 27863, 34751, 39134, 42578],
+	[300000, 28750, 33692, 39981, 49864, 56153, 61095],
+	[500000, 45232, 53006, 62900, 78449, 88343, 96118],
+	[750000, 64666, 75781, 89927, 112156, 126301, 137416],
+	[1000000, 83182, 97479, 115675, 144268, 162464, 176761],
+	[1500000, 119307, 139813, 165911, 206923, 233022, 253527],
+	[2000000, 153965, 180428, 214108, 267034, 300714, 327177],
+	[3000000, 220161, 258002, 306162, 381843, 430003, 467843],
+	[5000000, 343879, 402984, 478207, 596416, 671640, 730744],
+	[7500000, 493923, 578816, 686862, 856648, 964694, 1049587],
+	[10000000, 638277, 747981, 887604, 1107012, 1246635, 1356339],
+	[15000000, 915129, 1072416, 1272601, 1587176, 1787360, 1944648],
+	[20000000, 1180414, 1383298, 1641513, 2047281, 2305496, 2508380],
+	[25000000, 1436874, 1683837, 1998153, 2492079, 2806395, 3053358]
+];
+
+/* Leistungsphasen-Prozentsätze § 34 Abs. 3 HOAI */
+var PHASEN = {
+	gebaeude:    [2, 7, 15, 3, 25, 10, 4, 32, 2],
+	innenraeume: [2, 7, 15, 2, 30, 7, 3, 32, 2]
+};
+
+var STRINGS = {
+	de: {
+		title: "HOAI-Honorarrechnung",
+		serviceProfile: "Leistungsbild", building: "Gebäude", interiors: "Innenräume",
+		costs: "Anrechenbare Kosten (€, netto)", zone: "Honorarzone", rate: "Honorarsatz",
+		rateBase: "Basissatz", rateQuarter: "Viertelsatz", rateMiddle: "Mittelsatz",
+		rateThreeQuarter: "Dreiviertelsatz", rateTop: "Oberer Satz",
+		conversion: "Umbauzuschlag (%)", expenses: "Nebenkosten (%)",
+		phase: "Leistungsphase", completion: "Leistungsstand", fee: "Honorar",
+		phaseNames: ["Grundlagenermittlung", "Vorplanung", "Entwurfsplanung", "Genehmigungsplanung",
+			"Ausführungsplanung", "Vorbereitung der Vergabe", "Mitwirkung bei der Vergabe",
+			"Objektüberwachung", "Objektbetreuung"],
+		totalBase: "Gesamthonorar (100 %): ", sum: "Summe netto: ",
+		outOfRange: "Anrechenbare Kosten ausserhalb der Honorartafel (25.000 € – 25 Mio. €) – Honorar ist frei zu vereinbaren.",
+		expensesName: "Nebenkosten (§ 14 HOAI)",
+		conversionLead: ", zzgl. {0} % Umbauzuschlag (§ 36 HOAI)",
+		completionNote: "Leistungsstand {0} % von {1} %",
+		determine: "Ermitteln …",
+		zoneFinderTitle: "Honorarzone ermitteln",
+		zoneFinderSubtitle: "Bewertungsmerkmale nach § 35 Abs. 2 HOAI — je nach Anforderung 1 Punkt (sehr gering) bis zum Höchstwert (sehr hoch)",
+		merkmale: ["Einbindung in die Umgebung", "Anzahl der Funktionsbereiche", "Gestalterische Anforderungen",
+			"Konstruktive Anforderungen", "Technische Ausrüstung", "Ausbau"],
+		pointsTotal: "{0} Punkte",
+		zoneResolved: "Honorarzone {0}",
+		apply: "Übernehmen", close: "Schließen",
+		subject: "Honorarrechnung",
+		lead: "Anrechenbare Kosten: {0} € netto (Kostenberechnung nach DIN 276) · Honorarzone {1}, {2} · Honorartafel § 35 HOAI{3} · Gesamthonorar (100 %): {4} € netto. Abrechnung der Leistungsphasen nach § 34 HOAI."
+	},
+	en: {
+		title: "HOAI Fee Invoice",
+		serviceProfile: "Service profile", building: "Buildings", interiors: "Interiors",
+		costs: "Chargeable costs (€, net)", zone: "Fee zone", rate: "Fee rate",
+		rateBase: "Base rate", rateQuarter: "Quarter rate", rateMiddle: "Middle rate",
+		rateThreeQuarter: "Three-quarter rate", rateTop: "Upper rate",
+		conversion: "Conversion surcharge (%)", expenses: "Ancillary costs (%)",
+		phase: "Work phase", completion: "Completion", fee: "Fee",
+		phaseNames: ["Basic evaluation", "Preliminary design", "Final design", "Building permission",
+			"Execution drawings", "Preparation of contract award", "Assisting award process",
+			"Construction supervision", "Post-completion services"],
+		totalBase: "Total fee (100 %): ", sum: "Net total: ",
+		outOfRange: "Chargeable costs outside the fee table (€25,000 – €25 m) – fee must be agreed freely.",
+		expensesName: "Ancillary costs (§ 14 HOAI)",
+		conversionLead: ", plus {0} % conversion surcharge (§ 36 HOAI)",
+		completionNote: "Completion {0} % of {1} %",
+		determine: "Determine …",
+		zoneFinderTitle: "Determine fee zone",
+		zoneFinderSubtitle: "Evaluation criteria per § 35 (2) HOAI — 1 point (very low requirements) up to the maximum (very high)",
+		merkmale: ["Integration into the surroundings", "Number of functional areas", "Design requirements",
+			"Structural requirements", "Technical services", "Interior fit-out"],
+		pointsTotal: "{0} points",
+		zoneResolved: "Fee zone {0}",
+		apply: "Apply", close: "Close",
+		subject: "Fee invoice",
+		lead: "Chargeable costs: €{0} net (cost calculation per DIN 276) · fee zone {1}, {2} · fee table § 35 HOAI{3} · total fee (100 %): €{4} net. Work phases billed per § 34 HOAI."
+	}
+};
+
+var lang = (window.grandtotal && grandtotal.language === "en") ? "en" : "de";
+var S = STRINGS[lang];
+function fmt(template) {
+	var args = Array.prototype.slice.call(arguments, 1);
+	return template.replace(/\{(\d)\}/g, function (m, i) { return args[i]; });
+}
+function eur(n) {
+	return n.toLocaleString(lang === "de" ? "de-DE" : "en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/* Tafelwert: lineare Interpolation (§ 13 HOAI) zwischen den Kostenstufen,
+   Satz t ∈ [0,1] zwischen Zonen-von und Zonen-bis */
+function tafelHonorar(kosten, zone, t) {
+	if (kosten < TAFEL[0][0] || kosten > TAFEL[TAFEL.length - 1][0]) return null;
+	var lo = TAFEL[0], hi = TAFEL[TAFEL.length - 1];
+	for (var i = 0; i < TAFEL.length - 1; i++) {
+		if (kosten >= TAFEL[i][0] && kosten <= TAFEL[i + 1][0]) { lo = TAFEL[i]; hi = TAFEL[i + 1]; break; }
+	}
+	var f = hi[0] === lo[0] ? 0 : (kosten - lo[0]) / (hi[0] - lo[0]);
+	var von = lo[zone] + f * (hi[zone] - lo[zone]);
+	var bis = lo[zone + 1] + f * (hi[zone + 1] - lo[zone + 1]);
+	return von + t * (bis - von);
+}
+
+/* --- UI --- */
+document.querySelectorAll("[data-s]").forEach(function (el) { el.textContent = S[el.dataset.s]; });
+document.title = S.title;
+
+var tbody = document.querySelector("#phasen tbody");
+S.phaseNames.forEach(function (name, i) {
+	var tr = document.createElement("tr");
+	tr.innerHTML = '<td class="check"><input type="checkbox" data-i="' + i + '" checked></td>'
+		+ '<td>' + (i + 1) + ' – ' + name + '</td>'
+		+ '<td class="num pct"></td>'
+		+ '<td class="num"><input type="number" min="0" max="100" step="5" value="100" data-i="' + i + '"> %</td>'
+		+ '<td class="num fee"></td>';
+	tbody.appendChild(tr);
+});
+
+function values() {
+	return {
+		bild: document.getElementById("bild").value,
+		kosten: parseFloat(document.getElementById("kosten").value) || 0,
+		zone: parseInt(document.getElementById("zone").value, 10),
+		satz: parseFloat(document.getElementById("satz").value),
+		umbau: parseFloat(document.getElementById("umbau").value) || 0,
+		nk: parseFloat(document.getElementById("nk").value) || 0
+	};
+}
+
+function berechnen() {
+	var v = values();
+	var pct = PHASEN[v.bild];
+	var basis = tafelHonorar(v.kosten, v.zone, v.satz);
+	var ok = basis !== null && v.kosten > 0;
+	document.getElementById("hinweis").textContent = ok ? "" : S.outOfRange;
+	var honorar = ok ? basis * (1 + v.umbau / 100) : 0;
+
+	var summe = 0;
+	var rows = tbody.querySelectorAll("tr");
+	rows.forEach(function (tr, i) {
+		var on = tr.querySelector("input[type=checkbox]").checked;
+		var stand = parseFloat(tr.querySelector("input[type=number]").value) || 0;
+		tr.classList.toggle("off", !on);
+		tr.querySelector(".pct").textContent = pct[i] + " %";
+		var betrag = on ? honorar * pct[i] / 100 * stand / 100 : 0;
+		tr.querySelector(".fee").textContent = on && ok ? eur(betrag) : "–";
+		summe += betrag;
+	});
+	var nkBetrag = summe * v.nk / 100;
+	document.getElementById("basisinfo").textContent = ok ? S.totalBase + eur(honorar) + " €" : "";
+	document.getElementById("summe").textContent = ok ? S.sum + eur(summe + nkBetrag) + " €" : "";
+	if (window.grandtotal && grandtotal.setCanCommit) grandtotal.setCanCommit(ok && summe > 0);
+	return { ok: ok, honorar: honorar, summe: summe, nkBetrag: nkBetrag, v: v, pct: pct };
+}
+
+/* --- Honorarzonen-Ermittlung: Bewertungsmerkmale § 35 Abs. 2–4 HOAI.
+   Merkmale 2 und 3 bis 9 Punkte, übrige bis 6; Zonen I–V nach Punktesumme. --- */
+var MERKMAL_MAX = [6, 9, 9, 6, 6, 6];
+var MERKMAL_DEFAULT = [3, 5, 5, 3, 3, 3];
+var ZONEN = [[0, 10], [11, 18], [19, 26], [27, 34], [35, 42]];
+var ROMAN = ["I", "II", "III", "IV", "V"];
+
+var zfContainer = document.getElementById("merkmale");
+S.merkmale.forEach(function (name, i) {
+	var row = document.createElement("div");
+	row.className = "merkmal";
+	row.innerHTML = '<span class="mlabel">' + name + '</span>'
+		+ '<input type="range" min="1" max="' + MERKMAL_MAX[i] + '" step="1" value="' + MERKMAL_DEFAULT[i] + '">'
+		+ '<span class="pts"></span>';
+	zfContainer.appendChild(row);
+});
+
+var zfSegments = document.getElementById("zfsegments");
+ZONEN.forEach(function (range, i) {
+	var seg = document.createElement("div");
+	seg.className = "segment";
+	seg.innerHTML = '<span class="roman">' + ROMAN[i] + '</span>'
+		+ '<span class="range">' + (i === 0 ? "≤ " + range[1] : range[0] + "–" + range[1]) + '</span>';
+	zfSegments.appendChild(seg);
+});
+
+function zoneFromPoints(points) {
+	for (var i = 0; i < ZONEN.length; i++) {
+		if (points <= ZONEN[i][1]) return i + 1;
+	}
+	return 5;
+}
+
+function zfUpdate() {
+	var total = 0;
+	zfContainer.querySelectorAll("input[type=range]").forEach(function (el) {
+		var value = parseInt(el.value, 10);
+		total += value;
+		el.style.setProperty("--fill", ((value - el.min) / (el.max - el.min) * 100) + "%");
+		el.parentNode.querySelector(".pts").textContent = value;
+	});
+	var zone = zoneFromPoints(total);
+	document.getElementById("zfpoints").textContent = fmt(S.pointsTotal, total);
+	document.getElementById("zfzone").textContent = fmt(S.zoneResolved, ROMAN[zone - 1]);
+	zfSegments.querySelectorAll(".segment").forEach(function (seg, i) {
+		seg.classList.toggle("active", i === zone - 1);
+	});
+	return zone;
+}
+
+function zfShow() {
+	document.getElementById("zonefinder").hidden = false;
+	zfUpdate();
+	if (window.grandtotal && grandtotal.setModal) grandtotal.setModal(true);
+}
+
+function zfHide() {
+	document.getElementById("zonefinder").hidden = true;
+	if (window.grandtotal && grandtotal.setModal) grandtotal.setModal(false);
+}
+
+zfContainer.addEventListener("input", zfUpdate);
+document.getElementById("zonefind").addEventListener("click", zfShow);
+document.getElementById("zfcancel").addEventListener("click", zfHide);
+document.getElementById("zonefinder").addEventListener("mousedown", function (e) {
+	if (e.target === this) zfHide();
+});
+document.getElementById("zfapply").addEventListener("click", function () {
+	var zone = zfUpdate();
+	zfHide();
+	var select = document.getElementById("zone");
+	if (String(zone) !== select.value) {
+		select.value = zone;
+		select.dispatchEvent(new Event("input", { bubbles: true })); // berechnen + Undo-Snapshot
+	}
+});
+
+/* Undo: Formularzustand vor jeder Änderung sichern, Cmd+Z / Shift-Cmd+Z */
+var undoStack = [], redoStack = [], lastEdited = null, lastEditTime = 0, currentState;
+
+function captureState() {
+	var s = [];
+	document.querySelectorAll("input, select").forEach(function (el) {
+		s.push(el.type === "checkbox" ? el.checked : el.value);
+	});
+	return s;
+}
+
+function applyState(s) {
+	document.querySelectorAll("input, select").forEach(function (el, i) {
+		if (el.type === "checkbox") el.checked = s[i]; else el.value = s[i];
+	});
+	berechnen();
+}
+
+document.body.addEventListener("input", function (e) {
+	var now = Date.now();
+	if (e.target !== lastEdited || now - lastEditTime > 800) {
+		undoStack.push(currentState);
+		redoStack = [];
+	}
+	lastEdited = e.target;
+	lastEditTime = now;
+	currentState = captureState();
+	berechnen();
+});
+
+document.addEventListener("keydown", function (e) {
+	if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "z") return;
+	e.preventDefault();
+	if (e.shiftKey) {
+		if (!redoStack.length) return;
+		undoStack.push(currentState);
+		currentState = redoStack.pop();
+	} else {
+		if (!undoStack.length) return;
+		redoStack.push(currentState);
+		currentState = undoStack.pop();
+	}
+	applyState(currentState);
+});
+
+/* Zuletzt verwendete Werte wiederherstellen */
+var savedDefaults = (window.grandtotal && grandtotal.getDefaults) ? grandtotal.getDefaults() : null;
+if (savedDefaults && savedDefaults.values && savedDefaults.values.length === captureState().length) {
+	applyState(savedDefaults.values);
+}
+berechnen();
+currentState = captureState();
+
+function doCommit() {
+	var r = berechnen();
+	if (!r.ok) return;
+	var uid = "hoai-" + Math.random().toString(36).slice(2, 10);
+	var satzName = document.querySelector("#satz option:checked").textContent;
+	var umbauText = r.v.umbau > 0 ? fmt(S.conversionLead, r.v.umbau) : "";
+	var lead = fmt(S.lead, eur(r.v.kosten), ["I", "II", "III", "IV", "V"][r.v.zone - 1], satzName, umbauText, eur(r.honorar));
+
+	/* Leistungsphasen als dynamische Positionen: Prozent vom Basiswert (Gesamthonorar),
+	   Nebenkosten als Prozent der Positionen darüber — bleiben im Dokument editierbar */
+	var costs = [];
+	tbody.querySelectorAll("tr").forEach(function (tr, i) {
+		if (!tr.querySelector("input[type=checkbox]").checked) return;
+		var stand = parseFloat(tr.querySelector("input[type=number]").value) || 0;
+		if (stand <= 0) return;
+		var attrs = {
+			itemNumber: "Lph " + (i + 1),
+			name: S.phaseNames[i],
+			quantity: r.pct[i] * stand / 100,
+			pluginIdentifier: "com.mediaatelier.DynamicBaseValue"
+		};
+		if (stand < 100) attrs.notes = fmt(S.completionNote, stand, r.pct[i]);
+		costs.push({ attributes: attrs, relations: { parent: "Invoice/" + uid } });
+	});
+	if (r.v.nk > 0) {
+		costs.push({
+			attributes: { name: S.expensesName, quantity: r.v.nk, pluginIdentifier: "com.mediaatelier.DynamicPercentage+", rangeType: 1 },
+			relations: { parent: "Invoice/" + uid }
+		});
+	}
+
+	var entities = {
+		Invoice: [{ attributes: { uid: uid, subject: S.subject, lead: lead } }],
+		MetaValue: [{
+			attributes: { name: "dynamic:baseValue", type: "NSNumber", number: Number(r.honorar.toFixed(2)) },
+			relations: { document: "Invoice/" + uid }
+		}],
+		DynamicCost: costs
+	};
+	if (window.grandtotal) {
+		if (grandtotal.setDefaults) grandtotal.setDefaults({ values: captureState() });
+		grandtotal.commit(entities);
+	}
+}
+
+if (window.grandtotal) grandtotal.onCommit = doCommit;
+</script>
+</body>
+</html>

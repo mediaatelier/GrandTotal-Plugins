@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>SIA 102 Honorarrechnung</title>
+<style>
+	:root {
+		color-scheme: light dark;
+		--border: rgba(0, 0, 0, 0.12);
+		--muted: rgba(0, 0, 0, 0.55);
+		--accent: #000000;
+		--accent-contrast: #ffffff;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root { --border: rgba(255, 255, 255, 0.16); --muted: rgba(255, 255, 255, 0.55); --accent: #ffffff; --accent-contrast: #000000; }
+	}
+	* { box-sizing: border-box; }
+	body {
+		font: 13px/1.45 -apple-system, system-ui, sans-serif;
+		margin: 0;
+		padding: 20px 24px 16px;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+	h1 { font-size: 15px; margin: 0 0 14px; }
+	.grid {
+		display: grid;
+		grid-template-columns: max-content 1fr max-content 1fr;
+		gap: 8px 10px;
+		align-items: center;
+		margin-bottom: 14px;
+	}
+	label { text-align: right; color: var(--muted); }
+	input, select {
+		font: inherit;
+		padding: 3px 6px;
+		border: 1px solid var(--border);
+		border-radius: 5px;
+		background: transparent;
+		width: 100%;
+	}
+	select {
+		-webkit-appearance: none;
+		appearance: none;
+		border: none;
+		outline: none;
+		border-radius: 6px;
+		padding: 3px 24px 3px 9px;
+		background-color: rgba(0, 0, 0, 0.06);
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='14' viewBox='0 0 9 14'><path d='M1.5 5 4.5 2 7.5 5 M1.5 9 4.5 12 7.5 9' fill='none' stroke='%23666666' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+		background-repeat: no-repeat;
+		background-position: right 7px center;
+	}
+	@media (prefers-color-scheme: dark) {
+		select {
+			background-color: rgba(255, 255, 255, 0.14);
+			background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='14' viewBox='0 0 9 14'><path d='M1.5 5 4.5 2 7.5 5 M1.5 9 4.5 12 7.5 9' fill='none' stroke='%23bbbbbb' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+		}
+	}
+	input[type="number"] { text-align: right; }
+	table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 4px; }
+	th { text-align: left; font-weight: 600; color: var(--muted); padding: 4px 8px; border-bottom: 1px solid var(--border); }
+	#phasen th:nth-child(1) { width: 30px; }
+	#phasen th:nth-child(3) { width: 56px; }
+	#phasen th:nth-child(4) { width: 120px; }
+	#phasen th:nth-child(5) { width: 80px; }
+	#phasen th:nth-child(6) { width: 110px; }
+	th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+	td { padding: 3px 8px; border-bottom: 1px solid var(--border); }
+	td input[type="number"] { width: 64px; }
+	tr.off td:not(.check) { opacity: 0.35; }
+	.summary {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding: 10px 8px;
+		font-weight: 600;
+	}
+	.summary .base { font-weight: 400; color: var(--muted); }
+	.hint { color: var(--muted); font-size: 12px; margin: 2px 0 0; min-height: 16px; }
+</style>
+</head>
+<body>
+<h1 data-s="title"></h1>
+
+<div class="grid">
+	<label for="kosten" data-s="costs"></label>
+	<input type="number" id="kosten" min="0" step="10000" value="1000000">
+
+	<label for="kategorie" data-s="category"></label>
+	<select id="kategorie">
+		<option value="0.7">I (n = 0.7)</option>
+		<option value="0.8">II (n = 0.8)</option>
+		<option value="0.9">III (n = 0.9)</option>
+		<option value="1.0" selected>IV (n = 1.0)</option>
+		<option value="1.1">V (n = 1.1)</option>
+		<option value="1.2">VI (n = 1.2)</option>
+		<option value="1.3">VII (n = 1.3)</option>
+	</select>
+
+	<label for="satz" data-s="rate"></label>
+	<input type="number" id="satz" min="0" step="0.1" value="138.60">
+
+	<label for="faktor" data-s="factor"></label>
+	<input type="number" id="faktor" min="0.1" max="2" step="0.05" value="1.0">
+
+	<label for="nk" data-s="expenses"></label>
+	<input type="number" id="nk" min="0" max="25" step="0.5" value="0">
+</div>
+
+<table id="phasen">
+	<thead>
+		<tr>
+			<th></th>
+			<th data-s="phase"></th>
+			<th class="num">%</th>
+			<th class="num" data-s="completion"></th>
+			<th class="num" data-s="hours"></th>
+			<th class="num" data-s="fee"></th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<div class="summary">
+	<span class="base" id="basisinfo"></span>
+	<span id="summe"></span>
+</div>
+<p class="hint" id="hinweis"></p>
+
+<script>
+"use strict";
+
+/* Honorarberechnung nach aufwandbestimmenden Baukosten, SIA 102 Art. 7
+   (SIA 102:2014 / Kalkulationshilfe SIA 102-K:2018):
+   p = Z1 + Z2 / ∛B, Tm = B · p/100 · n · q/100 · r [h], H = Tm · h.
+   Z-Werte: letzte SIA-Publikation (2009–2018), von der öffentlichen Hand
+   (Stadt/Kanton Zürich 2025/26) unverändert angewendet. */
+var Z1 = 0.062;
+var Z2 = 10.58;
+
+/* Teilleistungen der Phasen 31–53 in % der Gesamtleistung (Art. 7.7) */
+var PHASEN_CODES = ["31", "32", "33", "41", "51", "52", "53"];
+var PHASEN_Q = [9, 21, 2.5, 18, 16, 29, 4.5];
+
+var STRINGS = {
+	de: {
+		title: "SIA 102 Honorarrechnung",
+		costs: "Aufwandbestimmende Baukosten (CHF, exkl. MwSt.)",
+		category: "Baukategorie (Schwierigkeitsgrad)",
+		rate: "Stundenansatz (CHF)",
+		factor: "Anpassungsfaktor r",
+		expenses: "Nebenkosten (%)",
+		phase: "Teilphase", completion: "Leistungsstand", hours: "Stunden", fee: "Honorar",
+		phaseNames: ["Vorprojekt", "Bauprojekt", "Bewilligungsverfahren", "Ausschreibung",
+			"Ausführungsplanung", "Ausführung", "Inbetriebnahme / Abschluss"],
+		totalBase: "Gesamthonorar (100 %): ",
+		sum: "Summe exkl. MwSt.: ",
+		tooLow: "Unter ca. CHF 100'000 Baukosten wird nach effektivem Zeitaufwand honoriert (Art. 6 SIA 102).",
+		expensesName: "Nebenkosten",
+		completionNote: "Leistungsstand {0} % von {1} %",
+		subject: "Honorarrechnung",
+		lead: "Aufwandbestimmende Baukosten: CHF {0} exkl. MwSt. · Baukategorie {1} (n = {2}) · Grundprozentsatz p = {3} % (Z1 = 0.062, Z2 = 10.58) · Anpassungsfaktor r = {4} · Mittlerer Stundenaufwand (100 %): {5} h · Stundenansatz CHF {6} · Gesamthonorar (100 %): CHF {7} exkl. MwSt. Teilleistungen nach Art. 7.7 SIA 102."
+	},
+	en: {
+		title: "SIA 102 Fee Invoice",
+		costs: "Cost-determining construction costs (CHF, excl. VAT)",
+		category: "Building category (degree of difficulty)",
+		rate: "Hourly rate (CHF)",
+		factor: "Adjustment factor r",
+		expenses: "Ancillary costs (%)",
+		phase: "Phase", completion: "Completion", hours: "Hours", fee: "Fee",
+		phaseNames: ["Preliminary project", "Building project", "Permit procedure", "Tendering",
+			"Construction planning", "Construction", "Commissioning / completion"],
+		totalBase: "Total fee (100 %): ",
+		sum: "Total excl. VAT: ",
+		tooLow: "Below approx. CHF 100,000 construction costs the fee is agreed by actual effort (art. 6 SIA 102).",
+		expensesName: "Ancillary costs",
+		completionNote: "Completion {0} % of {1} %",
+		subject: "Fee invoice",
+		lead: "Cost-determining construction costs: CHF {0} excl. VAT · building category {1} (n = {2}) · base percentage p = {3} % (Z1 = 0.062, Z2 = 10.58) · adjustment factor r = {4} · mean effort (100 %): {5} h · hourly rate CHF {6} · total fee (100 %): CHF {7} excl. VAT. Partial services per art. 7.7 SIA 102."
+	},
+	fr: {
+		title: "Facture d'honoraires SIA 102",
+		costs: "Coûts de construction déterminants (CHF, hors TVA)",
+		category: "Catégorie d'ouvrage (degré de difficulté)",
+		rate: "Tarif horaire (CHF)",
+		factor: "Facteur d'ajustement r",
+		expenses: "Frais accessoires (%)",
+		phase: "Phase partielle", completion: "Avancement", hours: "Heures", fee: "Honoraires",
+		phaseNames: ["Avant-projet", "Projet de l'ouvrage", "Procédure de demande d'autorisation", "Appel d'offres",
+			"Projet d'exécution", "Exécution de l'ouvrage", "Mise en service / achèvement"],
+		totalBase: "Honoraires totaux (100 %) : ",
+		sum: "Total hors TVA : ",
+		tooLow: "En dessous d'env. CHF 100'000 de coûts de construction, les honoraires sont convenus d'après le temps effectif (art. 6 SIA 102).",
+		expensesName: "Frais accessoires",
+		completionNote: "Avancement {0} % de {1} %",
+		subject: "Facture d'honoraires",
+		lead: "Coûts de construction déterminants : CHF {0} hors TVA · catégorie d'ouvrage {1} (n = {2}) · pourcentage de base p = {3} % (Z1 = 0.062, Z2 = 10.58) · facteur d'ajustement r = {4} · temps moyen (100 %) : {5} h · tarif horaire CHF {6} · honoraires totaux (100 %) : CHF {7} hors TVA. Prestations partielles selon l'art. 7.7 SIA 102."
+	},
+	it: {
+		title: "Fattura di onorari SIA 102",
+		costs: "Costi di costruzione determinanti (CHF, IVA esclusa)",
+		category: "Categoria dell'opera (grado di difficoltà)",
+		rate: "Tariffa oraria (CHF)",
+		factor: "Fattore di adeguamento r",
+		expenses: "Spese accessorie (%)",
+		phase: "Fase parziale", completion: "Avanzamento", hours: "Ore", fee: "Onorario",
+		phaseNames: ["Progetto preliminare", "Progetto dell'opera", "Procedura di autorizzazione", "Appalto",
+			"Progetto esecutivo", "Esecuzione dell'opera", "Messa in esercizio / conclusione"],
+		totalBase: "Onorario complessivo (100 %): ",
+		sum: "Totale IVA esclusa: ",
+		tooLow: "Sotto ca. CHF 100'000 di costi di costruzione l'onorario è convenuto secondo il tempo effettivo (art. 6 SIA 102).",
+		expensesName: "Spese accessorie",
+		completionNote: "Avanzamento {0} % di {1} %",
+		subject: "Fattura di onorari",
+		lead: "Costi di costruzione determinanti: CHF {0} IVA esclusa · categoria dell'opera {1} (n = {2}) · percentuale di base p = {3} % (Z1 = 0.062, Z2 = 10.58) · fattore di adeguamento r = {4} · tempo medio (100 %): {5} h · tariffa oraria CHF {6} · onorario complessivo (100 %): CHF {7} IVA esclusa. Prestazioni parziali secondo l'art. 7.7 SIA 102."
+	}
+};
+
+var lang = (window.grandtotal && STRINGS[grandtotal.language]) ? grandtotal.language : "de";
+var S = STRINGS[lang];
+var LOCALES = { de: "de-CH", fr: "fr-CH", it: "it-CH", en: "en-GB" };
+function fmt(template) {
+	var args = Array.prototype.slice.call(arguments, 1);
+	return template.replace(/\{(\d)\}/g, function (m, i) { return args[i]; });
+}
+function chf(n) {
+	return n.toLocaleString(LOCALES[lang], { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function hoursString(n) {
+	return n.toLocaleString(LOCALES[lang], { maximumFractionDigits: 0 });
+}
+
+/* --- UI --- */
+document.querySelectorAll("[data-s]").forEach(function (el) { el.textContent = S[el.dataset.s]; });
+document.title = S.title;
+
+var tbody = document.querySelector("#phasen tbody");
+S.phaseNames.forEach(function (name, i) {
+	var tr = document.createElement("tr");
+	tr.innerHTML = '<td class="check"><input type="checkbox" checked></td>'
+		+ '<td>' + PHASEN_CODES[i] + ' – ' + name + '</td>'
+		+ '<td class="num pct"></td>'
+		+ '<td class="num"><input type="number" min="0" max="100" step="5" value="100"> %</td>'
+		+ '<td class="num std"></td>'
+		+ '<td class="num fee"></td>';
+	tbody.appendChild(tr);
+});
+
+function values() {
+	return {
+		kosten: parseFloat(document.getElementById("kosten").value) || 0,
+		n: parseFloat(document.getElementById("kategorie").value),
+		satz: parseFloat(document.getElementById("satz").value) || 0,
+		faktor: parseFloat(document.getElementById("faktor").value) || 1,
+		nk: parseFloat(document.getElementById("nk").value) || 0
+	};
+}
+
+function berechnen() {
+	var v = values();
+	var ok = v.kosten >= 100000 && v.satz > 0;
+	document.getElementById("hinweis").textContent = ok ? "" : S.tooLow;
+
+	var p = ok ? Z1 + Z2 / Math.cbrt(v.kosten) : 0;
+	var stundenTotal = v.kosten * p / 100 * v.n * v.faktor; /* q = 100 % */
+	var honorar = stundenTotal * v.satz;
+
+	var summe = 0;
+	tbody.querySelectorAll("tr").forEach(function (tr, i) {
+		var on = tr.querySelector("input[type=checkbox]").checked;
+		var stand = parseFloat(tr.querySelector("input[type=number]").value) || 0;
+		tr.classList.toggle("off", !on);
+		tr.querySelector(".pct").textContent = PHASEN_Q[i] + " %";
+		var stunden = on ? stundenTotal * PHASEN_Q[i] / 100 * stand / 100 : 0;
+		var betrag = stunden * v.satz;
+		tr.querySelector(".std").textContent = on && ok ? hoursString(stunden) : "–";
+		tr.querySelector(".fee").textContent = on && ok ? chf(betrag) : "–";
+		summe += betrag;
+	});
+	var nkBetrag = summe * v.nk / 100;
+	document.getElementById("basisinfo").textContent = ok ? S.totalBase + chf(honorar) + " CHF" : "";
+	document.getElementById("summe").textContent = ok ? S.sum + chf(summe + nkBetrag) + " CHF" : "";
+	if (window.grandtotal && grandtotal.setCanCommit) grandtotal.setCanCommit(ok && summe > 0);
+	return { ok: ok, p: p, stundenTotal: stundenTotal, honorar: honorar, summe: summe, v: v };
+}
+
+function doCommit() {
+	var r = berechnen();
+	if (!r.ok) return;
+	var uid = "sia102-" + Math.random().toString(36).slice(2, 10);
+	var kategorie = document.querySelector("#kategorie option:checked").textContent.split(" ")[0];
+	var lead = fmt(S.lead, chf(r.v.kosten), kategorie, r.v.n, (Math.round(r.p * 1000) / 1000), r.v.faktor,
+		hoursString(r.stundenTotal), chf(r.v.satz), chf(r.honorar));
+
+	/* Teilphasen als dynamische Positionen: Prozent vom Basiswert (Gesamthonorar),
+	   Nebenkosten als Prozent der Positionen darüber — bleiben im Dokument editierbar */
+	var costs = [];
+	tbody.querySelectorAll("tr").forEach(function (tr, i) {
+		if (!tr.querySelector("input[type=checkbox]").checked) return;
+		var stand = parseFloat(tr.querySelector("input[type=number]").value) || 0;
+		if (stand <= 0) return;
+		var attrs = {
+			itemNumber: "Phase " + PHASEN_CODES[i],
+			name: S.phaseNames[i],
+			quantity: PHASEN_Q[i] * stand / 100,
+			pluginIdentifier: "com.mediaatelier.DynamicBaseValue"
+		};
+		if (stand < 100) attrs.notes = fmt(S.completionNote, stand, PHASEN_Q[i]);
+		costs.push({ attributes: attrs, relations: { parent: "Invoice/" + uid } });
+	});
+	if (r.v.nk > 0) {
+		costs.push({
+			attributes: { name: S.expensesName, quantity: r.v.nk, pluginIdentifier: "com.mediaatelier.DynamicPercentage+", rangeType: 1 },
+			relations: { parent: "Invoice/" + uid }
+		});
+	}
+
+	var entities = {
+		Invoice: [{ attributes: { uid: uid, subject: S.subject, lead: lead } }],
+		MetaValue: [{
+			attributes: { name: "dynamic:baseValue", type: "NSNumber", number: Number(r.honorar.toFixed(2)) },
+			relations: { document: "Invoice/" + uid }
+		}],
+		DynamicCost: costs
+	};
+	if (window.grandtotal) {
+		if (grandtotal.setDefaults) grandtotal.setDefaults({ values: captureState() });
+		grandtotal.commit(entities);
+	}
+}
+
+if (window.grandtotal) grandtotal.onCommit = doCommit;
+
+/* Undo: Formularzustand vor jeder Änderung sichern, Cmd+Z / Shift-Cmd+Z */
+var undoStack = [], redoStack = [], lastEdited = null, lastEditTime = 0, currentState;
+
+function captureState() {
+	var s = [];
+	document.querySelectorAll("input, select").forEach(function (el) {
+		s.push(el.type === "checkbox" ? el.checked : el.value);
+	});
+	return s;
+}
+
+function applyState(s) {
+	document.querySelectorAll("input, select").forEach(function (el, i) {
+		if (el.type === "checkbox") el.checked = s[i]; else el.value = s[i];
+	});
+	berechnen();
+}
+
+document.body.addEventListener("input", function (e) {
+	var now = Date.now();
+	if (e.target !== lastEdited || now - lastEditTime > 800) {
+		undoStack.push(currentState);
+		redoStack = [];
+	}
+	lastEdited = e.target;
+	lastEditTime = now;
+	currentState = captureState();
+	berechnen();
+});
+
+document.addEventListener("keydown", function (e) {
+	if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "z") return;
+	e.preventDefault();
+	if (e.shiftKey) {
+		if (!redoStack.length) return;
+		undoStack.push(currentState);
+		currentState = redoStack.pop();
+	} else {
+		if (!undoStack.length) return;
+		redoStack.push(currentState);
+		currentState = undoStack.pop();
+	}
+	applyState(currentState);
+});
+
+/* Zuletzt verwendete Werte wiederherstellen */
+var savedDefaults = (window.grandtotal && grandtotal.getDefaults) ? grandtotal.getDefaults() : null;
+if (savedDefaults && savedDefaults.values && savedDefaults.values.length === captureState().length) {
+	applyState(savedDefaults.values);
+}
+berechnen();
+currentState = captureState();
+</script>
+</body>
+</html>

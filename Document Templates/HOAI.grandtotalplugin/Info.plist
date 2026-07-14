@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.hoai</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleDisplayName</key>
+	<string>HOAI-Honorarrechnung</string>
+	<key>FeatureIdentifier</key>
+	<string>GTFeaturePluginsDocumentTemplates</string>
+	<key>copyright</key>
+	<string>© 2026 Stefan Fürst</string>
+	<key>GrandTotalMinimumVersion</key>
+	<string>9.4.1</string>
+	<key>types</key>
+	<array>
+		<string>documenttemplate</string>
+	</array>
+	<key>documentType</key>
+	<string>invoice</string>
+	<key>sheetSize</key>
+	<string>{760, 620}</string>
+	<key>commitButtonTitle</key>
+	<string>Create Invoice</string>
+</dict>
+</plist>
