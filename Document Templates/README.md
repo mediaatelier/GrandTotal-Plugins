@@ -1,4 +1,4 @@
-# Document Template Plugins (Draft Spec)
+# Interactive Document Templates
 
 A plugin type that hooks into the template chooser of **File → New Document**. Selecting the template opens the plugin's HTML UI in a sheet; on commit, GrandTotal creates the document internally from a [Records-Format](../Records-Format.md) payload — same semantics as opening a `.grandtotalrecords` file, without the file.
 
