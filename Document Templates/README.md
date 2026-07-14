@@ -24,8 +24,9 @@ The name shown in the File → New submenu is the bundle's file name, localized 
 <string>com.mediaatelier.hoai</string>
 <key>GrandTotalMinimumVersion</key>
 <string>9.4.1</string>                <!-- required; compared against the app version, plugin is skipped without it -->
-<key>documentType</key>
-<string>invoice</string>              <!-- invoice | estimate -->
+<key>documentTypes</key>
+<array><string>invoice</string></array>   <!-- invoice and/or estimate; one menu entry per type.
+                                               Fallback: singular documentType string -->
 <key>sheetSize</key>
 <string>{720, 640}</string>           <!-- optional, size of the HTML area; the native button row adds to the window height -->
 <key>commitButtonTitle</key>
@@ -44,6 +45,7 @@ GrandTotal injects `window.grandtotal` before `index.html` runs:
 
 - **grandtotal.language** — UI language of the app (`"de"`, `"en"`, …)
 - **grandtotal.currency** — currency code of the frontmost document (`"EUR"`)
+- **grandtotal.documentType** — which menu the template was launched from (`"invoice"` or `"estimate"`); relevant when `documentTypes` lists both
 - **grandtotal.tintColor** — the app's button tint as an `rgba(…)` string; also available in CSS as `var(--gt-tint)`
 - **grandtotal.commit(entities)** — create the document and close the sheet. `entities` is the `entities` dictionary of the Records Format (e.g. one `Invoice` record plus `Cost` records related via `parent` — NOT `parentDocument`, which is blocked for item imports). Documents are created as drafts; numbering, contact and layout follow the app's normal flow.
 - **grandtotal.cancel()** — close the sheet without creating anything.

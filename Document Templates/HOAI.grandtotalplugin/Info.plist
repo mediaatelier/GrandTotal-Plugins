@@ -20,8 +20,10 @@
 	<array>
 		<string>documenttemplate</string>
 	</array>
-	<key>documentType</key>
-	<string>invoice</string>
+	<key>documentTypes</key>
+	<array>
+		<string>invoice</string>
+	</array>
 	<key>sheetSize</key>
 	<string>{760, 620}</string>
 	<key>commitButtonTitle</key>
