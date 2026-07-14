@@ -2,7 +2,7 @@
 
 A plugin type that hooks into the template chooser of **File → New Document**. Selecting the template opens the plugin's HTML UI in a sheet; on commit, GrandTotal creates the document internally from a [Records-Format](../Records-Format.md) payload — same semantics as opening a `.grandtotalrecords` file, without the file.
 
-Status: **implemented** in GrandTotal 9.5 (`GTDocumentTemplateSheetController`). Plugins of this type are gated by the feature identifier `GTFeaturePluginsDocumentTemplates` (XL). First plugin: HOAI (German architects' fee calculation), now shipped inside the app's internal `PlugIns/` folder.
+Available since GrandTotal **9.4.1** (`GTDocumentTemplateSheetController`), gated by the feature identifier `GTFeaturePluginsDocumentTemplates` (XL). The plugins are not bundled with the app — they live in this folder (as bundle and zip) and are installed via **Overview → Get Plugins** or by opening the zip. Plugins so far: [HOAI](HOAI.grandtotalplugin/) (German architects' fee schedule) and [SIA 102](SIA%20102.grandtotalplugin/) (Swiss cost-based fee model, localized de/en/fr/it).
 
 ## Bundle Layout
 
@@ -10,9 +10,10 @@ Status: **implemented** in GrandTotal 9.5 (`GTDocumentTemplateSheetController`).
 Name.grandtotalplugin/
     Info.plist
     index.html       ← UI, loaded in a WKWebView sheet
-    Icon.pdf
-    de.lproj/…       ← optional, for the template name in the chooser
+    de.lproj/…       ← template name in the chooser and commit button title
 ```
+
+The name shown in the File → New submenu is the bundle's file name, localized through the bundle's `Localizable.strings` (`"HOAI" = "HOAI-Honorarrechnung";`). `CFBundleDisplayName` is not used.
 
 ### Info.plist
 
@@ -21,6 +22,8 @@ Name.grandtotalplugin/
 <array><string>documenttemplate</string></array>
 <key>CFBundleIdentifier</key>
 <string>com.mediaatelier.hoai</string>
+<key>GrandTotalMinimumVersion</key>
+<string>9.4.1</string>                <!-- required; compared against the app version, plugin is skipped without it -->
 <key>documentType</key>
 <string>invoice</string>              <!-- invoice | estimate -->
 <key>sheetSize</key>
@@ -33,7 +36,7 @@ Name.grandtotalplugin/
 
 ## Native Chrome
 
-Cancel and commit are native `GTTintButton`s below the WKWebView — the HTML must NOT render its own button row. GrandTotal sets the page background to the window background color at load (a user script assigns `document.documentElement.style.backgroundColor`), so the page should not set its own opaque body background; it blends with the native button row automatically.
+Cancel and commit are native `GTTintButton`s below the WKWebView — the HTML must NOT render its own button row. GrandTotal sets the page background to the text background color (white / dark) at load via a user script, so the page should not set its own opaque body background; it blends with the native button row automatically. The context menu is suppressed.
 
 ## JavaScript API
 
