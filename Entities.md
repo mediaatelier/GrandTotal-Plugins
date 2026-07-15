@@ -1055,6 +1055,8 @@ This document lists all entities with their attributes and relationships.
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
+- **datePaid**: NSDate
+- **dateRead**: NSDate
 - **dateSent**: NSDate
 - **deliveryType**: NSNumber
 - **discount**: NSNumber
@@ -1116,6 +1118,8 @@ This document lists all entities with their attributes and relationships.
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
+- **datePaid**: NSDate
+- **dateRead**: NSDate
 - **dateSent**: NSDate
 - **deliveryType**: NSNumber
 - **discount**: NSNumber
@@ -1177,6 +1181,8 @@ This document lists all entities with their attributes and relationships.
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **dateDue**: NSDate
+- **datePaid**: NSDate
+- **dateRead**: NSDate
 - **dateSent**: NSDate
 - **deliveryType**: NSNumber
 - **discount**: NSNumber
