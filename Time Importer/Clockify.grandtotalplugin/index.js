@@ -51,9 +51,11 @@ function httpGetJSON(theUrl) {
 }
 
 function httpPostJSON(theUrl, theBody) {
+	// theBody must be passed as object — loadURL serializes it as JSON itself;
+	// passing a pre-serialized string makes the request fail with HTTP 406
 	var aHeader = { "X-Api-Key": token, "Content-Type": "application/json" };
-	var aString = loadURL("POST", theUrl, aHeader, JSON.stringify(theBody));
-	if (aString.length == 0) {
+	var aString = loadURL("POST", theUrl, aHeader, theBody);
+	if (!aString || aString.length == 0) {
 		return null;
 	}
 
@@ -68,20 +70,35 @@ function httpPostJSON(theUrl, theBody) {
 	}
 }
 
+// Returns a human readable error string for a failed response, null otherwise.
+// On HTTP errors loadURL wraps the response as
+// {"grandtotal_error":"Error","http_error":406,"server_error":{"message":...},"server_response":...}
+function errorText(theParsed) {
+	if (!theParsed) {
+		return "Clockify returned an empty response. Check your settings, please";
+	}
+	if (theParsed["grandtotal_error"]) {
+		if (theParsed["server_error"] && theParsed["server_error"]["message"]) {
+			return "Clockify: " + theParsed["server_error"]["message"];
+		}
+		if (theParsed["server_response"]) {
+			return "Clockify: " + String(theParsed["server_response"]).substring(0, 500);
+		}
+		return theParsed["grandtotal_error"];
+	}
+	if (theParsed["message"]) {
+		return "Clockify: " + theParsed["message"];
+	}
+	return null;
+}
+
 function timedEntries() {
 	var result = [];
 	var aArray = httpGetJSON("https://api.clockify.me/api/v1/user");
 
-	if (!aArray) {
-		return "Clockify returned an empty response. Check your settings, please";
-	}
-
-	if (aArray["grandtotal_error"]) {
-		return aArray["grandtotal_error"];
-	}
-
-	if (aArray["message"]) {
-		return "Clockify: " + aArray["message"];
+	var aUserError = errorText(aArray);
+	if (aUserError) {
+		return aUserError;
 	}
 
 	var aWorkspaceID = aArray["activeWorkspace"];
@@ -210,16 +227,9 @@ function timedEntries() {
 				}
 			);
 
-			if (!aReport) {
-				return "Clockify returned an empty response. Check your settings, please";
-			}
-
-			if (aReport["grandtotal_error"]) {
-				return aReport["grandtotal_error"];
-			}
-
-			if (aReport["message"]) {
-				return "Clockify: " + aReport["message"];
+			var aReportError = errorText(aReport);
+			if (aReportError) {
+				return aReportError;
 			}
 
 			var aEntries = aReport["timeentries"];
