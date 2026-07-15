@@ -112,22 +112,7 @@ function timedEntries() {
 	} while (aUsers.length != 0);
 
 	var page = 1;
-	var aClientLookup = {};
-	do {
-		var aClients = httpGetJSON(
-			"https://api.clockify.me/api/v1/workspaces/" + aWorkspaceID + "/clients?page-size=5000&page=" + page
-		);
-		for (aClientIndex in aClients) {
-			aClient = aClients[aClientIndex];
-			aClientID = aClient["id"];
-			aClientLookup[aClientID] = aClient;
-		}
-		page++;
-	} while (aClients.length != 0);
-
-	var page = 1;
 	var aProjectLookup = {};
-	var aTasksLookup = {};
 	do {
 		var aProjects = httpGetJSON(
 			"https://api.clockify.me/api/v1/workspaces/" + aWorkspaceID + "/projects?page-size=5000&page=" + page
@@ -136,6 +121,18 @@ function timedEntries() {
 			aProject = aProjects[aProjectIndex];
 			aProjectID = aProject["id"];
 			aProjectLookup[aProjectID] = aProject;
+		}
+		page++;
+	} while (aProjects.length != 0);
+
+	// Tasks are fetched lazily per project. Fetching them upfront for every
+	// project caused one request per project and made large workspaces time out.
+	var aTasksLookup = {};
+	var aTasksLoadedForProject = {};
+
+	function taskForID(aProjectID, aTaskID) {
+		if (!aTasksLoadedForProject[aProjectID]) {
+			aTasksLoadedForProject[aProjectID] = true;
 			var aTasks = httpGetJSON(
 				"https://api.clockify.me/api/v1/workspaces/" +
 					aWorkspaceID +
@@ -143,14 +140,13 @@ function timedEntries() {
 					aProjectID +
 					"/tasks?page-size=5000"
 			);
-			for (aTasksIndex in aTasks) {
-				aTask = aTasks[aTasksIndex];
-				aTaskID = aTask["id"];
-				aTasksLookup[aTaskID] = aTask;
+			for (var aTasksIndex in aTasks) {
+				var aLoadedTask = aTasks[aTasksIndex];
+				aTasksLookup[aLoadedTask["id"]] = aLoadedTask;
 			}
 		}
-		page++;
-	} while (aProjects.length != 0);
+		return aTasksLookup[aTaskID];
+	}
 
 	var aTagsLookup = {};
 	var page = 1;
@@ -261,7 +257,7 @@ function timedEntries() {
 				aTaskName = "";
 
 				if (aTaskID) {
-					aTask = aTasksLookup[aTaskID];
+					aTask = taskForID(aProjectID, aTaskID);
 					if (aTask) {
 						aTaskName = aTask["name"];
 					}
