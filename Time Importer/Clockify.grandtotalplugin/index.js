@@ -228,7 +228,9 @@ function timedEntries() {
 					aWorkspaceID +
 					"/user/" +
 					aUserID +
-					"/time-entries/?page-size=5000&is-active=true&page=" +
+					"/time-entries/?page-size=1000&is-active=true&start=" +
+					aStartDateString +
+					"T00:00:00Z&page=" +
 					page
 			);
 			for (aEntriesIndex in aEntries) {
@@ -365,7 +367,7 @@ function timedEntries() {
 				result.push(aItem);
 			}
 			page++;
-		} while (aEntries.length != 0 && page < 3);
+		} while (aEntries.length != 0 && page < 20);
 	}
 
 	return result;
