@@ -21,6 +21,7 @@ GrandTotal supports several plugin types:
 - **[Time Importer](Time%20Importer/README.md)** - Import time tracking entries (Menu: File → Import Time Entries)
 - **[Send To Menu](Send%20To%20Menu/README.md)** - Export invoices to other applications (Menu: File → Send to)
 - **[Payment Links](Payment%20Links/README.md)** - Stripe payment links with QR code on the invoice and automatic payment booking
+- **[Interactive Document Templates](Document%20Templates/README.md)** - HTML forms in the template chooser (File → New Document) that create draft invoices or estimates (e.g. HOAI and SIA 102 fee schedules)
 - **Document Numbering** - Custom document numbering schemes
 - **Insert** - Insert content into documents
 - **E-Invoice** - Electronic invoice generation
