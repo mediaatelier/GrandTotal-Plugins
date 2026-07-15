@@ -50,7 +50,11 @@ function httpGetJSON(theUrl) {
 		grandtotal.sleep(0.05);
 	} catch (error) {}
 
-	return JSON.parse(string);
+	try {
+		return JSON.parse(string);
+	} catch (error) {
+		return { "grandtotal_error": "Unexpected response from " + theUrl + ":\n" + string.substring(0, 500) };
+	}
 }
 
 function timedEntries() {
@@ -63,12 +67,16 @@ function timedEntries() {
 	var result = [];
 	var aArray = httpGetJSON("https://api.clockify.me/api/v1/user");
 
+	if (!aArray) {
+		return "Clockify returned an empty response. Check your settings, please";
+	}
+
 	if (aArray["grandtotal_error"]) {
 		return aArray["grandtotal_error"];
 	}
 
-	if (!aArray) {
-		return "Check your settings, please";
+	if (aArray["message"]) {
+		return "Clockify: " + aArray["message"];
 	}
 
 	var aUserID = aArray["id"];
