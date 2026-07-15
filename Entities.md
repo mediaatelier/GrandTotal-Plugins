@@ -1038,7 +1038,68 @@ This document lists all entities with their attributes and relationships.
 
 ---
 
-## InboundInvoice
+## InboundCreditNote
+
+**Inherits from:** InboundDocument → Sendable → Financial → Document → Container → Base
+
+### Attributes
+
+- **archived**: NSNumber
+- **cachedBalance**: NSNumber
+- **cachedCost**: NSNumber
+- **cachedCostWithTaxes**: NSNumber
+- **checkSum**: NSString
+- **completeMode**: NSNumber
+- **customRangeEnd**: NSDate
+- **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
+- **dateCreation**: NSDate
+- **dateDue**: NSDate
+- **dateSent**: NSDate
+- **deliveryType**: NSNumber
+- **discount**: NSNumber
+- **doNotClone**: NSNumber
+- **footnote**: NSString
+- **internalReference**: NSString
+- **isDefault**: NSNumber
+- **lead**: NSString
+- **name**: NSString
+- **notes**: NSString
+- **payInterval**: NSNumber
+- **rate**: NSNumber
+- **reference**: NSString
+- **subject**: NSString
+- **supplierID**: NSString
+- **supplierName**: NSString
+- **toDo**: NSNumber
+- **uid**: NSString
+- **useCustomRange**: NSNumber
+- **useGrossPrices**: NSNumber
+
+### Relationships
+
+- **children**: To-Many → Container (inverse: parent)
+- **contact**: To-One → Contact (inverse: assignedDocuments)
+- **currency**: To-One → Currency (inverse: documents)
+- **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
+- **derivates**: To-Many → Base (inverse: source)
+- **documentLabels**: To-Many → DocumentLabel (inverse: documents)
+- **documents**: To-Many → Document (inverse: parentDocument)
+- **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
+- **layout**: To-One → Layout (inverse: documents)
+- **metaValues**: To-Many → MetaValue (inverse: document)
+- **parent**: To-One → Container (inverse: children)
+- **parentDocument**: To-One → Document (inverse: documents)
+- **paymentType**: To-One → PaymentType (inverse: documents)
+- **source**: To-One → Base (inverse: derivates)
+- **statementLayout**: To-One → Layout (inverse: statementDocuments)
+- **storage**: To-One → SendableStorage (inverse: sendable)
+- **teamMember**: To-One → TeamMember (inverse: memberDocuments)
+
+---
+
+## InboundDocument
 
 **Inherits from:** Sendable → Financial → Document → Container → Base
 
