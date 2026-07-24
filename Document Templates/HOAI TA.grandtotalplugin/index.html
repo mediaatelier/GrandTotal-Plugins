@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>HOAI Technische Ausrüstung</title>
+<style>
+	:root {
+		color-scheme: light dark;
+		--border: rgba(0, 0, 0, 0.12);
+		--muted: rgba(0, 0, 0, 0.55);
+		--accent: #000000;
+		--field: rgba(0, 0, 0, 0.06);
+	}
+	@media (prefers-color-scheme: dark) {
+		:root { --border: rgba(255, 255, 255, 0.16); --muted: rgba(255, 255, 255, 0.55); --accent: #ffffff; --field: rgba(255, 255, 255, 0.14); }
+	}
+	* { box-sizing: border-box; }
+	body {
+		font: 13px/1.45 -apple-system, system-ui, sans-serif;
+		margin: 0;
+		padding: 20px 24px 16px;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+	h1 { font-size: 15px; margin: 0 0 14px; }
+	h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 18px 0 8px; font-weight: 600; }
+	.globals {
+		display: grid;
+		grid-template-columns: max-content 1fr max-content 1fr max-content 1fr;
+		gap: 8px 10px;
+		align-items: center;
+	}
+	label { text-align: right; color: var(--muted); }
+	input, select {
+		font: inherit;
+		padding: 3px 6px;
+		border: 1px solid var(--border);
+		border-radius: 5px;
+		background: transparent;
+		width: 100%;
+	}
+	select {
+		-webkit-appearance: none;
+		appearance: none;
+		border: none;
+		outline: none;
+		border-radius: 6px;
+		padding: 3px 24px 3px 9px;
+		background-color: var(--field);
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='14' viewBox='0 0 9 14'><path d='M1.5 5 4.5 2 7.5 5 M1.5 9 4.5 12 7.5 9' fill='none' stroke='%23888888' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+		background-repeat: no-repeat;
+		background-position: right 7px center;
+	}
+	input[type="number"] { text-align: right; }
+	table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+	th { text-align: left; font-weight: 600; color: var(--muted); padding: 4px 8px; border-bottom: 1px solid var(--border); font-size: 12px; }
+	th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+	td { padding: 3px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+
+	/* Anlagengruppen */
+	#gruppen th:nth-child(1) { width: auto; }
+	#gruppen th:nth-child(2) { width: 120px; }
+	#gruppen th:nth-child(3) { width: 70px; }
+	#gruppen th:nth-child(4) { width: 130px; }
+	#gruppen th:nth-child(5) { width: 30px; }
+	#gruppen td.honorar { font-weight: 600; }
+	.remove {
+		font: inherit;
+		line-height: 1;
+		border: none;
+		background: transparent;
+		color: var(--muted);
+		padding: 2px 6px;
+		border-radius: 5px;
+		cursor: default;
+	}
+	.remove:hover { background: var(--field); color: var(--accent); }
+	.addrow {
+		font: inherit;
+		margin-top: 8px;
+		margin-left: 8px;   /* gleicher Einzug wie die Popups in den Gruppenzeilen (td-Padding) */
+		padding: 4px 12px;
+		border: none;
+		border-radius: 6px;
+		background: var(--field);
+		color: var(--accent);
+	}
+
+	/* Leistungsphasen */
+	#phasen th:nth-child(1) { width: 30px; }
+	#phasen th:nth-child(3) { width: 56px; }
+	#phasen th:nth-child(4) { width: 120px; }
+	#phasen th:nth-child(5) { width: 130px; }
+	#phasen tr.off td:not(.check) { opacity: 0.35; }
+	#phasen td input[type="number"] { width: 64px; }
+
+	.summary {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding: 12px 8px 4px;
+		font-weight: 600;
+	}
+	.summary .base { font-weight: 400; color: var(--muted); }
+	.hint { color: var(--muted); font-size: 12px; margin: 2px 8px 0; min-height: 16px; }
+</style>
+</head>
+<body>
+<h1 data-s="title"></h1>
+
+<div class="globals">
+	<label for="satz" data-s="rate"></label>
+	<select id="satz">
+		<option value="0" data-s="rateBase"></option>
+		<option value="0.25" data-s="rateQuarter"></option>
+		<option value="0.5" data-s="rateMiddle"></option>
+		<option value="0.75" data-s="rateThreeQuarter"></option>
+		<option value="1" data-s="rateTop"></option>
+	</select>
+
+	<label for="umbau" data-s="conversion"></label>
+	<input type="number" id="umbau" min="0" max="80" step="1">
+
+	<label for="nk" data-s="expenses"></label>
+	<input type="number" id="nk" min="0" max="25" step="0.5">
+</div>
+
+<h2 data-s="groupsTitle"></h2>
+<table id="gruppen">
+	<thead>
+		<tr>
+			<th data-s="installationGroup"></th>
+			<th class="num" data-s="costs"></th>
+			<th data-s="zone"></th>
+			<th class="num" data-s="fee100"></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+<button type="button" id="addgroup" class="addrow" data-s="addGroup"></button>
+
+<h2 data-s="phasesTitle"></h2>
+<table id="phasen">
+	<thead>
+		<tr>
+			<th></th>
+			<th data-s="phase"></th>
+			<th class="num">%</th>
+			<th class="num" data-s="completion"></th>
+			<th class="num" data-s="fee"></th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<div class="summary">
+	<span class="base" id="basisinfo"></span>
+	<span id="summe"></span>
+</div>
+<p class="hint" id="hinweis"></p>
+
+<script>
+"use strict";
+
+/* Honorartafel § 56 HOAI (2013/2021) — Technische Ausrüstung.
+   Zeile: [anrechenbare Kosten, Grenze0, Grenze1, Grenze2, Grenze3].
+   Honorarzone I = [G0,G1], II = [G1,G2], III = [G2,G3] (von–bis).
+   Quelle: gesetze-im-internet.de/hoai_2013/__56.html, gegen dejure.org verifiziert. */
+var TAFEL = [
+	[5000, 2132, 2547, 2990, 3405],
+	[10000, 3689, 4408, 5174, 5893],
+	[15000, 5084, 6075, 7131, 8122],
+	[25000, 7615, 9098, 10681, 12164],
+	[35000, 9934, 11869, 13934, 15869],
+	[50000, 13165, 15729, 18465, 21029],
+	[75000, 18122, 21652, 25418, 28948],
+	[100000, 22723, 27150, 31872, 36299],
+	[150000, 31228, 37311, 43800, 49883],
+	[250000, 46640, 55726, 65418, 74504],
+	[500000, 80684, 96402, 113168, 128886],
+	[750000, 111105, 132749, 155836, 177480],
+	[1000000, 139347, 166493, 195448, 222594],
+	[1250000, 166043, 198389, 232891, 265237],
+	[1500000, 191545, 228859, 268660, 305974],
+	[2000000, 239792, 286504, 336331, 383044],
+	[2500000, 285649, 341295, 400650, 456296],
+	[3000000, 329420, 393593, 462044, 526217],
+	[3500000, 371491, 443859, 521052, 593420],
+	[4000000, 412126, 492410, 578046, 658331]
+];
+
+/* Leistungsphasen § 55 Abs. 1 HOAI — Prozentsätze der Grundleistungen */
+var PCT = [2, 9, 17, 2, 22, 7, 5, 35, 1];
+
+var STRINGS = {
+	de: {
+		title: "HOAI-Honorarrechnung · Technische Ausrüstung",
+		rate: "Honorarsatz",
+		rateBase: "Basissatz", rateQuarter: "Viertelsatz", rateMiddle: "Mittelsatz",
+		rateThreeQuarter: "Dreiviertelsatz", rateTop: "Oberer Satz",
+		conversion: "Umbauzuschlag (%)", expenses: "Nebenkosten (%)",
+		groupsTitle: "Anlagengruppen (§ 53 HOAI)",
+		installationGroup: "Anlagengruppe", costs: "Anrechenbare Kosten (€)",
+		zone: "Honorarzone", fee100: "Honorar (100 %)", addGroup: "+ Anlagengruppe", removeGroup: "Anlagengruppe entfernen",
+		groupTitle: "Anlagengruppe {0} – {1}",
+		summaryNote: "Anrechenbare Kosten {0} € netto · Honorarzone {1}",
+		phasesTitle: "Leistungsphasen (§ 55 HOAI)",
+		phase: "Leistungsphase", completion: "Leistungsstand", fee: "Honorar",
+		phaseNames: ["Grundlagenermittlung", "Vorplanung", "Entwurfsplanung", "Genehmigungsplanung",
+			"Ausführungsplanung", "Vorbereitung der Vergabe", "Mitwirkung bei der Vergabe",
+			"Objektüberwachung (Bauüberwachung)", "Objektbetreuung"],
+		agNames: ["Abwasser-, Wasser- und Gasanlagen", "Wärmeversorgungsanlagen",
+			"Raumlufttechnische Anlagen", "Starkstromanlagen",
+			"Fernmelde- und informationstechnische Anlagen", "Förderanlagen",
+			"Nutzungsspezifische und verfahrenstechnische Anlagen", "Gebäudeautomation"],
+		agShort: "AG",
+		totalBase: "Gesamthonorar (100 %): ", sum: "Summe netto: ",
+		outOfRange: "Kosten einer Anlagengruppe ausserhalb der Honorartafel (5.000 € – 4 Mio. €) – Honorar dort frei zu vereinbaren.",
+		expensesName: "Nebenkosten (§ 14 HOAI)",
+		completionNote: "Leistungsstand {0} % von {1} %",
+		subject: "Honorarrechnung Technische Ausrüstung",
+		leadHead: "Technische Ausrüstung nach §§ 53–56 HOAI · {0} · Honorartafel § 56 HOAI{1} · Leistungsphasen nach § 55 HOAI.",
+		conversionLead: " zzgl. {0} % Umbauzuschlag (§ 36 HOAI)",
+		groupLead: "{0} {1} ({2} € netto, Zone {3})"
+	},
+	en: {
+		title: "HOAI Fee Invoice · Technical Services",
+		rate: "Fee rate",
+		rateBase: "Base rate", rateQuarter: "Quarter rate", rateMiddle: "Middle rate",
+		rateThreeQuarter: "Three-quarter rate", rateTop: "Upper rate",
+		conversion: "Conversion surcharge (%)", expenses: "Ancillary costs (%)",
+		groupsTitle: "Installation groups (§ 53 HOAI)",
+		installationGroup: "Installation group", costs: "Chargeable costs (€)",
+		zone: "Fee zone", fee100: "Fee (100 %)", addGroup: "+ Installation group", removeGroup: "Remove installation group",
+		groupTitle: "Installation group {0} – {1}",
+		summaryNote: "Chargeable costs €{0} net · fee zone {1}",
+		phasesTitle: "Work phases (§ 55 HOAI)",
+		phase: "Work phase", completion: "Completion", fee: "Fee",
+		phaseNames: ["Basic evaluation", "Preliminary design", "Final design", "Building permission",
+			"Execution drawings", "Preparation of contract award", "Assisting award process",
+			"Construction supervision", "Post-completion services"],
+		agNames: ["Sewage, water and gas installations", "Heat supply installations",
+			"Air handling installations", "High-voltage installations",
+			"Telecommunications and IT installations", "Conveyor systems",
+			"Use-specific and process installations", "Building automation"],
+		agShort: "Grp",
+		totalBase: "Total fee (100 %): ", sum: "Net total: ",
+		outOfRange: "Costs of one group outside the fee table (€5,000 – €4 m) – fee must be agreed freely there.",
+		expensesName: "Ancillary costs (§ 14 HOAI)",
+		completionNote: "Completion {0} % of {1} %",
+		subject: "Fee invoice technical services",
+		leadHead: "Technical services per §§ 53–56 HOAI · {0} · fee table § 56 HOAI{1} · work phases billed per § 55 HOAI.",
+		conversionLead: " plus {0} % conversion surcharge (§ 36 HOAI)",
+		groupLead: "{0} {1} (€{2} net, zone {3})"
+	}
+};
+
+var ROMAN = ["I", "II", "III"];
+var lang = (window.grandtotal && grandtotal.language === "en") ? "en" : "de";
+var S = STRINGS[lang];
+
+function fmt(template) {
+	var args = Array.prototype.slice.call(arguments, 1);
+	return template.replace(/\{(\d)\}/g, function (m, i) { return args[i]; });
+}
+function eur(n) {
+	return n.toLocaleString(lang === "de" ? "de-DE" : "en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function num(n) {
+	return n.toLocaleString(lang === "de" ? "de-DE" : "en-GB");
+}
+
+/* Tafelwert: lineare Interpolation (§ 13 HOAI) zwischen den Kostenstufen;
+   Satz t ∈ [0,1] zwischen Zonen-von und Zonen-bis. zone: 1..3 → Spalten [zone, zone+1]. */
+function tafelHonorar(kosten, zone, t) {
+	if (kosten < TAFEL[0][0] || kosten > TAFEL[TAFEL.length - 1][0]) return null;
+	var lo = TAFEL[0], hi = TAFEL[TAFEL.length - 1];
+	for (var i = 0; i < TAFEL.length - 1; i++) {
+		if (kosten >= TAFEL[i][0] && kosten <= TAFEL[i + 1][0]) { lo = TAFEL[i]; hi = TAFEL[i + 1]; break; }
+	}
+	var f = hi[0] === lo[0] ? 0 : (kosten - lo[0]) / (hi[0] - lo[0]);
+	var von = lo[zone] + f * (hi[zone] - lo[zone]);
+	var bis = lo[zone + 1] + f * (hi[zone + 1] - lo[zone + 1]);
+	return von + t * (bis - von);
+}
+
+/* --- Statisch: Kopftexte, Leistungsphasen-Zeilen --- */
+document.querySelectorAll("[data-s]").forEach(function (el) { el.textContent = S[el.dataset.s]; });
+document.title = S.title;
+
+var phasenBody = document.querySelector("#phasen tbody");
+S.phaseNames.forEach(function (name, i) {
+	var tr = document.createElement("tr");
+	tr.innerHTML = '<td class="check"><input type="checkbox" data-phase="' + i + '"></td>'
+		+ '<td>' + (i + 1) + ' – ' + name + '</td>'
+		+ '<td class="num">' + PCT[i] + ' %</td>'
+		+ '<td class="num"><input type="number" min="0" max="100" step="5" data-stand="' + i + '"> %</td>'
+		+ '<td class="num fee"></td>';
+	phasenBody.appendChild(tr);
+});
+
+/* --- State: einzige Quelle der Wahrheit --- */
+function defaultState() {
+	return {
+		satz: "0.5", umbau: 0, nk: 0,
+		groups: [{ ag: 2, kosten: 120000, zone: 2 }],
+		phases: PCT.map(function () { return { on: true, stand: 100 }; })
+	};
+}
+var state = defaultState();
+
+var gruppenBody = document.querySelector("#gruppen tbody");
+
+function agOptions(selected) {
+	return S.agNames.map(function (n, i) {
+		return '<option value="' + (i + 1) + '"' + (i + 1 === selected ? " selected" : "") + '>' + (i + 1) + ' – ' + n + '</option>';
+	}).join("");
+}
+function zoneOptions(selected) {
+	return ROMAN.map(function (r, i) {
+		return '<option value="' + (i + 1) + '"' + (i + 1 === selected ? " selected" : "") + '>' + r + '</option>';
+	}).join("");
+}
+
+/* Gruppen-Tabelle aus dem State neu aufbauen (bei Hinzufügen/Entfernen). */
+function renderGroups() {
+	gruppenBody.innerHTML = "";
+	state.groups.forEach(function (g, idx) {
+		var tr = document.createElement("tr");
+		tr.innerHTML = '<td><select data-g-ag="' + idx + '">' + agOptions(g.ag) + '</select></td>'
+			+ '<td class="num"><input type="number" min="0" step="1000" value="' + g.kosten + '" data-g-kosten="' + idx + '"></td>'
+			+ '<td><select data-g-zone="' + idx + '">' + zoneOptions(g.zone) + '</select></td>'
+			+ '<td class="num honorar"></td>'
+			+ '<td><button type="button" class="remove" data-g-remove="' + idx + '" title="' + S.removeGroup + '">&times;</button></td>';
+		gruppenBody.appendChild(tr);
+	});
+}
+
+/* Honorar je Gruppe (100 %, inkl. Umbauzuschlag); null wenn ausserhalb der Tafel. */
+function groupHonorar(g) {
+	var basis = tafelHonorar(g.kosten, g.zone, parseFloat(state.satz));
+	if (basis === null || !(g.kosten > 0)) return null;
+	return basis * (1 + state.umbau / 100);
+}
+
+function recompute() {
+	var anyOut = false, ok = false;
+	var honos = state.groups.map(function (g) {
+		var h = groupHonorar(g);
+		if (h === null && g.kosten > 0) anyOut = true;
+		if (h !== null) ok = true;
+		return h;
+	});
+
+	// Honorar-Zellen der Gruppen
+	gruppenBody.querySelectorAll("tr").forEach(function (tr, idx) {
+		var h = honos[idx];
+		tr.querySelector(".honorar").textContent = h === null ? "–" : eur(h) + " €";
+	});
+
+	// Leistungsphasen: Betrag = Summe über alle Gruppen
+	var grand = 0;
+	var phaseRows = phasenBody.querySelectorAll("tr");
+	state.phases.forEach(function (p, i) {
+		var tr = phaseRows[i];
+		tr.classList.toggle("off", !p.on);
+		var betrag = 0;
+		if (p.on) {
+			honos.forEach(function (h) {
+				if (h !== null) betrag += h * PCT[i] / 100 * p.stand / 100;
+			});
+		}
+		tr.querySelector(".fee").textContent = (p.on && ok) ? eur(betrag) : "–";
+		grand += betrag;
+	});
+
+	var totalHonorar = honos.reduce(function (s, h) { return s + (h || 0); }, 0);
+	var nkBetrag = grand * state.nk / 100;
+	document.getElementById("basisinfo").textContent = ok ? S.totalBase + eur(totalHonorar) + " €" : "";
+	document.getElementById("summe").textContent = ok ? S.sum + eur(grand + nkBetrag) + " €" : "";
+	document.getElementById("hinweis").textContent = anyOut ? S.outOfRange : "";
+
+	var committable = ok && grand > 0;
+	if (window.grandtotal && grandtotal.setCanCommit) grandtotal.setCanCommit(committable);
+	return { ok: ok, honos: honos, grand: grand, nkBetrag: nkBetrag, totalHonorar: totalHonorar };
+}
+
+/* Globale Felder + Phasen-Inputs aus dem State setzen (nach Undo/Restore). */
+function syncControls() {
+	document.getElementById("satz").value = state.satz;
+	document.getElementById("umbau").value = state.umbau;
+	document.getElementById("nk").value = state.nk;
+	state.phases.forEach(function (p, i) {
+		phasenBody.querySelector('input[data-phase="' + i + '"]').checked = p.on;
+		phasenBody.querySelector('input[data-stand="' + i + '"]').value = p.stand;
+	});
+}
+
+function renderAll() {
+	syncControls();
+	renderGroups();
+	recompute();
+}
+
+/* --- Undo/Redo über State-Snapshots --- */
+var undoStack = [], redoStack = [], lastKind = null, lastTime = 0, currentSnapshot;
+
+function snapshot() { return JSON.stringify(state); }
+
+function pushUndo(kind) {
+	var now = Date.now();
+	if (kind !== lastKind || now - lastTime > 800) {
+		undoStack.push(currentSnapshot);
+		redoStack = [];
+	}
+	lastKind = kind;
+	lastTime = now;
+	currentSnapshot = snapshot();
+}
+
+function restore(snap) {
+	state = JSON.parse(snap);
+	renderAll();
+}
+
+/* --- Eingaben --- */
+document.getElementById("satz").addEventListener("input", function () {
+	pushUndo("satz"); state.satz = this.value; recompute();
+});
+document.getElementById("umbau").addEventListener("input", function () {
+	pushUndo("umbau"); state.umbau = parseFloat(this.value) || 0; recompute();
+});
+document.getElementById("nk").addEventListener("input", function () {
+	pushUndo("nk"); state.nk = parseFloat(this.value) || 0; recompute();
+});
+
+gruppenBody.addEventListener("input", function (e) {
+	var t = e.target;
+	if (t.dataset.gAg !== undefined) { pushUndo("g-ag"); state.groups[t.dataset.gAg].ag = parseInt(t.value, 10); recompute(); }
+	else if (t.dataset.gKosten !== undefined) { pushUndo("g-kosten"); state.groups[t.dataset.gKosten].kosten = parseFloat(t.value) || 0; recompute(); }
+	else if (t.dataset.gZone !== undefined) { pushUndo("g-zone"); state.groups[t.dataset.gZone].zone = parseInt(t.value, 10); recompute(); }
+});
+gruppenBody.addEventListener("click", function (e) {
+	var idx = e.target.dataset.gRemove;
+	if (idx === undefined || state.groups.length <= 1) return;
+	pushUndo("g-remove-" + Date.now());
+	state.groups.splice(idx, 1);
+	renderGroups(); recompute();
+});
+document.getElementById("addgroup").addEventListener("click", function () {
+	pushUndo("g-add-" + Date.now());
+	var last = state.groups[state.groups.length - 1];
+	state.groups.push({ ag: last ? last.ag : 2, kosten: 0, zone: last ? last.zone : 2 });
+	renderGroups(); recompute();
+});
+
+phasenBody.addEventListener("input", function (e) {
+	var t = e.target;
+	if (t.dataset.phase !== undefined) { pushUndo("p-on"); state.phases[t.dataset.phase].on = t.checked; recompute(); }
+	else if (t.dataset.stand !== undefined) { pushUndo("p-stand"); state.phases[t.dataset.stand].stand = parseFloat(t.value) || 0; recompute(); }
+});
+
+document.addEventListener("keydown", function (e) {
+	if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "z") return;
+	e.preventDefault();
+	if (e.shiftKey) {
+		if (!redoStack.length) return;
+		undoStack.push(currentSnapshot);
+		currentSnapshot = redoStack.pop();
+	} else {
+		if (!undoStack.length) return;
+		redoStack.push(currentSnapshot);
+		currentSnapshot = undoStack.pop();
+	}
+	lastKind = null;
+	restore(currentSnapshot);
+});
+
+/* --- Zuletzt verwendete Werte --- */
+var saved = (window.grandtotal && grandtotal.getDefaults) ? grandtotal.getDefaults() : null;
+if (saved && saved.state && saved.state.groups && saved.state.phases && saved.state.phases.length === PCT.length) {
+	state = saved.state;
+}
+renderAll();
+currentSnapshot = snapshot();
+
+/* --- Commit ---
+   Mehrere Anlagengruppen: pro Gruppe eine SummaryCost (Positionen listen + Zwischensumme) mit
+   eigenem Basiswert (MetaValue dynamic:baseValue = Gruppen-Honorar 100 %); die Phasen sind
+   DynamicBaseValue-Positionen (quantity = %-Satz) als Kinder der SummaryCost — GrandTotal löst
+   den Basiswert bottom-up aus der SummaryCost auf.
+   Nur EINE Gruppe: keine SummaryCost — Basiswert direkt aufs Dokument (Invoice), Phasen direkt
+   darunter. Das rechnet bereits ohne die SummaryCost-Basiswert-Auflösung und spart den
+   redundanten Zwischensummen-Block. Nebenkosten als Prozentzeile über alles. */
+function doCommit() {
+	var r = recompute();
+	if (!r.ok || !(r.grand > 0)) return;
+
+	var uid = "hoaita-" + Math.random().toString(36).slice(2, 10);
+	var satzName = document.querySelector("#satz option:checked").textContent;
+	var umbauText = state.umbau > 0 ? fmt(S.conversionLead, state.umbau) : "";
+
+	var valid = [];
+	state.groups.forEach(function (g, gi) {
+		if (r.honos[gi] !== null) valid.push({ g: g, base: Number(r.honos[gi].toFixed(2)) });
+	});
+	var single = valid.length === 1;
+
+	var groupLeads = [];
+	var summaries = [];   // SummaryCost je Anlagengruppe (nur bei ≥2 Gruppen)
+	var metas = [];       // dynamic:baseValue je Gruppe bzw. aufs Dokument
+	var dyn = [];         // DynamicBaseValue-Phasen (+ Nebenkosten am Ende)
+
+	valid.forEach(function (v, vi) {
+		var g = v.g, base = v.base;
+		groupLeads.push(fmt(S.groupLead, S.agShort + " " + g.ag, S.agNames[g.ag - 1], num(g.kosten), ROMAN[g.zone - 1]));
+
+		var container;   // wohin die Phasen + der Basiswert gehören
+		if (single) {
+			container = "Invoice/" + uid;
+		} else {
+			var scUid = uid + "-ag" + (vi + 1);
+			container = "SummaryCost/" + scUid;
+			summaries.push({
+				attributes: {
+					uid: scUid,
+					name: fmt(S.groupTitle, g.ag, S.agNames[g.ag - 1]),
+					notes: fmt(S.summaryNote, num(g.kosten), ROMAN[g.zone - 1]),
+					displayType: 1,
+					subtotal: 1,
+					quantity: 1
+				},
+				relations: { parent: "Invoice/" + uid }
+			});
+		}
+
+		metas.push({
+			attributes: { name: "dynamic:baseValue", type: "NSNumber", number: base },
+			relations: { document: container }
+		});
+		state.phases.forEach(function (p, i) {
+			if (!p.on || !(p.stand > 0)) return;
+			var attrs = {
+				itemNumber: "Lph " + (i + 1),
+				name: S.phaseNames[i],
+				quantity: Number((PCT[i] * p.stand / 100).toFixed(4)), // Anteil vom Basiswert in %
+				pluginIdentifier: "com.mediaatelier.DynamicBaseValue"
+			};
+			if (p.stand < 100) attrs.notes = fmt(S.completionNote, p.stand, PCT[i]);
+			dyn.push({ attributes: attrs, relations: { parent: container } });
+		});
+	});
+
+	if (state.nk > 0) {
+		dyn.push({
+			attributes: { name: S.expensesName, quantity: state.nk, pluginIdentifier: "com.mediaatelier.DynamicPercentage+", rangeType: 1 },
+			relations: { parent: "Invoice/" + uid }
+		});
+	}
+
+	var lead = fmt(S.leadHead, satzName, umbauText)
+		+ " " + groupLeads.join(" · ") + ".";
+
+	var entities = {
+		Invoice: [{ attributes: { uid: uid, subject: S.subject, lead: lead } }],
+		MetaValue: metas,
+		DynamicCost: dyn
+	};
+	if (summaries.length) entities.SummaryCost = summaries;
+
+	if (window.grandtotal) {
+		if (grandtotal.setDefaults) grandtotal.setDefaults({ state: state });
+		grandtotal.commit(entities);
+	}
+}
+
+if (window.grandtotal) grandtotal.onCommit = doCommit;
+</script>
+</body>
+</html>

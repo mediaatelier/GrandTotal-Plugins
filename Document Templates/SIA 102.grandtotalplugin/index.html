@@ -160,7 +160,7 @@ var STRINGS = {
 		expensesName: "Nebenkosten",
 		completionNote: "Leistungsstand {0} % von {1} %",
 		subject: "Honorarrechnung",
-		lead: "Aufwandbestimmende Baukosten: CHF {0} exkl. MwSt. · Baukategorie {1} (n = {2}) · Grundprozentsatz p = {3} % (Z1 = 0.062, Z2 = 10.58) · Anpassungsfaktor r = {4} · Mittlerer Stundenaufwand (100 %): {5} h · Stundenansatz CHF {6} · Gesamthonorar (100 %): CHF {7} exkl. MwSt. Teilleistungen nach Art. 7.7 SIA 102."
+		lead: "Aufwandbestimmende Baukosten: CHF {0} exkl. MwSt. · Baukategorie {1} (n = {2}) · Grundprozentsatz p = {3} % (Z1 = 0.062, Z2 = 10.58) · Anpassungsfaktor r = {4} · Mittlerer Stundenaufwand (100 %): {5} h · Stundenansatz CHF {6}. Teilleistungen nach Art. 7.7 SIA 102."
 	},
 	en: {
 		title: "SIA 102 Fee Invoice",
@@ -178,7 +178,7 @@ var STRINGS = {
 		expensesName: "Ancillary costs",
 		completionNote: "Completion {0} % of {1} %",
 		subject: "Fee invoice",
-		lead: "Cost-determining construction costs: CHF {0} excl. VAT · building category {1} (n = {2}) · base percentage p = {3} % (Z1 = 0.062, Z2 = 10.58) · adjustment factor r = {4} · mean effort (100 %): {5} h · hourly rate CHF {6} · total fee (100 %): CHF {7} excl. VAT. Partial services per art. 7.7 SIA 102."
+		lead: "Cost-determining construction costs: CHF {0} excl. VAT · building category {1} (n = {2}) · base percentage p = {3} % (Z1 = 0.062, Z2 = 10.58) · adjustment factor r = {4} · mean effort (100 %): {5} h · hourly rate CHF {6}. Partial services per art. 7.7 SIA 102."
 	},
 	fr: {
 		title: "Facture d'honoraires SIA 102",
@@ -196,7 +196,7 @@ var STRINGS = {
 		expensesName: "Frais accessoires",
 		completionNote: "Avancement {0} % de {1} %",
 		subject: "Facture d'honoraires",
-		lead: "Coûts de construction déterminants : CHF {0} hors TVA · catégorie d'ouvrage {1} (n = {2}) · pourcentage de base p = {3} % (Z1 = 0.062, Z2 = 10.58) · facteur d'ajustement r = {4} · temps moyen (100 %) : {5} h · tarif horaire CHF {6} · honoraires totaux (100 %) : CHF {7} hors TVA. Prestations partielles selon l'art. 7.7 SIA 102."
+		lead: "Coûts de construction déterminants : CHF {0} hors TVA · catégorie d'ouvrage {1} (n = {2}) · pourcentage de base p = {3} % (Z1 = 0.062, Z2 = 10.58) · facteur d'ajustement r = {4} · temps moyen (100 %) : {5} h · tarif horaire CHF {6}. Prestations partielles selon l'art. 7.7 SIA 102."
 	},
 	it: {
 		title: "Fattura di onorari SIA 102",
@@ -214,7 +214,7 @@ var STRINGS = {
 		expensesName: "Spese accessorie",
 		completionNote: "Avanzamento {0} % di {1} %",
 		subject: "Fattura di onorari",
-		lead: "Costi di costruzione determinanti: CHF {0} IVA esclusa · categoria dell'opera {1} (n = {2}) · percentuale di base p = {3} % (Z1 = 0.062, Z2 = 10.58) · fattore di adeguamento r = {4} · tempo medio (100 %): {5} h · tariffa oraria CHF {6} · onorario complessivo (100 %): CHF {7} IVA esclusa. Prestazioni parziali secondo l'art. 7.7 SIA 102."
+		lead: "Costi di costruzione determinanti: CHF {0} IVA esclusa · categoria dell'opera {1} (n = {2}) · percentuale di base p = {3} % (Z1 = 0.062, Z2 = 10.58) · fattore di adeguamento r = {4} · tempo medio (100 %): {5} h · tariffa oraria CHF {6}. Prestazioni parziali secondo l'art. 7.7 SIA 102."
 	}
 };
 
@@ -292,7 +292,7 @@ function doCommit() {
 	var uid = "sia102-" + Math.random().toString(36).slice(2, 10);
 	var kategorie = document.querySelector("#kategorie option:checked").textContent.split(" ")[0];
 	var lead = fmt(S.lead, chf(r.v.kosten), kategorie, r.v.n, (Math.round(r.p * 1000) / 1000), r.v.faktor,
-		hoursString(r.stundenTotal), chf(r.v.satz), chf(r.honorar));
+		hoursString(r.stundenTotal), chf(r.v.satz));
 
 	/* Teilphasen als dynamische Positionen: Prozent vom Basiswert (Gesamthonorar),
 	   Nebenkosten als Prozent der Positionen darüber — bleiben im Dokument editierbar */

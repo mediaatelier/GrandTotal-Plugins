@@ -4,29 +4,29 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>HOAI-Honorarrechnung</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.hoai</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
-	<key>CFBundleDisplayName</key>
-	<string>HOAI-Honorarrechnung</string>
+	<string>1.1</string>
 	<key>FeatureIdentifier</key>
 	<string>GTFeaturePluginsDocumentTemplates</string>
-	<key>copyright</key>
-	<string>© 2026 Stefan Fürst</string>
 	<key>GrandTotalMinimumVersion</key>
 	<string>9.4.1</string>
-	<key>types</key>
-	<array>
-		<string>documenttemplate</string>
-	</array>
+	<key>commitButtonTitle</key>
+	<string>Create Invoice</string>
+	<key>copyright</key>
+	<string>© 2026 Stefan Fürst</string>
 	<key>documentTypes</key>
 	<array>
 		<string>invoice</string>
 	</array>
 	<key>sheetSize</key>
 	<string>{760, 620}</string>
-	<key>commitButtonTitle</key>
-	<string>Create Invoice</string>
+	<key>types</key>
+	<array>
+		<string>documenttemplate</string>
+	</array>
 </dict>
 </plist>

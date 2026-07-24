@@ -2,7 +2,7 @@
 
 A plugin type that hooks into the template chooser of **File → New Document**. Selecting the template opens the plugin's HTML UI in a sheet; on commit, GrandTotal creates the document internally from a [Records-Format](../Records-Format.md) payload — same semantics as opening a `.grandtotalrecords` file, without the file.
 
-Available since GrandTotal **9.4.1** (`GTDocumentTemplateSheetController`), gated by the feature identifier `GTFeaturePluginsDocumentTemplates` (XL). The plugins are not bundled with the app — they live in this folder (as bundle and zip) and are installed via **Overview → Get Plugins** or by opening the zip. Plugins so far: [HOAI](HOAI.grandtotalplugin/) (German architects' fee schedule) and [SIA 102](SIA%20102.grandtotalplugin/) (Swiss cost-based fee model, localized de/en/fr/it).
+Available since GrandTotal **9.4.1** (`GTDocumentTemplateSheetController`), gated by the feature identifier `GTFeaturePluginsDocumentTemplates` (XL). The plugins are not bundled with the app — they live in this folder (as bundle and zip) and are installed via **Overview → Get Plugins** or by opening the zip. Plugins so far: [HOAI](HOAI.grandtotalplugin/) (German architects' fee schedule, Leistungsbild Gebäude/Innenräume, §§ 34/35), [HOAI TA](HOAI%20TA.grandtotalplugin/) (German engineers' fee schedule for technical services, Leistungsbild Technische Ausrüstung, §§ 53–56, multiple installation groups per invoice) and [SIA 102](SIA%20102.grandtotalplugin/) (Swiss cost-based fee model, localized de/en/fr/it).
 
 ## Bundle Layout
 

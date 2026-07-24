@@ -319,7 +319,7 @@ var STRINGS = {
 		zoneResolved: "Honorarzone {0}",
 		apply: "Übernehmen", close: "Schließen",
 		subject: "Honorarrechnung",
-		lead: "Anrechenbare Kosten: {0} € netto (Kostenberechnung nach DIN 276) · Honorarzone {1}, {2} · Honorartafel § 35 HOAI{3} · Gesamthonorar (100 %): {4} € netto. Abrechnung der Leistungsphasen nach § 34 HOAI."
+		lead: "Anrechenbare Kosten: {0} € netto (Kostenberechnung nach DIN 276) · Honorarzone {1}, {2} · Honorartafel § 35 HOAI{3}. Abrechnung der Leistungsphasen nach § 34 HOAI."
 	},
 	en: {
 		title: "HOAI Fee Invoice",
@@ -346,7 +346,7 @@ var STRINGS = {
 		zoneResolved: "Fee zone {0}",
 		apply: "Apply", close: "Close",
 		subject: "Fee invoice",
-		lead: "Chargeable costs: €{0} net (cost calculation per DIN 276) · fee zone {1}, {2} · fee table § 35 HOAI{3} · total fee (100 %): €{4} net. Work phases billed per § 34 HOAI."
+		lead: "Chargeable costs: €{0} net (cost calculation per DIN 276) · fee zone {1}, {2} · fee table § 35 HOAI{3}. Work phases billed per § 34 HOAI."
 	}
 };
 
@@ -562,7 +562,7 @@ function doCommit() {
 	var uid = "hoai-" + Math.random().toString(36).slice(2, 10);
 	var satzName = document.querySelector("#satz option:checked").textContent;
 	var umbauText = r.v.umbau > 0 ? fmt(S.conversionLead, r.v.umbau) : "";
-	var lead = fmt(S.lead, eur(r.v.kosten), ["I", "II", "III", "IV", "V"][r.v.zone - 1], satzName, umbauText, eur(r.honorar));
+	var lead = fmt(S.lead, eur(r.v.kosten), ["I", "II", "III", "IV", "V"][r.v.zone - 1], satzName, umbauText);
 
 	/* Leistungsphasen als dynamische Positionen: Prozent vom Basiswert (Gesamthonorar),
 	   Nebenkosten als Prozent der Positionen darüber — bleiben im Dokument editierbar */
