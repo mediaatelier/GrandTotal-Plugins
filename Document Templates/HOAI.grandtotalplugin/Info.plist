@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>HOAI-Honorarrechnung</string>
+	<string>HOAI Gebäude &amp; Innenräume</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.hoai</string>
 	<key>CFBundleVersion</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>FeatureIdentifier</key>
 	<string>GTFeaturePluginsDocumentTemplates</string>
 	<key>GrandTotalMinimumVersion</key>
