@@ -275,7 +275,11 @@ var PRICES = [900, 1800, 2400, 700, 600, 500]; // Standard-Richtpreise je Leistu
 
 var lang = (window.grandtotal && grandtotal.language === "en") ? "en" : "de";
 var S = STRINGS[lang];
-var CUR = (window.grandtotal && grandtotal.currency) || "EUR";
+
+/* Empfänger als interchangeRecord (siehe recipient-Spec). Währung des echten Empfängers
+   nutzen; Fallback auf grandtotal.currency, solange grandtotal.recipient noch nicht da ist. */
+var recipient = (window.grandtotal && grandtotal.recipient) || null;
+var CUR = (recipient && recipient.currency) || (window.grandtotal && grandtotal.currency) || "EUR";
 var SYM = ({ EUR: "€", CHF: "CHF", USD: "$", GBP: "£", DKK: "kr", SEK: "kr", NOK: "kr" })[CUR] || CUR;
 
 function fmt(t) { var a = arguments; return t.replace(/\{(\d)\}/g, function (m, i) { return a[+i + 1]; }); }
