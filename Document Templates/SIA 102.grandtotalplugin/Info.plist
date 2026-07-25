@@ -9,7 +9,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.sia102</string>
 	<key>CFBundleVersion</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>FeatureIdentifier</key>
 	<string>GTFeaturePluginsDocumentTemplates</string>
 	<key>GrandTotalMinimumVersion</key>
