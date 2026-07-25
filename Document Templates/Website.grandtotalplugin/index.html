@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Website-Projekt</title>
+<style>
+	:root {
+		color-scheme: light dark;
+		--border: rgba(0, 0, 0, 0.12);
+		--muted: rgba(0, 0, 0, 0.5);
+		--faint: rgba(0, 0, 0, 0.04);
+		--field: rgba(0, 0, 0, 0.06);
+		--accent: var(--gt-tint, #2b6cff);
+		--card: #ffffff;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--border: rgba(255, 255, 255, 0.14);
+			--muted: rgba(255, 255, 255, 0.5);
+			--faint: rgba(255, 255, 255, 0.05);
+			--field: rgba(255, 255, 255, 0.12);
+			--card: #2c2c2e;
+		}
+	}
+	* { box-sizing: border-box; }
+	body {
+		font: 13px/1.45 -apple-system, system-ui, sans-serif;
+		margin: 0;
+		padding: 20px 24px 14px;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+	h1 { font-size: 15px; margin: 0 0 16px; }
+	section { margin-bottom: 20px; }
+	.head {
+		display: flex; align-items: baseline; justify-content: space-between;
+		margin: 0 0 9px;
+	}
+	.head h2 {
+		font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+		color: var(--muted); margin: 0;
+	}
+	.head .aside { font-size: 11px; color: var(--muted); }
+
+	/* --- Adressleiste --- */
+	.addressbar {
+		display: flex; align-items: center; gap: 8px;
+		border: 1px solid var(--border); border-radius: 9px;
+		padding: 8px 12px; background: var(--faint);
+	}
+	.addressbar .lock {
+		width: 13px; height: 13px; flex: none; color: var(--muted);
+	}
+	.addressbar .scheme { color: var(--muted); font-variant-numeric: tabular-nums; }
+	.addressbar input {
+		flex: 1; border: none; outline: none; background: transparent;
+		font: inherit; font-size: 14px; padding: 0;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	}
+	.addressbar input::placeholder { color: var(--muted); opacity: 0.7; }
+
+	/* --- Leistungen --- */
+	.svc {
+		display: grid; grid-template-columns: 22px 1fr max-content;
+		align-items: center; gap: 10px;
+		padding: 7px 4px; border-bottom: 1px solid var(--border);
+	}
+	.svc:last-child { border-bottom: none; }
+	.svc.off { opacity: 0.4; }
+	.svc .name { font-size: 13px; }
+	.svc .price {
+		display: flex; align-items: center; gap: 4px;
+		color: var(--muted); font-variant-numeric: tabular-nums;
+	}
+	.svc .price input {
+		width: 72px; text-align: right; font: inherit;
+		border: 1px solid transparent; border-radius: 6px;
+		padding: 3px 7px; background: var(--field); color: inherit;
+		font-variant-numeric: tabular-nums;
+	}
+	.svc .price input:focus { outline: none; border-color: var(--accent); }
+	.svc .price .cur { color: var(--muted); width: 26px; }
+
+	/* Checkbox */
+	input[type="checkbox"].tick { -webkit-appearance: none; appearance: none; margin: 0;
+		width: 19px; height: 19px; border-radius: 6px; border: 1.5px solid var(--border);
+		background: var(--card); position: relative; flex: none; }
+	input[type="checkbox"].tick:checked { background: var(--accent); border-color: var(--accent); }
+	input[type="checkbox"].tick:checked::after {
+		content: ""; position: absolute; left: 5.5px; top: 2px; width: 5px; height: 9px;
+		border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+	}
+
+	/* --- Toggle (iOS-Stil) für optionale Blöcke --- */
+	.switch { position: relative; width: 38px; height: 22px; flex: none; }
+	.switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+	.switch .track {
+		position: absolute; inset: 0; border-radius: 11px; background: var(--field);
+		transition: background 0.18s;
+	}
+	.switch .track::before {
+		content: ""; position: absolute; width: 18px; height: 18px; border-radius: 50%;
+		background: #fff; top: 2px; left: 2px; transition: transform 0.18s;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	}
+	.switch input:checked + .track { background: var(--accent); }
+	.switch input:checked + .track::before { transform: translateX(16px); }
+
+	.optblock { border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; }
+	.optblock.off { opacity: 0.55; }
+	.optrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+	.optrow .title { font-size: 13px; font-weight: 600; }
+	.optrow .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+	/* Wartungs-Slider */
+	.maint-detail { margin-top: 12px; display: flex; align-items: center; gap: 12px; }
+	input[type="range"] {
+		-webkit-appearance: none; appearance: none; flex: 1; height: 4px; border-radius: 2px;
+		background: linear-gradient(to right, var(--accent) 0 var(--fill, 50%), var(--field) var(--fill, 50%));
+	}
+	input[type="range"]::-webkit-slider-thumb {
+		-webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+	}
+	.maint-detail .pct { font-variant-numeric: tabular-nums; font-weight: 600; width: 44px; text-align: right; }
+	.maint-detail .amt { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 92px; text-align: right; }
+
+	/* Hosting-Tarife */
+	.tiers { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+	.tier {
+		border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 11px;
+		cursor: default; transition: border-color 0.15s, background 0.15s;
+	}
+	.tier:hover { background: var(--faint); }
+	.tier.sel { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+	.tier .tname { font-weight: 600; font-size: 13px; }
+	.tier .tprice { font-variant-numeric: tabular-nums; margin: 3px 0 2px; }
+	.tier .tprice small { color: var(--muted); font-weight: 400; }
+	.tier .tdesc { font-size: 11px; color: var(--muted); line-height: 1.3; }
+
+	/* --- Summary --- */
+	.summary { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+	.sumline { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 2px; }
+	.sumline .lbl { color: var(--muted); }
+	.sumline .lbl .tag {
+		font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+		border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; margin-left: 6px; color: var(--muted);
+	}
+	.sumline .val { font-variant-numeric: tabular-nums; }
+	.sumline.total { font-weight: 600; font-size: 15px; padding-top: 6px; }
+	.sumline.total .lbl { color: inherit; }
+</style>
+</head>
+<body>
+<h1 data-s="title"></h1>
+
+<section>
+	<div class="head"><h2 data-s="domainLabel"></h2></div>
+	<div class="addressbar">
+		<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+		<span class="scheme">https://</span>
+		<input type="text" id="domain" spellcheck="false" autocapitalize="off">
+	</div>
+</section>
+
+<section>
+	<div class="head"><h2 data-s="servicesTitle"></h2><span class="aside" id="svccount"></span></div>
+	<div id="services"></div>
+</section>
+
+<section>
+	<div class="optblock" id="maintblock">
+		<div class="optrow">
+			<div>
+				<div class="title" data-s="maintTitle"></div>
+				<div class="sub" id="maintsub"></div>
+			</div>
+			<label class="switch"><input type="checkbox" id="mainton"><span class="track"></span></label>
+		</div>
+		<div class="maint-detail">
+			<input type="range" id="maintpct" min="5" max="30" step="1">
+			<span class="pct" id="maintpctlbl"></span>
+			<span class="amt" id="maintamt"></span>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="optblock" id="hostblock">
+		<div class="optrow">
+			<div>
+				<div class="title" data-s="hostingTitle"></div>
+				<div class="sub" data-s="hostingSub"></div>
+			</div>
+			<label class="switch"><input type="checkbox" id="hoston"><span class="track"></span></label>
+		</div>
+		<div class="tiers" id="tiers"></div>
+	</div>
+</section>
+
+<div class="summary">
+	<div class="sumline"><span class="lbl" data-s="projectTotal"></span><span class="val" id="sumproject"></span></div>
+	<div class="sumline" id="summaint" hidden><span class="lbl"><span data-s="maintTitle"></span><span class="tag" data-s="optional"></span></span><span class="val" id="summaintval"></span></div>
+	<div class="sumline" id="sumhost" hidden><span class="lbl"><span data-s="hostingTitle"></span><span class="tag" data-s="optional"></span></span><span class="val" id="sumhostval"></span></div>
+	<div class="sumline total"><span class="lbl" data-s="oneTimeTotal"></span><span class="val" id="sumtotal"></span></div>
+</div>
+
+<script>
+"use strict";
+
+var STRINGS = {
+	de: {
+		title: "Website-Projekt",
+		domainLabel: "Domain",
+		domainPlaceholder: "meinewebsite.de",
+		servicesTitle: "Leistungen",
+		services: ["Konzept & Informationsarchitektur", "Screendesign (UI)", "Umsetzung & Development",
+			"Responsive & Performance", "Content-Integration", "SEO-Grundausstattung"],
+		maintTitle: "Wartung & Updates",
+		maintSub: "Jährlich, {0} % vom Projektaufwand",
+		hostingTitle: "Hosting",
+		hostingSub: "Jährlich, inkl. Betrieb & Backups",
+		tiers: [
+			{ name: "Starter", price: 120, desc: "Kleine Website, statisch" },
+			{ name: "Pro", price: 300, desc: "Business-Site, CMS, Backups" },
+			{ name: "Business", price: 720, desc: "Shop / hohe Last, Monitoring" }
+		],
+		perYear: "/ Jahr",
+		projectTotal: "Projektsumme",
+		oneTimeTotal: "Einmalig gesamt",
+		optional: "optional",
+		servicesActive: "{0} von {1} aktiv",
+		subject: "Website {0}",
+		subjectPlain: "Website",
+		lead: "Konzept, Design und Umsetzung der Website {0}.",
+		leadPlain: "Konzept, Design und Umsetzung der Website.",
+		leadMaint: " Optionale Wartung & Updates {0} % pro Jahr.",
+		leadHost: " Optionales Hosting im Tarif {0}.",
+		maintItem: "Wartung & Updates ({0} % pro Jahr)",
+		hostItem: "Hosting {0} (jährlich)"
+	},
+	en: {
+		title: "Website Project",
+		domainLabel: "Domain",
+		domainPlaceholder: "mywebsite.com",
+		servicesTitle: "Services",
+		services: ["Concept & information architecture", "Screen design (UI)", "Build & development",
+			"Responsive & performance", "Content integration", "SEO essentials"],
+		maintTitle: "Maintenance & updates",
+		maintSub: "Yearly, {0} % of the project effort",
+		hostingTitle: "Hosting",
+		hostingSub: "Yearly, incl. operation & backups",
+		tiers: [
+			{ name: "Starter", price: 120, desc: "Small site, static" },
+			{ name: "Pro", price: 300, desc: "Business site, CMS, backups" },
+			{ name: "Business", price: 720, desc: "Shop / high load, monitoring" }
+		],
+		perYear: "/ year",
+		projectTotal: "Project total",
+		oneTimeTotal: "One-time total",
+		optional: "optional",
+		servicesActive: "{0} of {1} active",
+		subject: "Website {0}",
+		subjectPlain: "Website",
+		lead: "Concept, design and build of the website {0}.",
+		leadPlain: "Concept, design and build of the website.",
+		leadMaint: " Optional maintenance & updates {0} % per year.",
+		leadHost: " Optional hosting on the {0} plan.",
+		maintItem: "Maintenance & updates ({0} % per year)",
+		hostItem: "Hosting {0} (yearly)"
+	}
+};
+
+var PRICES = [900, 1800, 2400, 700, 600, 500]; // Standard-Richtpreise je Leistung
+
+var lang = (window.grandtotal && grandtotal.language === "en") ? "en" : "de";
+var S = STRINGS[lang];
+var CUR = (window.grandtotal && grandtotal.currency) || "EUR";
+var SYM = ({ EUR: "€", CHF: "CHF", USD: "$", GBP: "£", DKK: "kr", SEK: "kr", NOK: "kr" })[CUR] || CUR;
+
+function fmt(t) { var a = arguments; return t.replace(/\{(\d)\}/g, function (m, i) { return a[+i + 1]; }); }
+function money(n) { return n.toLocaleString(lang === "de" ? "de-DE" : "en-GB", { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+function withCur(n) { return SYM + " " + money(n); }
+
+document.querySelectorAll("[data-s]").forEach(function (el) { el.textContent = S[el.dataset.s]; });
+document.title = S.title;
+document.getElementById("domain").placeholder = S.domainPlaceholder;
+
+/* Leistungen aufbauen */
+var svcBox = document.getElementById("services");
+S.services.forEach(function (name, i) {
+	var row = document.createElement("div");
+	row.className = "svc";
+	row.innerHTML = '<input type="checkbox" class="tick" data-svc="' + i + '" checked>'
+		+ '<span class="name">' + name + '</span>'
+		+ '<span class="price"><span class="cur">' + SYM + '</span>'
+		+ '<input type="number" min="0" step="50" value="' + PRICES[i] + '" data-price="' + i + '"></span>';
+	svcBox.appendChild(row);
+});
+
+/* Hosting-Tarife aufbauen */
+var tierBox = document.getElementById("tiers");
+S.tiers.forEach(function (t, i) {
+	var c = document.createElement("div");
+	c.className = "tier";
+	c.dataset.tier = i;
+	c.innerHTML = '<div class="tname">' + t.name + '</div>'
+		+ '<div class="tprice">' + withCur(t.price) + ' <small>' + S.perYear + '</small></div>'
+		+ '<div class="tdesc">' + t.desc + '</div>';
+	tierBox.appendChild(c);
+});
+
+var el = function (id) { return document.getElementById(id); };
+
+function values() {
+	var services = [], project = 0, count = 0;
+	document.querySelectorAll("#services .svc").forEach(function (row, i) {
+		var on = row.querySelector("input[type=checkbox]").checked;
+		var price = parseFloat(row.querySelector("input[type=number]").value) || 0;
+		row.classList.toggle("off", !on);
+		if (on) { project += price; count++; }
+		services.push({ on: on, price: price });
+	});
+	var tier = 0;
+	document.querySelectorAll(".tier").forEach(function (c) { if (c.classList.contains("sel")) tier = +c.dataset.tier; });
+	return {
+		domain: el("domain").value.trim(),
+		services: services, project: project, count: count,
+		maintOn: el("mainton").checked, maintPct: parseInt(el("maintpct").value, 10),
+		hostOn: el("hoston").checked, tier: tier
+	};
+}
+
+function recompute() {
+	var v = values();
+
+	el("svccount").textContent = fmt(S.servicesActive, v.count, S.services.length);
+	el("maintsub").textContent = fmt(S.maintSub, v.maintPct);
+
+	// Wartung
+	el("maintblock").classList.toggle("off", !v.maintOn);
+	var mpct = el("maintpct");
+	mpct.style.setProperty("--fill", ((v.maintPct - mpct.min) / (mpct.max - mpct.min) * 100) + "%");
+	mpct.disabled = !v.maintOn;
+	el("maintpctlbl").textContent = v.maintPct + " %";
+	var maintAmt = v.maintOn ? Math.round(v.project * v.maintPct / 100) : 0;
+	el("maintamt").textContent = v.maintOn ? withCur(maintAmt) + " " + S.perYear : "–";
+
+	// Hosting
+	el("hostblock").classList.toggle("off", !v.hostOn);
+	var hostAmt = v.hostOn ? S.tiers[v.tier].price : 0;
+
+	// Summary
+	el("sumproject").textContent = withCur(v.project);
+	var sm = el("summaint"); sm.hidden = !v.maintOn;
+	el("summaintval").textContent = withCur(maintAmt) + " " + S.perYear;
+	var sh = el("sumhost"); sh.hidden = !v.hostOn;
+	el("sumhostval").textContent = withCur(hostAmt) + " " + S.perYear;
+	el("sumtotal").textContent = withCur(v.project);
+
+	if (window.grandtotal && grandtotal.setCanCommit) grandtotal.setCanCommit(v.project > 0);
+	return { v: v, maintAmt: maintAmt, hostAmt: hostAmt };
+}
+
+/* Tarif wählen (aktiviert Hosting gleich mit) */
+tierBox.addEventListener("click", function (e) {
+	var c = e.target.closest(".tier"); if (!c) return;
+	document.querySelectorAll(".tier").forEach(function (t) { t.classList.toggle("sel", t === c); });
+	if (!el("hoston").checked) el("hoston").checked = true;
+	saveAndRecompute();
+});
+
+document.body.addEventListener("input", saveAndRecompute);
+document.body.addEventListener("change", saveAndRecompute);
+
+function saveAndRecompute() {
+	var r = recompute();
+	if (window.grandtotal && grandtotal.setDefaults) grandtotal.setDefaults({ values: captureState() });
+	return r;
+}
+
+/* Persistenz: Formularzustand sichern/wiederherstellen */
+function captureState() {
+	var s = { inputs: [], tier: 0 };
+	document.querySelectorAll("input").forEach(function (i) {
+		s.inputs.push(i.type === "checkbox" ? i.checked : i.value);
+	});
+	document.querySelectorAll(".tier").forEach(function (c) { if (c.classList.contains("sel")) s.tier = +c.dataset.tier; });
+	return s;
+}
+function applyState(s) {
+	var inputs = document.querySelectorAll("input");
+	if (!s || !s.inputs || s.inputs.length !== inputs.length) return;
+	inputs.forEach(function (i, n) { if (i.type === "checkbox") i.checked = s.inputs[n]; else i.value = s.inputs[n]; });
+	document.querySelectorAll(".tier").forEach(function (c) { c.classList.toggle("sel", +c.dataset.tier === s.tier); });
+}
+
+/* Startzustand: Pro-Tarif vorwählen, dann gespeicherte Werte laden */
+document.querySelector('.tier[data-tier="1"]').classList.add("sel");
+var saved = (window.grandtotal && grandtotal.getDefaults) ? grandtotal.getDefaults() : null;
+if (saved && saved.values) applyState(saved.values);
+recompute();
+
+/* --- Commit --- */
+function doCommit() {
+	var r = recompute();
+	if (!(r.v.project > 0)) return;
+	var v = r.v;
+
+	var docEntity = (window.grandtotal && grandtotal.documentType === "estimate") ? "Estimate" : "Invoice";
+	var uid = "web-" + Math.random().toString(36).slice(2, 10);
+
+	var subject = v.domain ? fmt(S.subject, v.domain) : S.subjectPlain;
+	var lead = v.domain ? fmt(S.lead, v.domain) : S.leadPlain;
+	if (v.maintOn) lead += fmt(S.leadMaint, v.maintPct);
+	if (v.hostOn) lead += fmt(S.leadHost, S.tiers[v.tier].name);
+
+	var costs = [];
+	function add(attrs) { costs.push({ attributes: attrs, relations: { parent: docEntity + "/" + uid } }); }
+
+	v.services.forEach(function (s, i) {
+		if (s.on) add({ name: S.services[i], quantity: 1, unitPrice: s.price });
+	});
+	// Optionale, jährlich wiederkehrende Zusätze — als optionale Positionen (zählen nicht in die Summe)
+	if (v.maintOn && r.maintAmt > 0) {
+		add({ name: fmt(S.maintItem, v.maintPct), quantity: 1, unitPrice: r.maintAmt, optional: 1 });
+	}
+	if (v.hostOn) {
+		add({ name: fmt(S.hostItem, S.tiers[v.tier].name), quantity: 1, unitPrice: r.hostAmt, optional: 1 });
+	}
+
+	var entities = {};
+	entities[docEntity] = [{ attributes: { uid: uid, subject: subject, lead: lead } }];
+	entities.Cost = costs;
+
+	if (window.grandtotal) grandtotal.commit(entities);
+}
+
+if (window.grandtotal) grandtotal.onCommit = doCommit;
+</script>
+</body>
+</html>
