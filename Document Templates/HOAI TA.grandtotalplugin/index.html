@@ -205,6 +205,7 @@ var STRINGS = {
 		zone: "Honorarzone", fee100: "Honorar (100 %)", addGroup: "+ Anlagengruppe", removeGroup: "Anlagengruppe entfernen",
 		groupTitle: "Anlagengruppe {0} – {1}",
 		summaryNote: "Anrechenbare Kosten {0} € netto · Honorarzone {1}",
+		baseValue: "Basiswert (100 %): <meta.dynamic:baseValue/> €",
 		phasesTitle: "Leistungsphasen (§ 55 HOAI)",
 		phase: "Leistungsphase", completion: "Leistungsstand", fee: "Honorar",
 		phaseNames: ["Grundlagenermittlung", "Vorplanung", "Entwurfsplanung", "Genehmigungsplanung",
@@ -235,6 +236,7 @@ var STRINGS = {
 		zone: "Fee zone", fee100: "Fee (100 %)", addGroup: "+ Installation group", removeGroup: "Remove installation group",
 		groupTitle: "Installation group {0} – {1}",
 		summaryNote: "Chargeable costs €{0} net · fee zone {1}",
+		baseValue: "Base value (100 %): <meta.dynamic:baseValue/> €",
 		phasesTitle: "Work phases (§ 55 HOAI)",
 		phase: "Work phase", completion: "Completion", fee: "Fee",
 		phaseNames: ["Basic evaluation", "Preliminary design", "Final design", "Building permission",
@@ -526,7 +528,7 @@ function doCommit() {
 				attributes: {
 					uid: scUid,
 					name: fmt(S.groupTitle, g.ag, S.agNames[g.ag - 1]),
-					notes: fmt(S.summaryNote, num(g.kosten), ROMAN[g.zone - 1]),
+					notes: fmt(S.summaryNote, num(g.kosten), ROMAN[g.zone - 1]) + " · " + S.baseValue,
 					displayType: 1,
 					subtotal: 1,
 					quantity: 1
@@ -559,8 +561,9 @@ function doCommit() {
 		});
 	}
 
-	var lead = fmt(S.leadHead, satzName, umbauText)
-		+ " " + groupLeads.join(" · ") + ".";
+	var lead = fmt(S.leadHead, satzName, umbauText) + " " + groupLeads.join(" · ");
+	if (single) lead += " · " + S.baseValue;   // Ein-Gruppen-Fall: Basiswert am Dokument, per Platzhalter im Lead
+	lead += ".";
 
 	var entities = {
 		Invoice: [{ attributes: { uid: uid, subject: S.subject, lead: lead } }],
