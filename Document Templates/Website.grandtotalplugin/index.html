@@ -87,8 +87,9 @@
 		background: var(--card); position: relative; flex: none; }
 	input[type="checkbox"].tick:checked { background: var(--accent); border-color: var(--accent); }
 	input[type="checkbox"].tick:checked::after {
-		content: ""; position: absolute; left: 5.5px; top: 2px; width: 5px; height: 9px;
-		border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+		content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 9px;
+		border: solid #fff; border-width: 0 2px 2px 0;
+		transform: translate(-50%, calc(-50% - 1.2px)) rotate(45deg);
 	}
 
 	/* --- Toggle (iOS-Stil) für optionale Blöcke --- */
