@@ -79,7 +79,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -156,7 +156,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **clientGroup**: To-One → ClientGroup (inverse: clients)
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
@@ -194,7 +194,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **clients**: To-Many → Client (inverse: clientGroup)
 - **derivates**: To-Many → Base (inverse: source)
 - **parent**: To-One → Container (inverse: children)
@@ -254,7 +254,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -291,7 +291,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
@@ -331,7 +331,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -397,7 +397,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -439,7 +439,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **documents**: To-Many → Document (inverse: currency)
 - **parent**: To-One → Container (inverse: children)
@@ -536,7 +536,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -615,7 +615,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -677,7 +677,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -724,7 +724,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -771,7 +771,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -837,7 +837,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -895,7 +895,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -972,7 +972,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1048,6 +1048,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedBalance**: NSNumber
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
+- **category**: NSString
 - **checkSum**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
@@ -1070,6 +1071,9 @@ This document lists all entities with their attributes and relationships.
 - **payInterval**: NSNumber
 - **rate**: NSNumber
 - **reference**: NSString
+- **searchText**: NSString
+- **sourceInfo**: NSString
+- **sourceURI**: NSString
 - **subject**: NSString
 - **supplierID**: NSString
 - **supplierName**: NSString
@@ -1080,7 +1084,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1111,6 +1115,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedBalance**: NSNumber
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
+- **category**: NSString
 - **checkSum**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
@@ -1133,6 +1138,9 @@ This document lists all entities with their attributes and relationships.
 - **payInterval**: NSNumber
 - **rate**: NSNumber
 - **reference**: NSString
+- **searchText**: NSString
+- **sourceInfo**: NSString
+- **sourceURI**: NSString
 - **subject**: NSString
 - **supplierID**: NSString
 - **supplierName**: NSString
@@ -1143,7 +1151,74 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
+- **contact**: To-One → Contact (inverse: assignedDocuments)
+- **currency**: To-One → Currency (inverse: documents)
+- **customValues**: To-Many → CustomValue (inverse: document)
+- **deliveryContact**: To-One → Contact (inverse: assignedDeliveryDocuments)
+- **derivates**: To-Many → Base (inverse: source)
+- **documentLabels**: To-Many → DocumentLabel (inverse: documents)
+- **documents**: To-Many → Document (inverse: parentDocument)
+- **estimateLayout**: To-One → Layout (inverse: estimateDocuments)
+- **layout**: To-One → Layout (inverse: documents)
+- **metaValues**: To-Many → MetaValue (inverse: document)
+- **parent**: To-One → Container (inverse: children)
+- **parentDocument**: To-One → Document (inverse: documents)
+- **paymentType**: To-One → PaymentType (inverse: documents)
+- **source**: To-One → Base (inverse: derivates)
+- **statementLayout**: To-One → Layout (inverse: statementDocuments)
+- **storage**: To-One → SendableStorage (inverse: sendable)
+- **teamMember**: To-One → TeamMember (inverse: memberDocuments)
+
+---
+
+## InboundDraft
+
+**Inherits from:** InboundDocument → Sendable → Financial → Document → Container → Base
+
+### Attributes
+
+- **archived**: NSNumber
+- **cachedBalance**: NSNumber
+- **cachedCost**: NSNumber
+- **cachedCostWithTaxes**: NSNumber
+- **category**: NSString
+- **checkSum**: NSString
+- **completeMode**: NSNumber
+- **customRangeEnd**: NSDate
+- **customRangeStart**: NSDate
+- **customValuesJSON**: NSString
+- **dateCreation**: NSDate
+- **dateDue**: NSDate
+- **datePaid**: NSDate
+- **dateRead**: NSDate
+- **dateSent**: NSDate
+- **deliveryType**: NSNumber
+- **discount**: NSNumber
+- **doNotClone**: NSNumber
+- **footnote**: NSString
+- **internalReference**: NSString
+- **isDefault**: NSNumber
+- **lead**: NSString
+- **name**: NSString
+- **notes**: NSString
+- **payInterval**: NSNumber
+- **rate**: NSNumber
+- **reference**: NSString
+- **searchText**: NSString
+- **sourceInfo**: NSString
+- **sourceURI**: NSString
+- **subject**: NSString
+- **supplierID**: NSString
+- **supplierName**: NSString
+- **toDo**: NSNumber
+- **uid**: NSString
+- **useCustomRange**: NSNumber
+- **useGrossPrices**: NSNumber
+
+### Relationships
+
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1174,6 +1249,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedBalance**: NSNumber
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
+- **category**: NSString
 - **checkSum**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
@@ -1196,6 +1272,9 @@ This document lists all entities with their attributes and relationships.
 - **payInterval**: NSNumber
 - **rate**: NSNumber
 - **reference**: NSString
+- **searchText**: NSString
+- **sourceInfo**: NSString
+- **sourceURI**: NSString
 - **subject**: NSString
 - **supplierID**: NSString
 - **supplierName**: NSString
@@ -1206,7 +1285,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1251,7 +1330,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1314,7 +1393,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1360,7 +1439,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1398,7 +1477,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **costs**: To-Many → Cost (inverse: itemGroup)
 - **derivates**: To-Many → Base (inverse: source)
 - **importRules**: To-Many → ImportRule (inverse: itemGroup)
@@ -1430,7 +1509,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
@@ -1461,7 +1540,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **contacts**: To-Many → Contact (inverse: language)
 - **costs**: To-Many → Cost (inverse: language)
@@ -1554,7 +1633,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **document**: To-One → Document (inverse: metaValues)
 - **parent**: To-One → Container (inverse: children)
@@ -1586,7 +1665,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1632,7 +1711,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1677,7 +1756,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1741,7 +1820,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1788,7 +1867,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1831,7 +1910,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **documents**: To-Many → Document (inverse: paymentType)
 - **parent**: To-One → Container (inverse: children)
@@ -1882,7 +1961,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1948,7 +2027,7 @@ This document lists all entities with their attributes and relationships.
 ### Relationships
 
 - **childInvoices**: To-Many → Invoice (inverse: parentInvoice)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -1992,7 +2071,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
@@ -2050,7 +2129,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2096,7 +2175,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2140,7 +2219,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2199,7 +2278,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2282,7 +2361,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2320,7 +2399,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **parent**: To-One → Container (inverse: children)
 - **source**: To-One → Base (inverse: derivates)
@@ -2351,7 +2430,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2407,7 +2486,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2448,7 +2527,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **derivates**: To-Many → Base (inverse: source)
 - **itemGroups**: To-Many → ItemGroup (inverse: taxGroup)
 - **parent**: To-One → Container (inverse: children)
@@ -2542,7 +2621,7 @@ This document lists all entities with their attributes and relationships.
 
 - **assignedDeliveryDocuments**: To-Many → Document (inverse: deliveryContact)
 - **assignedDocuments**: To-Many → Document (inverse: contact)
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)
@@ -2588,7 +2667,7 @@ This document lists all entities with their attributes and relationships.
 
 ### Relationships
 
-- **children**: To-Many → Container (inverse: parent)
+- **children**: To-Many → Container (inverse: parent) — ordered; in create_records and the records format the key is `childs`, not `children`
 - **contact**: To-One → Contact (inverse: assignedDocuments)
 - **currency**: To-One → Currency (inverse: documents)
 - **customValues**: To-Many → CustomValue (inverse: document)

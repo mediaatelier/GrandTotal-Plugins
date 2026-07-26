@@ -55,3 +55,27 @@ GrandTotal injects `window.grandtotal` before `index.html` runs:
 - **grandtotal.getDefaults() / grandtotal.setDefaults(object)** — optional persistence per plugin (last used inputs), stored in the plugin's preferences.
 
 The HTML page is self-contained: no network access, no external resources.
+
+## Items and their order
+
+Besides `Cost`, a committed document can contain `Title`, `SubTotal`, `Note`, `PageBreak` and `SectionEnd` items. As soon as those are mixed in, `parent` no longer defines the order — records are created per entity, so all `Cost` items would end up together, followed by all `Title` items. Pass the order explicitly in the document's ordered `childs` relation instead and leave `parent` off the items:
+
+```javascript
+grandtotal.commit({
+    Estimate: [{
+        attributes: { uid: docUID, subject: subject },
+        relations: { childs: ["Cost/i1", "SubTotal/i2", "Title/i3", "Cost/i4", "SubTotal/i5"] }
+    }],
+    Cost: [
+        { attributes: { uid: "i1", name: "Concept", quantity: 1, unitPrice: 900 } },
+        { attributes: { uid: "i4", name: "Hosting", quantity: 1, unitPrice: 300, optional: 1 } }
+    ],
+    SubTotal: [
+        { attributes: { uid: "i2", name: "One-time" } },
+        { attributes: { uid: "i5", name: "Yearly" } }
+    ],
+    Title: [{ attributes: { uid: "i3", name: "Yearly" } }]
+});
+```
+
+A `SubTotal` sums everything above it back to the previous subtotal, including items flagged `optional` — those are left out of the document total but still add up in the subtotal. See [Records-Format.md](../Records-Format.md#document-items). The [Website](Website.grandtotalplugin/) plugin uses exactly this structure.

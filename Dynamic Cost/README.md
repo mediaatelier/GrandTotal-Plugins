@@ -33,3 +33,5 @@ notes	description of the item (optional)
 title 	title of the item (optional)
 ```
 
+
+See [Plugin-Anatomy.md](../Plugin-Anatomy.md) for the `Info.plist` keys, including the `Globals` settings the plugin is configured with.

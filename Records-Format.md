@@ -135,6 +135,71 @@ References resolve first against records in the same import, then against existi
 
 Records can reference each other regardless of their order in the file — relations are resolved in a second pass after all records exist.
 
+## Document Items
+
+Line items are records like any other. Besides `Cost` a document can hold these item types:
+
+| Entity | Item |
+| --- | --- |
+| `Cost` | Regular line item (`name`, `quantity`, `unitPrice`, `discount`, `unit`, `notes`, `optional`) |
+| `Title` | Heading that groups the items below it |
+| `SubTotal` | Subtotal line |
+| `Note` | Text-only line |
+| `PageBreak` | Page break |
+| `SectionEnd` | Ends a section started by a `Title` |
+
+`SubTotal` sums every item above it, back to the previous subtotal — a `Title` in between does not reset the sum. Items flagged `optional` are excluded from the document total but are still counted by the subtotal, which is what makes a block of recurring optional items add up to a visible figure.
+
+### Order
+
+An item attaches to its document through `parent`:
+
+```json
+{ "attributes": { "name": "Consulting" }, "relations": { "parent": "Invoice/inv-1" } }
+```
+
+That is enough as long as every item is a `Cost`. As soon as several item types are mixed, `parent` alone does **not** define the order: records are created per entity, so all `Cost` items end up together, followed by all `Title` items, and so on — regardless of how the arrays are sorted.
+
+For a defined order, list the items on the document in the ordered `childs` relation instead, and leave `parent` off the items:
+
+```json
+{
+  "entities": {
+    "Estimate": [
+      {
+        "attributes": { "uid": "est-1", "subject": "Website" },
+        "relations": {
+          "childs": [
+            "Cost/i1",
+            "Cost/i2",
+            "SubTotal/i3",
+            "Title/i4",
+            "Cost/i5",
+            "SubTotal/i6"
+          ]
+        }
+      }
+    ],
+    "Cost": [
+      { "attributes": { "uid": "i1", "name": "Concept", "quantity": 1, "unitPrice": 900 } },
+      { "attributes": { "uid": "i2", "name": "Design", "quantity": 1, "unitPrice": 1800 } },
+      { "attributes": { "uid": "i5", "name": "Hosting", "quantity": 1, "unitPrice": 300, "optional": 1 } }
+    ],
+    "SubTotal": [
+      { "attributes": { "uid": "i3", "name": "One-time" } },
+      { "attributes": { "uid": "i6", "name": "Yearly" } }
+    ],
+    "Title": [
+      { "attributes": { "uid": "i4", "name": "Yearly" } }
+    ]
+  }
+}
+```
+
+The items appear in exactly the order given in `childs`, and each item's `parent` is set implicitly.
+
+> **The relation is called `childs`.** [Entities.md](Entities.md) lists it as `children` — that is the name of the convenience accessor in the app, not of the relationship. In `relations` only `childs` resolves; `children` is silently ignored.
+
 ## Complete Example
 
 ```json

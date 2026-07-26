@@ -19,3 +19,5 @@ Not visible in the UI. Imports pasteboards from other apps and converts them to 
  Keep in mind, that if you grab NSStringPboardType, you will override the default implementation. Return an empty array to pass to the built in parser.
  
 
+
+See [Plugin-Anatomy.md](../Plugin-Anatomy.md) for the `Info.plist` keys and [Records-Format.md](../Records-Format.md#document-items) for the item types and their order.

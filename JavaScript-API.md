@@ -174,7 +174,7 @@ contentsOfPlist(path)                          // Parse plist
 ```javascript
 writeToURL(contents, url)                      // Write string/data to file
 writeCSVToURL(array, url, encoding, separator, lineBreak)
-writeXLSToURL(array, url)                      // Write Excel file
+writeXLSToURL(array, url)                      // Write Excel file (xlsx format — use .xlsx as extension)
 ```
 
 ### File Information
