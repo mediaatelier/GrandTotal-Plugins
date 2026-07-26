@@ -238,7 +238,11 @@ var STRINGS = {
 		leadMaint: " Optionale Wartung & Updates {0} % pro Jahr.",
 		leadHost: " Optionales Hosting im Tarif {0}.",
 		maintItem: "Wartung & Updates ({0} % pro Jahr)",
-		hostItem: "Hosting {0} (jährlich)"
+		hostItem: "Hosting {0} (jährlich)",
+		subtotalOnce: "Einmalig",
+		yearlyTitle: "Jährlich",
+		subtotalYearly: "Jährlich",
+		maintFirstYear: "Wartung 1. Jahr im Projekt enthalten"
 	},
 	en: {
 		title: "Website Project",
@@ -268,7 +272,11 @@ var STRINGS = {
 		leadMaint: " Optional maintenance & updates {0} % per year.",
 		leadHost: " Optional hosting on the {0} plan.",
 		maintItem: "Maintenance & updates ({0} % per year)",
-		hostItem: "Hosting {0} (yearly)"
+		hostItem: "Hosting {0} (yearly)",
+		subtotalOnce: "One-time",
+		yearlyTitle: "Yearly",
+		subtotalYearly: "Yearly",
+		maintFirstYear: "Maintenance for the first year included in the project"
 	}
 };
 
@@ -420,23 +428,46 @@ function doCommit() {
 	if (v.maintOn) lead += fmt(S.leadMaint, v.maintPct);
 	if (v.hostOn) lead += fmt(S.leadHost, S.tiers[v.tier].name);
 
-	var costs = [];
-	function add(attrs) { costs.push({ attributes: attrs, relations: { parent: docEntity + "/" + uid } }); }
+	/* Positionen entstehen typgemischt (Cost, SubTotal, Title). Die Reihenfolge im
+	   Dokument ergibt sich NICHT aus "parent" — dabei würden die Typen gruppiert.
+	   Sie kommt aus der geordneten Relation "childs" des Dokuments, deshalb sammelt
+	   order die Positionen in genau der Reihenfolge, in der sie erscheinen sollen. */
+	var items = { Cost: [], SubTotal: [], Title: [] };
+	var order = [];
+	var n = 0;
+	function add(entity, attrs) {
+		attrs.uid = uid + "-" + (++n);
+		items[entity].push({ attributes: attrs });
+		order.push(entity + "/" + attrs.uid);
+	}
 
 	v.services.forEach(function (s, i) {
-		if (s.on) add({ name: S.services[i], quantity: 1, unitPrice: s.price });
+		if (s.on) add("Cost", { name: S.services[i], quantity: 1, unitPrice: s.price });
 	});
-	// Optionale, jährlich wiederkehrende Zusätze — als optionale Positionen (zählen nicht in die Summe)
-	if (v.maintOn && r.maintAmt > 0) {
-		add({ name: fmt(S.maintItem, v.maintPct), quantity: 1, unitPrice: r.maintAmt, optional: 1 });
-	}
-	if (v.hostOn) {
-		add({ name: fmt(S.hostItem, S.tiers[v.tier].name), quantity: 1, unitPrice: r.hostAmt, optional: 1 });
+	add("SubTotal", { name: S.subtotalOnce });
+
+	// Jährlich wiederkehrende Zusätze — optionale Positionen: sie zählen nicht in die
+	// Dokumentsumme, werden von der Zwischensumme darunter aber ausgewiesen.
+	var hasYearly = (v.maintOn && r.maintAmt > 0) || v.hostOn;
+	if (hasYearly) {
+		add("Title", { name: S.yearlyTitle });
+		if (v.maintOn && r.maintAmt > 0) {
+			add("Cost", { name: fmt(S.maintItem, v.maintPct), quantity: 1, unitPrice: r.maintAmt, optional: 1 });
+		}
+		if (v.hostOn) {
+			add("Cost", { name: fmt(S.hostItem, S.tiers[v.tier].name), quantity: 1, unitPrice: r.hostAmt, optional: 1 });
+		}
+		add("SubTotal", { name: S.subtotalYearly });
+		// Das erste Wartungsjahr ist im Projekt enthalten: als Minusposition nach der
+		// Zwischensumme, damit diese weiter den regulären Jahresbetrag zeigt.
+		if (v.maintOn && r.maintAmt > 0) {
+			add("Cost", { name: S.maintFirstYear, quantity: 1, unitPrice: -r.maintAmt, optional: 1 });
+		}
 	}
 
 	var entities = {};
-	entities[docEntity] = [{ attributes: { uid: uid, subject: subject, lead: lead } }];
-	entities.Cost = costs;
+	entities[docEntity] = [{ attributes: { uid: uid, subject: subject, lead: lead }, relations: { childs: order } }];
+	Object.keys(items).forEach(function (k) { if (items[k].length) entities[k] = items[k]; });
 
 	if (window.grandtotal) grandtotal.commit(entities);
 }
