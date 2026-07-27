@@ -126,7 +126,8 @@ function timedEntries() {
 			aTagsLookup[aTagID] = aTag;
 		}
 		page++;
-	} while (aTags.length != 0);
+		// aTags may be an error object without length (e.g. rate limit) — only arrays continue the loop
+	} while (Array.isArray(aTags) && aTags.length != 0);
 
 	//// Expenses
 
@@ -142,7 +143,7 @@ function timedEntries() {
 			aUserLookup[aUserID] = aUser;
 		}
 		page++;
-	} while (aUsers.length != 0);
+	} while (Array.isArray(aUsers) && aUsers.length != 0);
 
 	for (aUserIndex in aUserLookup) {
 		aUser = aUserLookup[aUserIndex];
@@ -193,7 +194,7 @@ function timedEntries() {
 				}
 			}
 			page++;
-		} while (aEntries.length != 0 && page < 3);
+		} while (Array.isArray(aEntries) && aEntries.length != 0 && page < 3);
 	}
 
 	//// Time Entries
@@ -229,6 +230,16 @@ function timedEntries() {
 
 			var aReportError = errorText(aReport);
 			if (aReportError) {
+				// With partial results (e.g. rate limit mid-import) keep what we
+				// have: notify about the error and return the entries so far.
+				// Returning the error string instead would discard them.
+				if (result.length > 0) {
+					displayUserNotification(
+						"Clockify",
+						localize("Import incomplete. Only the entries fetched so far were imported.") + "\n" + aReportError
+					);
+					return result;
+				}
 				return aReportError;
 			}
 

@@ -3,3 +3,4 @@
 "Enter your clockify api key to allow access to your data. You can find the token in your clockify profile." = "Enter your clockify API key to allow access to your data. You can find the token in your clockify profile.";
 "Round to" = "Round to";
 "Minutes" = "Minutes";
+"Import incomplete. Only the entries fetched so far were imported." = "Import incomplete. Only the entries fetched so far were imported.";

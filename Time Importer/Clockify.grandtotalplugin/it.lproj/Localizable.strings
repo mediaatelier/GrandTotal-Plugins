@@ -3,3 +3,5 @@
 "Enter your clockify api key to allow access to your data. You can find the token in your clockify profile." = "Inserisci la tua chiave API di clockify per consentire l'accesso ai tuoi dati. Puoi trovare il token nel tuo profilo clockify.";
 "Your API key" = "La tua chiave API";
 "Minutes" = "Minuti";
+
+"Import incomplete. Only the entries fetched so far were imported." = "Importazione incompleta. Sono state importate solo le voci già caricate.";
