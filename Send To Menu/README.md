@@ -188,8 +188,11 @@ Send to AppName.grandtotalplugin/
 
 #### SendToMenu Dictionary
 - **ApplicationURL**: URL to target application's website
-- **ApplicationFileName**: Default filename for export
+- **ApplicationFileName**: Default filename for export; may contain `{period}` (GrandTotal 9.5+, see Date Ranges section)
 - **AskForFile**: If `true`, show save dialog; if `false` or omitted, use temp file
+- **DateRanges**: Array limiting the period popup, e.g. `["quarter", "month"]` (GrandTotal 9.5+, see Date Ranges section)
+- **DateMode**: Number presetting the date basis, `1` = payment date (GrandTotal 9.5+)
+- **CountFunction**: Function name for the dialog's count line; also opts the plugin into `receiveddocuments` (GrandTotal 9.5+, see Inbound Documents section)
 
 ## Settings (Globals)
 
@@ -228,15 +231,153 @@ var company = companyID;
 var account = debitAccount;
 ```
 
+## Date Ranges and Periods (Year, Half-Year, Quarter, Month)
+
+Plugins do **not** implement their own period picker. The send-to dialog that
+GrandTotal shows before running the plugin already contains one: a year field
+plus a range popup with the whole year, half-years, quarters and months. It
+also has a toggle for the date basis — invoice date (`dateSent`, accrual) or
+payment date (`datePaid`, cash basis). The user's choice filters the documents
+before they reach the plugin, so `invoices`/`creditnotes` only ever contain the
+selected period.
+
+What the plugin receives:
+
+- `mode` — `1` if the user filtered by payment date, otherwise the invoice
+  date was used. Use it to pick the matching date field when you need dates:
+  `var dateKey = (mode == 1) ? "datePaid" : "dateSent";`
+- `periodFrom` / `periodTill` (GrandTotal 9.5+) — the exact period boundaries
+  as `Date` values. On older versions these globals do not exist, so guard
+  them and fall back to the min/max document date:
+
+```javascript
+var pFrom = (typeof periodFrom !== "undefined" && periodFrom) ? new Date(periodFrom) : minDate;
+var pTill = (typeof periodTill !== "undefined" && periodTill) ? new Date(periodTill) : maxDate;
+```
+
+Related `SendToMenu` Info.plist keys (GrandTotal 9.5+):
+
+- `DateRanges` — array restricting which ranges the popup offers, e.g.
+  `["quarter", "month"]` for a VAT plugin with only monthly/quarterly filing.
+  Allowed values: `year`, `half-year`, `quarter`, `month`. Omit the key to
+  offer all of them.
+- `DateMode` — number presetting the date-basis toggle (`1` = payment date).
+- `ApplicationFileName` may contain the placeholder `{period}`, which
+  GrandTotal replaces with a label of the selected period (e.g. "2026
+  Quarter 1") in the save dialog: `<string>VAT Return {period}</string>`.
+
+For a complete real-world example see the built-in **MTDSheets** plugin
+(quarterly UK VAT return): it uses `mode`, `periodFrom`/`periodTill`, the
+`{period}` filename placeholder and signed credit-note handling.
+
+## Inbound Documents and the Count Line (GrandTotal 9.5+)
+
+A send-to plugin can also receive the **received (inbound) invoices** of the
+selected period — needed for VAT filings that report input VAT, not just
+sales. This is opt-in: declare a `CountFunction` in the `SendToMenu` dict:
+
+```xml
+<key>CountFunction</key>
+<string>sendToCount</string>
+```
+
+The key has two effects:
+
+**1. `receiveddocuments` global.** The export run receives the inbound
+documents of the period as an array. Each record carries the usual fields plus
+`supplierName`, `supplierID`, `category` and — when the document has an
+e-invoice — the original XML as string in `xml`. The array is only populated
+while the user's edition has the inbound-documents feature; otherwise it is
+empty. Always guard it:
+
+```javascript
+var received = (typeof receiveddocuments !== "undefined" && receiveddocuments) ? receiveddocuments : [];
+```
+
+Note: inbound documents are always filtered by invoice date (`dateSent`),
+regardless of the dialog's date-basis toggle — input VAT arises with the
+invoice, never with the payment (§ 15 UStG).
+
+**2. Live count line in the dialog.** Whenever the user changes year, range or
+date basis, GrandTotal calls the named function with `pluginType()` returning
+`"count"` (so the plugin's top-level dispatch must not run the export then).
+Available globals: `counts` — a dict with the document counts of the selected
+period (`invoices`, `payments`, `creditnotes`, `transcripts`,
+`receiveddocuments`) — and `mode`. Return a string; it is shown in the dialog:
+
+```javascript
+if (pluginType() == "sendtomenu") {
+    doExport();
+} else if (pluginType() != "count") {
+    showPluginSettings();
+}
+
+function sendToCount() {
+    var parts = [counts.invoices + " " + localize(counts.invoices == 1 ? "invoice" : "invoices")];
+    // Without the inbound feature GrandTotal always reports 0 — don't advertise then
+    if (counts.receiveddocuments > 0) {
+        parts.push(counts.receiveddocuments + " " + localize("received invoices"));
+    }
+    return parts.join(", ");
+}
+```
+
+For a complete real-world example see the built-in **Send to Steuererklärung**
+plugin (German UStVA): it combines `CountFunction`, `receiveddocuments`,
+`DateRanges` (quarter/month) and the period globals.
+
+## Result Dialog (Success/Error Feedback)
+
+The value of the last evaluated expression in `index.js` is the plugin's
+result. Return `undefined` for silent success, or an object to make GrandTotal
+show a dialog — useful for validation errors:
+
+```javascript
+var __result;
+if (pluginType() == "sendtomenu") {
+    __result = doExport();   // returns undefined or the error object below
+} else {
+    showPluginSettings();
+}
+
+function fail(message) {
+    return { "version": 2, "success": false, "title": localize("Save Failed"), "message": message };
+}
+
+__result;   // last expression = plugin result
+```
+
+If the destination filename ends in `.zip`, GrandTotal lets the plugin write
+into a temporary folder and zips it afterwards automatically. An
+`ApplicationFileName` without extension makes the save dialog target a folder —
+the plugin can then write several files into `url` (create it first with
+`createFolderAtURL(url)`).
+
 ## index.js Implementation
 
 ### Global Variables Available
 
 ```javascript
-items       // Array of selected documents/invoices
-url         // Destination URL for the exported file
+items            // Array of selected invoices (compatibility alias for invoices)
+invoices         // Array of selected invoices
+creditnotes      // Array of selected credit notes (subtract these from totals!)
+payments         // Array of selected payments
+transcripts      // Array of selected transcripts
+mode             // Date basis chosen in the dialog: 1 = payment date (datePaid), otherwise invoice date (dateSent)
+url              // Destination URL for the exported file
 PluginDirectory  // Path to plugin bundle
+
+// GrandTotal 9.5 and later — guard with typeof (see Date Ranges below):
+periodFrom       // Date: first day of the period selected in the dialog
+periodTill       // Date: last day of the period selected in the dialog
+profile          // The default sender profile as a record
+receiveddocuments // Array of received (inbound) invoices — opt-in, see Inbound Documents below
 ```
+
+Documents that lie outside the period selected in the send-to dialog are
+already filtered out — the arrays only contain what the user sees in the
+dialog's list. Credit notes arrive separately in `creditnotes`; a correct
+export subtracts their amounts (multiply by −1) instead of ignoring them.
 
 ### Global Functions Available
 
@@ -640,7 +781,13 @@ Check Console.app for log output.
 ## API Reference Summary
 
 ### Global Variables
-- `items` - Array of selected documents
+- `items` / `invoices` - Array of selected invoices
+- `creditnotes`, `payments`, `transcripts` - Further selected record arrays
+- `mode` - Date basis (1 = payment date, else invoice date)
+- `periodFrom` / `periodTill` - Selected period boundaries (9.5+, guard with `typeof`)
+- `profile` - Default sender profile (9.5+)
+- `receiveddocuments` - Inbound invoices, requires `CountFunction` (9.5+)
+- `counts` - Document counts per type, only during `"count"` runs (9.5+)
 - `url` - Destination file URL
 - `PluginDirectory` - Plugin bundle path
 - Settings from `Globals` (e.g., `companyID`, `accountNumber`)

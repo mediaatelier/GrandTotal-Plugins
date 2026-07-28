@@ -162,12 +162,16 @@ getPaidUIDs(prefix)                            // Get UIDs of paid costs
 ### Reading Files
 
 ```javascript
-contentsOfFile(path)                           // Read text file
+contentsOfFile(path)                           // Read text file (encoding is guessed)
 contentsOfDirectory(path)                      // List directory
 contentsOfCSVFile(path)                        // Parse CSV
 contentsOfXLSFile(path, sheetName)             // Parse Excel
 contentsOfPlist(path)                          // Parse plist
+readTextFile(path)                             // Read text file strictly as UTF-8, null on failure
 ```
+
+`readTextFile` never guesses the encoding — use it for XML parts inside container
+formats (xlsx/ods), where a misdetected encoding would corrupt non-ASCII text.
 
 ### Writing Files
 
@@ -175,7 +179,27 @@ contentsOfPlist(path)                          // Parse plist
 writeToURL(contents, url)                      // Write string/data to file
 writeCSVToURL(array, url, encoding, separator, lineBreak)
 writeXLSToURL(array, url)                      // Write Excel file (xlsx format — use .xlsx as extension)
+writeTextFile(contents, path)                  // Write string verbatim as UTF-8; returns 0 on success
 ```
+
+`writeTextFile` writes the bytes exactly as given and creates intermediate
+directories. Prefer it over `writeToURL` for `.xml` payloads: `writeToURL`
+post-processes XML (branding comment, empty-node cleanup), which would break
+strict formats such as the worksheet parts of an xlsx file. Returns `0` on
+success, an error code otherwise.
+
+### Zip Archives
+
+```javascript
+unzipFileToFolder(zipPath)                     // Unzip into a fresh temp folder, returns its path (null on failure)
+zipFolderToFile(folderPath, outPath)           // Zip the folder's CONTENTS (flat, no parent dir); returns 0 on success
+```
+
+Together these open container formats (xlsx, ods, numbers) for in-place
+editing: unzip, edit the internal XML parts, zip back. `zipFolderToFile` puts
+the folder's entries at the archive root — required for valid xlsx/ods files.
+See the built-in MTDSheets plugin for a complete example. Both functions accept
+plain paths or file URLs.
 
 ### File Information
 
