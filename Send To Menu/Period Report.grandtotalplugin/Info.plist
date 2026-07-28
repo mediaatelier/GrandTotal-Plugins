@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.mediaatelier.sendto.periodreport</string>
+
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+
+    <key>GrandTotalMinimumVersion</key>
+    <integer>9</integer>
+
+    <key>types</key>
+    <array>
+        <string>sendtomenu</string>
+    </array>
+
+    <key>SendToMenu</key>
+    <dict>
+        <key>ApplicationName</key>
+        <string>Period Report (Sample)</string>
+
+        <key>ApplicationIdentifiers</key>
+        <array>
+            <string>com.apple.TextEdit</string>
+        </array>
+
+        <key>ApplicationFileExtension</key>
+        <string>txt</string>
+
+        <!-- {period} is replaced with the selected period, e.g. "2026 Quarter 1" -->
+        <key>ApplicationFileName</key>
+        <string>Period Report {period}.txt</string>
+
+        <key>AskForFile</key>
+        <true/>
+
+        <!-- Restrict the period popup; omit the key to offer year/half-year/quarter/month -->
+        <key>DateRanges</key>
+        <array>
+            <string>quarter</string>
+            <string>month</string>
+        </array>
+
+        <!-- Names the count-line function in index.js AND opts the plugin
+             into receiving inbound documents (receiveddocuments) -->
+        <key>CountFunction</key>
+        <string>sendToCount</string>
+
+        <key>ApplicationMinimumVersion</key>
+        <string>1.0</string>
+    </dict>
+
+    <key>copyright</key>
+    <string>© 2026 Media Atelier</string>
+</dict>
+</plist>

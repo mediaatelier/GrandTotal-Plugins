@@ -198,8 +198,7 @@ zipFolderToFile(folderPath, outPath)           // Zip the folder's CONTENTS (fla
 Together these open container formats (xlsx, ods, numbers) for in-place
 editing: unzip, edit the internal XML parts, zip back. `zipFolderToFile` puts
 the folder's entries at the archive root — required for valid xlsx/ods files.
-See the built-in MTDSheets plugin for a complete example. Both functions accept
-plain paths or file URLs.
+Both functions accept plain paths or file URLs.
 
 ### File Information
 

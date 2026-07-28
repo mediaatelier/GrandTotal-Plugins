@@ -266,9 +266,10 @@ Related `SendToMenu` Info.plist keys (GrandTotal 9.5+):
   GrandTotal replaces with a label of the selected period (e.g. "2026
   Quarter 1") in the save dialog: `<string>VAT Return {period}</string>`.
 
-For a complete real-world example see the built-in **MTDSheets** plugin
-(quarterly UK VAT return): it uses `mode`, `periodFrom`/`periodTill`, the
-`{period}` filename placeholder and signed credit-note handling.
+For a small working example see
+[`Period Report.grandtotalplugin`](Period%20Report.grandtotalplugin/) in this
+folder: it uses `mode`, `periodFrom`/`periodTill` with the version guard, the
+`{period}` filename placeholder, `DateRanges` and signed credit-note handling.
 
 ## Inbound Documents and the Count Line (GrandTotal 9.5+)
 
@@ -322,9 +323,9 @@ function sendToCount() {
 }
 ```
 
-For a complete real-world example see the built-in **Send to Steuererklärung**
-plugin (German UStVA): it combines `CountFunction`, `receiveddocuments`,
-`DateRanges` (quarter/month) and the period globals.
+The [`Period Report.grandtotalplugin`](Period%20Report.grandtotalplugin/)
+sample in this folder combines `CountFunction`, `receiveddocuments`,
+`DateRanges` (quarter/month) and the period globals in about 100 lines.
 
 ## Result Dialog (Success/Error Feedback)
 
@@ -728,6 +729,7 @@ Send To Menu plugins support full localization. See the [main README Localizatio
 ## Complete Examples
 
 See these plugins for working implementations:
+- **Period Report.grandtotalplugin** - Small sample for periods, count line, inbound documents and the result dialog
 - **Send to MonKey Office.grandtotalplugin** - Tab-delimited export with template and settings
 - **Send to Receipts.grandtotalplugin** - Plist-only, no code required
 - **Send to Xero.grandtotalplugin** - Complex export with multiple settings
