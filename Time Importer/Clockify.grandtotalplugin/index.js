@@ -105,12 +105,16 @@ function timedEntries() {
 
 	var aWorkspaces = httpGetJSON("https://api.clockify.me/api/v1/workspaces/");
 	var aWorkspaceName = "";
+	var aWorkspaceHourlyRate = 0;
 
 	for (aWorkspaceIndex in aWorkspaces) {
 		var aWorkspace = aWorkspaces[aWorkspaceIndex];
 
 		if (aWorkspace["id"] == aWorkspaceID) {
 			aWorkspaceName = aWorkspace["name"];
+			if (aWorkspace["hourlyRate"]) {
+				aWorkspaceHourlyRate = aWorkspace["hourlyRate"]["amount"];
+			}
 		}
 	}
 
@@ -128,6 +132,117 @@ function timedEntries() {
 		page++;
 		// aTags may be an error object without length (e.g. rate limit) — only arrays continue the loop
 	} while (Array.isArray(aTags) && aTags.length != 0);
+
+	// Rate fallback for free plan workspaces: since 04/2026 the report API
+	// omits rate/costRate there entirely, while previously entered project
+	// rates are still readable via the v1 endpoints. Projects are loaded
+	// lazily (one bulk request) on the first entry without a rate, so paid
+	// plans cost no extra request. Tasks stay per-project requests — only
+	// fetched when the cascade is still empty (free plan budget: 30 req/h).
+	var aProjectLookup = null;
+
+	function projectForID(theProjectID) {
+		if (aProjectLookup == null) {
+			aProjectLookup = {};
+			var aProjectPage = 1;
+			do {
+				var aProjects = httpGetJSON(
+					"https://api.clockify.me/api/v1/workspaces/" +
+						aWorkspaceID +
+						"/projects?page-size=5000&page=" +
+						aProjectPage
+				);
+				for (var aProjectIndex in aProjects) {
+					var aProject = aProjects[aProjectIndex];
+					aProjectLookup[aProject["id"]] = aProject;
+				}
+				aProjectPage++;
+				// a partial page is the last one — saves the empty-page request
+			} while (Array.isArray(aProjects) && aProjects.length == 5000);
+		}
+		return aProjectLookup[theProjectID];
+	}
+
+	var aTasksLookup = {};
+	var aTasksLoadedForProject = {};
+
+	function taskForID(theProjectID, theTaskID) {
+		if (!aTasksLoadedForProject[theProjectID]) {
+			aTasksLoadedForProject[theProjectID] = true;
+			var aTasks = httpGetJSON(
+				"https://api.clockify.me/api/v1/workspaces/" +
+					aWorkspaceID +
+					"/projects/" +
+					theProjectID +
+					"/tasks?page-size=5000"
+			);
+			for (var aTasksIndex in aTasks) {
+				var aLoadedTask = aTasks[aTasksIndex];
+				aTasksLookup[aLoadedTask["id"]] = aLoadedTask;
+			}
+		}
+		return aTasksLookup[theTaskID];
+	}
+
+	function rateAmount(theRateDict) {
+		if (theRateDict && theRateDict["amount"]) {
+			return theRateDict["amount"];
+		}
+		return 0;
+	}
+
+	// Most specific cheap source wins: project member > project > task >
+	// workspace member > workspace. Task rates come after project rates
+	// (unlike Clockify's own precedence) because they cost one request per
+	// project — only worth it when everything cheaper resolved to 0.
+	// Returns {rate, costRate} in cents.
+	function fallbackRates(theEntry) {
+		var aResolved = { rate: 0, costRate: 0 };
+		var aProjectID = theEntry["projectId"];
+		var aEntryUser = aUserLookup[theEntry["userId"]];
+
+		if (aEntryUser) {
+			for (var aMembershipIndex in aEntryUser["memberships"]) {
+				var aMembership = aEntryUser["memberships"][aMembershipIndex];
+				if (aMembership["targetId"] == aProjectID) {
+					aResolved.rate = rateAmount(aMembership["hourlyRate"]);
+					aResolved.costRate = rateAmount(aMembership["costRate"]);
+				}
+				if (aMembership["membershipType"] == "WORKSPACE" && aResolved.costRate == 0) {
+					aResolved.costRate = rateAmount(aMembership["costRate"]);
+				}
+			}
+		}
+
+		if (aResolved.rate == 0 && aProjectID) {
+			var aProject = projectForID(aProjectID);
+			if (aProject) {
+				aResolved.rate = rateAmount(aProject["hourlyRate"]);
+			}
+		}
+
+		if (aResolved.rate == 0 && theEntry["taskId"] && aProjectID) {
+			var aTask = taskForID(aProjectID, theEntry["taskId"]);
+			if (aTask) {
+				aResolved.rate = rateAmount(aTask["hourlyRate"]);
+			}
+		}
+
+		if (aResolved.rate == 0 && aEntryUser) {
+			for (var aMembershipIndex in aEntryUser["memberships"]) {
+				var aMembership = aEntryUser["memberships"][aMembershipIndex];
+				if (aMembership["membershipType"] == "WORKSPACE") {
+					aResolved.rate = rateAmount(aMembership["hourlyRate"]);
+				}
+			}
+		}
+
+		if (aResolved.rate == 0) {
+			aResolved.rate = aWorkspaceHourlyRate;
+		}
+
+		return aResolved;
+	}
 
 	//// Expenses
 
@@ -274,8 +389,17 @@ function timedEntries() {
 
 				var aMinutes = Math.ceil(aSeconds / 60);
 				var aRate = 0;
-				if (aEntry["rate"]) {
+				var aCostRate = aEntry["costRate"] ? aEntry["costRate"] : 0;
+				if (aEntry["rate"] != null) {
 					aRate = aEntry["rate"] / 100;
+				} else {
+					// Free plan report: no rate field at all — resolve from
+					// project/membership/workspace rates instead.
+					var aResolved = fallbackRates(aEntry);
+					aRate = aResolved.rate / 100;
+					if (aCostRate == 0) {
+						aCostRate = aResolved.costRate;
+					}
 				}
 
 				aTagNames = [];
@@ -295,7 +419,7 @@ function timedEntries() {
 				aItem["minutes"] = aMinutes;
 				aItem["category"] = aEntry["taskName"] ? aEntry["taskName"] : "";
 				aItem["cost"] = (aRate * aMinutes) / 60;
-				aItem["costPrice"] = aEntry["costRate"] ? aEntry["costRate"] / 100 : 0;
+				aItem["costPrice"] = aCostRate / 100;
 
 				if (aMinutes > 0 && roundTo > 0) {
 					aRate = aItem["cost"] / (aMinutes / 60);
