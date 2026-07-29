@@ -54,7 +54,7 @@ GrandTotal injects `window.grandtotal` before `index.html` runs:
 - **grandtotal.setModal(bool)** — disable both native buttons while an in-page overlay is open; pass `false` when it closes.
 - **grandtotal.getDefaults() / grandtotal.setDefaults(object)** — optional persistence per plugin (last used inputs), stored in the plugin's preferences.
 
-The HTML page is self-contained: no network access, no external resources.
+The HTML page must work offline: embed all styles, scripts and data (e.g. price tables) in the bundle — no external resources needed at load time. Network is not blocked, though: the page is loaded via `loadFileURL` (origin `null`), so `fetch()` works against CORS-permissive endpoints (`Access-Control-Allow-Origin: *`). Use it only as an optional enhancement — say, refreshing an embedded price list from a supplier catalog — never as a requirement for the form to function.
 
 ## Items and their order
 
