@@ -37,6 +37,7 @@ A symlink into that folder works too, which is the convenient way to develop a p
 | [Pasteboard](Pasteboard/README.md) | `pasteItems` | Pasting from other apps |
 | [Overview](Overview/README.md) | `overview`, `statistics` | Overview → Plugins |
 | [Plugins Menu](Plugins%20Menu/README.md) | `pluginsmenu` | Plugins menu |
+| [Agent](Agent/README.md) | `agent` | Ask GrandTotal (Web Access, on the phone) |
 
 Type names are matched case-insensitively. See the respective directories for detailed documentation on each plugin type.
 

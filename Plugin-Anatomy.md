@@ -95,6 +95,7 @@ A symlink into that folder is enough — GrandTotal resolves symlinks and aliase
 | `APIKeyURL` | Migration, importers | URL of the page where the user finds their API key. |
 | `TimeImporterEntryURLTemplate` | Time importer | Template for the deep link back to the imported entry. |
 | `menuValidationKeyPath` | Menu plugins | Key path on the selection deciding whether the menu item is enabled. |
+| `AgentModelPlaceholder` | Agent | The plugin takes a model: the MCP server settings (Ask GrandTotal) show a Model field with this default as placeholder, passed as `options.model`. See [Agent/README.md](Agent/README.md). |
 
 ## Settings fields (`Globals`)
 
@@ -144,6 +145,7 @@ Unless a type says otherwise, the whole script is evaluated and the work happens
 | `e-invoice` | E-invoice generation | see [E-Invoice/README.md](E-Invoice/README.md) | XML / file |
 | `paymentlink` | Payment link on the layout | see [Payment Links/README.md](Payment%20Links/README.md) | Link |
 | `overview`, `statistics` | Overview → Plugins | HTML UI | — |
+| `agent` | Ask GrandTotal (Web Access, on the phone) | `detect()`, `command(options)`, `parseLine(line)` — in a plain context without records, see [Agent/README.md](Agent/README.md) | CLI path; command line; events |
 
 ## Notes
 
