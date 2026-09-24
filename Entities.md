@@ -51,6 +51,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **comment**: NSString
 - **costPrice**: NSNumber
 - **customValuesJSON**: NSString
@@ -116,6 +117,7 @@ This document lists all entities with their attributes and relationships.
 - **checkSum**: NSString
 - **city**: NSString
 - **clientID**: NSString
+- **color**: NSString
 - **countryCode**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
@@ -186,6 +188,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **doNotClone**: NSNumber
 - **isDefault**: NSNumber
 - **name**: NSString
@@ -215,6 +218,7 @@ This document lists all entities with their attributes and relationships.
 - **checkSum**: NSString
 - **city**: NSString
 - **clientID**: NSString
+- **color**: NSString
 - **countryCode**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
@@ -283,6 +287,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **doNotClone**: NSNumber
 - **isDefault**: NSNumber
 - **name**: NSString
@@ -306,6 +311,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **costPrice**: NSNumber
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
@@ -366,6 +372,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -428,6 +435,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **checkSum**: NSString
 - **code**: NSString
+- **color**: NSString
 - **doNotClone**: NSNumber
 - **format**: NSString
 - **isDefault**: NSNumber
@@ -520,6 +528,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -587,6 +596,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **cost**: NSNumber
 - **costPrice**: NSNumber
 - **customValuesJSON**: NSString
@@ -650,6 +660,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -706,6 +717,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -753,6 +765,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -821,6 +834,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -868,6 +882,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -954,6 +969,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1050,6 +1066,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCostWithTaxes**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1117,6 +1134,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCostWithTaxes**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1184,6 +1202,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCostWithTaxes**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1251,6 +1270,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCostWithTaxes**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1314,6 +1334,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1362,6 +1383,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1423,6 +1445,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1468,6 +1491,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **doNotClone**: NSNumber
 - **isDefault**: NSNumber
 - **name**: NSString
@@ -1496,6 +1520,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **data**: NSData
 - **date**: NSDate
 - **doNotClone**: NSNumber
@@ -1524,6 +1549,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1620,6 +1646,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **data**: NSData
 - **date**: NSDate
 - **doNotClone**: NSNumber
@@ -1649,6 +1676,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1694,6 +1722,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1740,6 +1769,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1788,6 +1818,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1851,6 +1882,7 @@ This document lists all entities with their attributes and relationships.
 - **amount**: NSNumber
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -1897,6 +1929,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **bic**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **conditions**: NSData
 - **doNotClone**: NSNumber
 - **excludeFromDirectDebit**: NSNumber
@@ -1929,6 +1962,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -1994,6 +2028,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -2058,6 +2093,7 @@ This document lists all entities with their attributes and relationships.
 - **archived**: NSNumber
 - **category**: NSString
 - **checkSum**: NSString
+- **color**: NSString
 - **data**: NSData
 - **date**: NSDate
 - **doNotClone**: NSNumber
@@ -2090,6 +2126,7 @@ This document lists all entities with their attributes and relationships.
 - **checkSum**: NSString
 - **city**: NSString
 - **clientID**: NSString
+- **color**: NSString
 - **countryCode**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
@@ -2158,6 +2195,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -2203,6 +2241,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -2251,6 +2290,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -2333,6 +2373,7 @@ This document lists all entities with their attributes and relationships.
 - **cachedCost**: NSNumber
 - **cachedCostWithTaxes**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **completeMode**: NSNumber
 - **customRangeEnd**: NSDate
 - **customRangeStart**: NSDate
@@ -2390,6 +2431,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **doNotClone**: NSNumber
 - **isDefault**: NSNumber
 - **name**: NSString
@@ -2414,6 +2456,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
@@ -2459,6 +2502,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **costPrice**: NSNumber
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
@@ -2518,6 +2562,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **doNotClone**: NSNumber
 - **isDefault**: NSNumber
 - **name**: NSString
@@ -2581,6 +2626,7 @@ This document lists all entities with their attributes and relationships.
 - **checkSum**: NSString
 - **city**: NSString
 - **clientID**: NSString
+- **color**: NSString
 - **countryCode**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
@@ -2651,6 +2697,7 @@ This document lists all entities with their attributes and relationships.
 
 - **archived**: NSNumber
 - **checkSum**: NSString
+- **color**: NSString
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
