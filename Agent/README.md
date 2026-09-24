@@ -1,12 +1,12 @@
 # Agent Plugins for GrandTotal
 
-An agent plugin powers **Ask GrandTotal**: it connects GrandTotal's Web Access to an AI agent that runs as a command-line program on the Mac. A question typed (or dictated with the keyboard's microphone) in the **Ask GrandTotal** tab of the web app on the phone goes to the Mac; GrandTotal starts the agent CLI headless, and the agent works on the document **only** through GrandTotal's built-in MCP server, with a token that is issued for this one conversation. The plugin is the adapter: it finds the CLI, builds its command line and translates its output into events for the page.
+An agent plugin powers **Ask GrandTotal**: it connects GrandTotal to an AI agent that runs as a command-line program on the Mac. A question typed in the **Ask GrandTotal** window of a document goes to the agent: GrandTotal starts the agent CLI headless, and the agent works on the document **only** through GrandTotal's built-in MCP server, with a token that is issued for this one conversation. The plugin is the adapter: it finds the CLI, builds its command line and translates its output into events for the window.
 
 ## Key Characteristics
 
 - **Type**: `agent`
-- **Where it appears**: the **Ask GrandTotal** popup in the MCP server settings of a document, and the Ask GrandTotal tab of the web app on the phone
-- **Not gated on the plugin licence**: agents belong to Web Access, like the web app itself. They need GrandTotal's MCP server — the feature, the server running, and the document's MCP access not set to "none"
+- **Where it appears**: the **Ask GrandTotal** popup in the MCP server settings of a document, and View › Ask GrandTotal (⇧⌘K) or the sparkles button next to the search field
+- **Not gated on the plugin licence**: agents need GrandTotal's MCP server — the feature, the server running, and the document's MCP access not set to "none"
 - **No records, no document in the script**: the plugin runs in a plain JavaScript context with a handful of globals (below). It never touches data — the agent does, through MCP
 - **Sample**: [Goose (Ollama)](Goose%20(Ollama).grandtotalplugin/) — a local model in Ollama, driven by [Goose](https://github.com/block/goose). Written from the Goose sources, not run against a real Goose and Ollama: a starting point, not a tested adapter
 
@@ -18,18 +18,17 @@ In GrandTotal, open the document's settings → **MCP Server**. The **Ask GrandT
 - **Model**: only for a plugin whose `Info.plist` declares `AgentModelPlaceholder`. The value is passed to `command()` as `options.model`; empty means the plugin's default, shown as placeholder.
 - **Test**: runs the chosen agent once, read-only, with a fixed question.
 
-What a run may do is the document's MCP permission combined with the phone's **Allow changes** switch:
+What a run may do follows the document's MCP permission:
 
-| MCP server of the document | Device may change | Run |
-| --- | --- | --- |
-| Off | any | no agent |
-| Read only | any | read-only |
-| Full | no | read-only |
-| Full | yes | full |
+| MCP server of the document | Run |
+| --- | --- |
+| Off | no agent |
+| Read only | read-only |
+| Full | full |
 
 ## Conversations
 
-The questions of one device about one document are a **conversation**. It keeps its scoped token, a private folder (0700) that is the CLI's working directory for every run, and the CLI's own session id. It ends when the page starts a new conversation, after 30 minutes without a question, when the agent or the access level changes, when the device is removed, or when GrandTotal quits — then the token is revoked and the folder deleted.
+The questions about one document are a **conversation**. It keeps its scoped token, a private folder (0700) that is the CLI's working directory for every run, and the CLI's own session id. It ends with **New conversation**, after 30 minutes without a question, when the agent or the access level changes, or when GrandTotal quits — then the token is revoked and the folder deleted.
 
 The token only works for this one document, only for the tools of its access level, and only while the conversation lives. A read-only run does not even see `create_records`. In a full run the agent creates drafts only (never `dateSent`), and it may change and delete only the records it created in this conversation. The MCP server enforces all of this itself; the plugin's allow lists are the second lock.
 
@@ -122,7 +121,7 @@ Returns the command of one run:
 
 | Option | Meaning |
 | --- | --- |
-| `prompt` | The question from the phone. |
+| `prompt` | The question. |
 | `instructions` | What GrandTotal tells the agent: the document, tools only, answer short in the language of the question, read-only or not. Pass it as the CLI's system prompt or ahead of the prompt. |
 | `executable` | What `detect()` found. |
 | `mcpServerName` | `"grandtotal"`. |
@@ -147,7 +146,7 @@ Called for every line the CLI writes to stdout. Returns `null`, one event or an 
 | `{type: "tool", tool, detail}` | A tool call: `tool` is the MCP tool's name without prefixes, `detail` its arguments as JSON. |
 | `{type: "result", text, cost}` | The final answer (`cost` optional). |
 | `{type: "error", text}` | The end without an answer. |
-| `{type: "session", id}` | Not shown on the phone. GrandTotal keeps `id` (up to 200 characters) with the conversation and passes it as `options.sessionId` to the next run. Emit it once the CLI's session exists and can be resumed. |
+| `{type: "session", id}` | Not shown. GrandTotal keeps `id` (up to 200 characters) with the conversation and passes it as `options.sessionId` to the next run. Emit it once the CLI's session exists and can be resumed. |
 
 Emit exactly one `result` or `error` at the end. If neither comes, GrandTotal ends the run with the tail of the CLI's stderr as the error — a CLI that is not logged in usually says so there.
 
@@ -177,4 +176,4 @@ function parseLine(line) {
 
 ## Testing
 
-Choose the agent in the MCP server settings (**Ask GrandTotal**) and click **Test**: one read-only run with a fixed question; the answer or the error comes up in an alert. Then ask from the phone. `log()` output and GrandTotal's own messages about the run appear in Console.app.
+Choose the agent in the MCP server settings (**Ask GrandTotal**) and click **Test**: one read-only run with a fixed question; the answer or the error comes up in an alert. Then ask in the Ask GrandTotal window. `log()` output and GrandTotal's own messages about the run appear in Console.app.

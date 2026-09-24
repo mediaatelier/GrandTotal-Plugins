@@ -145,7 +145,7 @@ Unless a type says otherwise, the whole script is evaluated and the work happens
 | `e-invoice` | E-invoice generation | see [E-Invoice/README.md](E-Invoice/README.md) | XML / file |
 | `paymentlink` | Payment link on the layout | see [Payment Links/README.md](Payment%20Links/README.md) | Link |
 | `overview`, `statistics` | Overview → Plugins | HTML UI | — |
-| `agent` | Ask GrandTotal (Web Access, on the phone) | `detect()`, `command(options)`, `parseLine(line)` — in a plain context without records, see [Agent/README.md](Agent/README.md) | CLI path; command line; events |
+| `agent` | Ask GrandTotal (View › Ask GrandTotal) | `detect()`, `command(options)`, `parseLine(line)` — in a plain context without records, see [Agent/README.md](Agent/README.md) | CLI path; command line; events |
 
 ## Notes
 
