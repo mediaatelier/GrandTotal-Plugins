@@ -8,7 +8,7 @@ An agent plugin powers **Ask GrandTotal**: it connects GrandTotal's Web Access t
 - **Where it appears**: the **Ask GrandTotal** popup in the MCP server settings of a document, and the Ask GrandTotal tab of the web app on the phone
 - **Not gated on the plugin licence**: agents belong to Web Access, like the web app itself. They need GrandTotal's MCP server — the feature, the server running, and the document's MCP access not set to "none"
 - **No records, no document in the script**: the plugin runs in a plain JavaScript context with a handful of globals (below). It never touches data — the agent does, through MCP
-- **Built-in adapters**: Claude Code, Codex and Gemini CLI ship with GrandTotal. Their `index.js` headers describe the exact command lines and are the best further reference
+- **Built-in adapters**: Claude Code and Codex ship with GrandTotal. Their `index.js` headers describe the exact command lines and are the best further reference
 - **Sample**: [Goose (Ollama)](Goose%20(Ollama).grandtotalplugin/) — a local model in Ollama, driven by [Goose](https://github.com/block/goose). Written from the Goose sources, not run against a real Goose and Ollama: a starting point, not a tested adapter
 
 ## Choosing the Agent
