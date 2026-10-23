@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.terminalpayment.sumup</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>API Key</string>
+			<key>name</key>
+			<string>apiKey</string>
+			<key>type</key>
+			<string>password</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Affiliate Key</string>
+			<key>name</key>
+			<string>affiliateKey</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>App ID</string>
+			<key>name</key>
+			<string>appID</string>
+			<key>placeholder</key>
+			<string>com.mediaatelier.GrandTotal3</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Pairing code</string>
+			<key>name</key>
+			<string>pairingCode</string>
+			<key>placeholder</key>
+			<string>Shown on the Solo when pairing</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Reader name</string>
+			<key>name</key>
+			<string>readerName</string>
+			<key>placeholder</key>
+			<string>Optional</string>
+			<key>type</key>
+			<string>string</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>SumUp developer settings</string>
+			<key>type</key>
+			<string>link</string>
+			<key>url</key>
+			<string>https://me.sumup.com</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>SumUp Info</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>10</integer>
+	<key>copyright</key>
+	<string>© 2026 Stefan Fürst</string>
+	<key>displayNames</key>
+	<dict>
+		<key>terminalpayment</key>
+		<string>SumUp</string>
+	</dict>
+	<key>mainFunction</key>
+	<string>pay</string>
+	<key>types</key>
+	<array>
+		<string>terminalpayment</string>
+	</array>
+</dict>
+</plist>

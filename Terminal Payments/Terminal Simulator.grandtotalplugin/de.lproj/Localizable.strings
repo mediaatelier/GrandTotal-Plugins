@@ -1,0 +1,7 @@
+"Terminal Simulator" = "Terminal-Simulator";
+"Decline the card" = "Karte ablehnen";
+"Pretends to take a card payment at a terminal. Nothing is charged." = "Tut so, als würde eine Kartenzahlung an einem Terminal laufen. Es wird nichts belastet.";
+"Connecting to the terminal…" = "Verbinde mit dem Terminal …";
+"Present the card on the terminal…" = "Karte an das Terminal halten …";
+"Processing…" = "Wird verarbeitet …";
+"The card was declined." = "Die Karte wurde abgelehnt.";

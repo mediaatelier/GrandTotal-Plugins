@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.terminalpayment.simulator</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>Decline the card</string>
+			<key>name</key>
+			<string>declineCard</string>
+			<key>type</key>
+			<string>boolean</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Pretends to take a card payment at a terminal. Nothing is charged.</string>
+	<key>GrandTotalMinimumVersion</key>
+	<integer>10</integer>
+	<key>copyright</key>
+	<string>© 2026 Stefan Fürst</string>
+	<key>displayNames</key>
+	<dict>
+		<key>terminalpayment</key>
+		<string>Terminal Simulator</string>
+	</dict>
+	<key>mainFunction</key>
+	<string>pay</string>
+	<key>types</key>
+	<array>
+		<string>terminalpayment</string>
+	</array>
+</dict>
+</plist>

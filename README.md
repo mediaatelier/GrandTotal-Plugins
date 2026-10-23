@@ -25,6 +25,7 @@ A symlink into that folder works too, which is the convenient way to develop a p
 | [Send To Menu](Send%20To%20Menu/README.md) | `sendtomenu` | File → Send to |
 | [E-Invoice](E-Invoice/README.md) | `e-invoice` | Electronic invoice generation |
 | [Payment Links](Payment%20Links/README.md) | `paymentlink` | Payment link and QR code on the invoice |
+| [Terminal Payments](Terminal%20Payments/README.md) | `terminalpayment` | Context menu of an open invoice — card payment at a terminal |
 | [Document Templates](Document%20Templates/README.md) | `documenttemplate` | File → New Document (HTML form creating a draft) |
 | [Document Numbering](Document%20Numbering/README.md) | `documentnumbering` | When a document number is generated |
 | [Dynamic Cost](Dynamic%20Cost/README.md) | `dynamiccost` | Calculated item inside a document |

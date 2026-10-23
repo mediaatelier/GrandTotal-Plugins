@@ -1,0 +1,17 @@
+"SumUp" = "SumUp";
+"API Key" = "API-Schlüssel";
+"Affiliate Key" = "Affiliate Key";
+"Pairing code" = "Kopplungscode";
+"Shown on the Solo when pairing" = "Zeigt der Solo beim Koppeln an";
+"Reader name" = "Name des Lesegeräts";
+"Optional" = "Optional";
+"SumUp developer settings" = "SumUp-Konto";
+"SumUp Info" = "Kartenzahlungen auf einem SumUp Solo. Im SumUp-Konto unter Einstellungen › Für Entwickler › Toolkit einen API-Schlüssel und einen Affiliate Key anlegen und die App-ID des Keys eintragen (leer: com.mediaatelier.GrandTotal3). Zum Koppeln den Code eintragen, den der Solo unter Verbindungen › API › Verbinden anzeigt.";
+"Connecting to SumUp…" = "Verbinde mit SumUp …";
+"Pairing the reader…" = "Lesegerät wird gekoppelt …";
+"The reader could not be paired. Pair it again with a new code." = "Das Lesegerät konnte nicht gekoppelt werden. Bitte mit einem neuen Code nochmals koppeln.";
+"Enter the API key and the Affiliate Key in the plugin settings." = "Bitte API-Schlüssel und Affiliate Key in den Plugin-Einstellungen eintragen.";
+"No paired reader. Enter the pairing code shown on the Solo in the plugin settings." = "Kein Lesegerät gekoppelt. Bitte den Code, den der Solo anzeigt, in den Plugin-Einstellungen eintragen.";
+"Present the card on the reader…" = "Karte an das Lesegerät halten …";
+"The payment failed at the reader." = "Die Zahlung ist am Lesegerät fehlgeschlagen.";
+"App ID" = "App-ID";
