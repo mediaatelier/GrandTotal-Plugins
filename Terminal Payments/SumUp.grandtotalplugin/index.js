@@ -150,11 +150,13 @@ function pay()
 		var status = transaction.error ? "PENDING" : transaction.status;
 		if (status == "SUCCESSFUL")
 		{
+			// the card as a receipt shows it: SumUp gives the last four digits only
+			var card = transaction.card && transaction.card.last_4_digits ? " · " + (transaction.card.type ? transaction.card.type + " " : "") + "•••• " + transaction.card.last_4_digits : "";
 			return {
 				status: "paid",
 				amount: transaction.amount,
 				date: new Date(transaction.timestamp),
-				notes: "SumUp " + transaction.transaction_code
+				notes: "SumUp " + transaction.transaction_code + card
 			};
 		}
 		if (status == "FAILED")
