@@ -104,7 +104,7 @@ function pay()
 	var found = pairedReader(merchant.code);
 	if (found.error)
 	{
-		return failed(found.error);
+		return failed(found.error, found.httpError == 401);
 	}
 	if (!found.reader)
 	{
@@ -131,7 +131,7 @@ function pay()
 	});
 	if (checkout.error)
 	{
-		return failed(checkout.error);
+		return failed(checkout.error, checkout.httpError == 401);
 	}
 	var transactionID = checkout.data.client_transaction_id;
 	setStatus(localize("Present the card on the reader…"));
