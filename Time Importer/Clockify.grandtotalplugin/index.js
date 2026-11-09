@@ -106,6 +106,9 @@ function timedEntries() {
 	var aWorkspaces = httpGetJSON("https://api.clockify.me/api/v1/workspaces/");
 	var aWorkspaceName = "";
 	var aWorkspaceHourlyRate = 0;
+	// FREE, BASIC, STANDARD, PRO, ENTERPRISE … — only "free or not" matters
+	// here, the names of the paid plans changed over time
+	var aWorkspacePlan = "";
 
 	for (aWorkspaceIndex in aWorkspaces) {
 		var aWorkspace = aWorkspaces[aWorkspaceIndex];
@@ -114,6 +117,9 @@ function timedEntries() {
 			aWorkspaceName = aWorkspace["name"];
 			if (aWorkspace["hourlyRate"]) {
 				aWorkspaceHourlyRate = aWorkspace["hourlyRate"]["amount"];
+			}
+			if (typeof aWorkspace["featureSubscriptionType"] == "string") {
+				aWorkspacePlan = aWorkspace["featureSubscriptionType"].toUpperCase();
 			}
 		}
 	}
@@ -316,20 +322,43 @@ function timedEntries() {
 	//
 	// Fetched via the detailed report, which delivers project, client, task,
 	// user and rates inline — no per-project lookups needed. The free plan
-	// only accepts report ranges up to 30 days, so the 180 day window is
-	// requested in 30 day chunks. Chunk borders may overlap by one entry,
-	// hence the dedup via aSeenUIDs.
+	// only accepts report ranges up to 30 days, so there the period is
+	// requested in 30 day chunks; paid plans get it in chunks of a year.
+	// A long chunk the API refuses (plan unknown or not what it says) is
+	// split into 30 day chunks and requested again. Chunk borders may overlap
+	// by one entry, hence the dedup via aSeenUIDs.
+	//
+	// Period: 180 days on the free plan (its request budget is 30 per hour)
+	// and 365 days on paid plans. Until 3.3 it was 180 days for everyone
+	// (Nov 2026: a Pro workspace missed everything older than six months).
 
-	var aChunkDays = 30;
-	var aChunkCount = 6;
+	var aIsFreePlan = aWorkspacePlan == "" || aWorkspacePlan == "FREE";
+	var aShortChunkDays = 30;
+	var aPeriodDays = aIsFreePlan ? 180 : 365;
 	var aPageSize = 1000;
 	var aDayMillis = 24 * 60 * 60 * 1000;
 	var aNow = new Date();
 	var aSeenUIDs = {};
 
-	for (var aChunkIndex = 0; aChunkIndex < aChunkCount; aChunkIndex++) {
-		var aChunkEnd = new Date(aNow.getTime() - aChunkIndex * aChunkDays * aDayMillis);
-		var aChunkStart = new Date(aChunkEnd.getTime() - aChunkDays * aDayMillis);
+	function chunksBetween(theStart, theEnd, theDays) {
+		var aChunks = [];
+		var aChunkEnd = theEnd;
+		while (aChunkEnd > theStart) {
+			var aChunkStart = new Date(Math.max(theStart.getTime(), aChunkEnd.getTime() - theDays * aDayMillis));
+			aChunks.push({ start: aChunkStart, end: aChunkEnd });
+			aChunkEnd = aChunkStart;
+		}
+		return aChunks;
+	}
+
+	var aPeriodStart = new Date(aNow.getTime() - aPeriodDays * aDayMillis);
+	var aChunks = chunksBetween(aPeriodStart, aNow, aIsFreePlan ? aShortChunkDays : 365);
+
+	while (aChunks.length > 0) {
+		var aChunk = aChunks.shift();
+		var aChunkStart = aChunk.start;
+		var aChunkEnd = aChunk.end;
+		var aChunkIsLong = aChunkEnd.getTime() - aChunkStart.getTime() > aShortChunkDays * aDayMillis;
 
 		var page = 1;
 		do {
@@ -344,6 +373,12 @@ function timedEntries() {
 			);
 
 			var aReportError = errorText(aReport);
+			if (aReportError && aChunkIsLong && page == 1) {
+				// refused as too long: the same range again in 30 day chunks
+				aChunks = chunksBetween(aChunkStart, aChunkEnd, aShortChunkDays).concat(aChunks);
+				aEntries = [];
+				break;
+			}
 			if (aReportError) {
 				// With partial results (e.g. rate limit mid-import) keep what we
 				// have: notify about the error and return the entries so far.
@@ -436,7 +471,7 @@ function timedEntries() {
 				result.push(aItem);
 			}
 			page++;
-		} while (aEntries.length == aPageSize && page < 20);
+		} while (aEntries.length == aPageSize && page <= 250);
 	}
 
 	return result;
