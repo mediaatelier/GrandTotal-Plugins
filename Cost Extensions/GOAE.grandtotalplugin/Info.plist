@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.goae</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>copyright</key>
+	<string>© 2026 Stefan Fürst</string>
+	<key>FeatureIdentifier</key>
+	<string>GTFeatureCostPlugins</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>10</real>
+	<key>types</key>
+	<array>
+		<string>CostExtension</string>
+	</array>
+	<key>displayNames</key>
+	<dict>
+		<key>costextension</key>
+		<string>name</string>
+	</dict>
+	<key>CellNib</key>
+	<string>GOAECell</string>
+	<key>PlaceholdersPrefix</key>
+	<string>goae</string>
+	<key>Placeholders</key>
+	<dict>
+		<key>cost</key>
+		<dict>
+			<key>label</key>
+			<string>GOÄ</string>
+			<key>rows</key>
+			<array>
+				<dict>
+					<key>label</key>
+					<string>Faktor</string>
+					<key>items</key>
+					<array>
+						<dict><key>key</key><string>factor</string><key>type</key><string>Number</string></dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>CostFields</key>
+	<dict>
+		<key>rows</key>
+		<array>
+			<dict><key>items</key><array>
+				<dict><key>key</key><string>ziffer</string><key>bind</key><string>itemNumber</string><key>type</key><string>string</string><key>placement</key><string>column</string><key>order</key><integer>10</integer></dict>
+				<dict><key>key</key><string>einfachsatz</string><key>bind</key><string>unitPrice</string><key>type</key><string>number</string><key>suffix</key><string>€</string><key>placement</key><string>column</string><key>order</key><integer>20</integer></dict>
+				<dict><key>key</key><string>factor</string><key>label</key><string>factor</string><key>type</key><string>number</string><key>suffix</key><string>×</string><key>default</key><string>1</string><key>placement</key><string>column</string><key>order</key><integer>30</integer></dict>
+			</array></dict>
+		</array>
+	</dict>
+</dict>
+</plist>
