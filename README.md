@@ -29,6 +29,7 @@ A symlink into that folder works too, which is the convenient way to develop a p
 | [Document Templates](Document%20Templates/README.md) | `documenttemplate` | File → New Document (HTML form creating a draft) |
 | [Document Numbering](Document%20Numbering/README.md) | `documentnumbering` | When a document number is generated |
 | [Dynamic Cost](Dynamic%20Cost/README.md) | `dynamiccost` | Calculated item inside a document |
+| [Cost Extensions](Cost%20Extensions/README.md) | `costextension` | Item whose amount the plugin calculates from its own fields (documents and catalog) |
 | [Input Assistants](Input%20Assistants/README.md) | `costassistant` | Assistant button on an item |
 | [Insert](Insert/README.md) | `insertInvoice`, `insertEstimate`, `insertProject`, `insertClient` | Automatically when a record is created |
 | [Others](Others/README.md) | `invoices`, `estimates`, `templates`, `clients`, `items`, `projects`, `catalogitems`, `layouts`, `languages` | Context menu of that list |

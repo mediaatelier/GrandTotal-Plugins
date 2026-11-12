@@ -135,6 +135,7 @@ Unless a type says otherwise, the whole script is evaluated and the work happens
 | `insertInvoice`, `insertEstimate`, `insertProject`, `insertClient` | Automatically when such a record is created | top level | — |
 | `costassistant` | Input assistant button on an item | top level, values from `Globals` | Object with `name`, `notes`, `quantity`, `unit`, `unitPrice`, `discount` |
 | `dynamiccost` | Dynamic cost item | top level, `query()` | Object with `cost`, optionally `unit`, `notes`, `title` |
+| `costextension` | Item of a document or the catalog | `evaluate(row)` | Object with `amount` (decimal string), optionally `warnings` |
 | `documentnumbering` | When a number is generated | top level | The number as a string |
 | `documenttemplate` | File → New Document | `index.html`, `grandtotal.onCommit` | Records via `grandtotal.commit()` |
 | `pasteitems`, `pastedocuments` | Paste into a document | top level, `pasteBoard` | Array of created records (empty array = fall back to the built-in parser) |
