@@ -15,7 +15,7 @@ An agent plugin powers **Ask GrandTotal**: it connects GrandTotal to an AI agent
 In GrandTotal, open the document's settings → **MCP Server**. The **Ask GrandTotal** row, below the document's access level, is there while the MCP server is on, an agent CLI is installed (or one is chosen) and the document's MCP access is not "none":
 
 - **Ask GrandTotal** popup: "None" (the default), then every agent plugin whose `detect()` finds its CLI. A chosen agent that is no longer installed stays selected, greyed out as "(not installed)".
-- **Model**: only for a plugin whose `Info.plist` declares `AgentModelPlaceholder`. The value is passed to `command()` as `options.model`; empty means the plugin's default, shown as placeholder.
+- **Model**: only for a plugin whose `Info.plist` declares `AgentModelPlaceholder`. The value is passed to `command()` as `options.model`; empty means the plugin's default, shown as placeholder. When the plugin has `models()` and it lists models, the field is a popup: "Default" (no model), then the models; a stored model that is not on the list shows as an item of its own.
 - **Test**: runs the chosen agent once, read-only, with a fixed question.
 
 What a run may do follows the document's MCP permission:
@@ -65,13 +65,13 @@ The folder name is the name in the popup (localizable like any plugin name).
 | --- | --- |
 | `types` | `agent` |
 | `CFBundleIdentifier` | What the document's setting names. Use your own — a plugin in your library replaces a built-in one with the same identifier. |
-| `AgentModelPlaceholder` | Optional. The plugin takes a model: the settings show a **Model** field, with this value — the model `command()` uses without one — as placeholder. Without the key there is no field. |
+| `AgentModelPlaceholder` | Optional. The plugin takes a model: the settings show a **Model** field, with this value — the model `command()` uses without one — as placeholder. Without the key there is no field. With `models()` the field becomes a popup of the models it lists. |
 
 No `JSModuleContext`: `index.js` is a classic script, and its top-level functions are the interface.
 
 ## The Script Context
 
-A plain JavaScript context — not the one other plugin types get: no `query()`, no records, no HTTP. One context for detection and one per run; the context of a run lives from `command()` through every `parseLine()` of that run, so top-level variables carry state between calls and start fresh with the next run.
+A plain JavaScript context — not the one other plugin types get: no `query()`, no records. One context for detection, one for `models()` and one per run; the context of a run lives from `command()` through every `parseLine()` of that run, so top-level variables carry state between calls and start fresh with the next run.
 
 | Global | Meaning |
 | --- | --- |
@@ -80,6 +80,9 @@ A plain JavaScript context — not the one other plugin types get: no `query()`,
 | `resolvedPath(path)` | The final target of a symlink chain — Homebrew links commands into its `bin` folder, the formula is in the target. |
 | `homeDirectory` | The user's home folder. |
 | `log(message)` | Writes to the system log. |
+| `loadURL(method, url, headers)` | For `models()`. Synchronous, no body. The response body of a 2xx answer, otherwise JSON with `grandtotal_error`, `http_error` and `server_response` — like `loadURL` of the other plugin types. |
+| `runCommand(executable, arguments)` | For `models()`. Runs a program synchronously (stdin empty, the home folder as working directory, stopped after 20 seconds) and returns `{status, output}`, `output` being its stdout. |
+| `readFile(path)` | For `models()`. A text file (UTF-8, `~` expanded), or `null` — for a key in the CLI's own `.env` file, say. |
 
 ## Functions
 
@@ -135,6 +138,33 @@ Returns the command of one run:
 | `model` | The **Model** field of the settings, or `""` — then use your default (the `AgentModelPlaceholder` value). |
 | `sessionId` | The id you reported with a `session` event in an earlier run of this conversation, or `null` on its first question — then start a new CLI session, otherwise resume that one. |
 | `history` | `[{prompt, answer}]` of the conversation's answered questions, oldest first. For a CLI that cannot resume a session: put them ahead of the prompt. |
+
+### `models(options)` (optional)
+
+Returns the models the CLI can take, for the **Model** popup, or `null` when it cannot tell — then the settings show the text field:
+
+```js
+[
+	{ id: "qwen3", name: "Qwen 3", description: "8B, local" }, // id is passed as options.model
+	…
+]
+```
+
+`name` is the title in the popup (defaults to `id`), `description` its tooltip. `options` has `executable` (what `detect()` found) and `environment` (the environment of a run, the login shell's API keys included). Called when the settings show the agent, never on the main thread; a list is kept until GrandTotal quits, `null` or an empty list is asked again next time.
+
+```js
+function models(options) {
+	var aAnswer;
+	try {
+		aAnswer = JSON.parse(loadURL("GET", "http://localhost:11434/api/tags", {}));
+	} catch (e) {
+		return null;
+	}
+	return (aAnswer.models || []).map(function (model) {
+		return { id: model.name, name: model.name };
+	});
+}
+```
 
 ### `parseLine(line)`
 

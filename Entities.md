@@ -390,6 +390,7 @@ This document lists all entities with their attributes and relationships.
 - **name**: NSString
 - **notes**: NSString
 - **payInterval**: NSNumber
+- **progressBilling**: NSNumber
 - **rate**: NSNumber
 - **recurring**: NSNumber
 - **recurringInterval**: NSNumber
@@ -1553,8 +1554,10 @@ This document lists all entities with their attributes and relationships.
 - **customValuesJSON**: NSString
 - **dateCreation**: NSDate
 - **doNotClone**: NSNumber
+- **formal**: NSNumber
 - **internalReference**: NSString
 - **isDefault**: NSNumber
+- **languageCode**: NSString
 - **name**: NSString
 - **notes**: NSString
 - **payInterval**: NSNumber
@@ -1836,6 +1839,7 @@ This document lists all entities with their attributes and relationships.
 - **name**: NSString
 - **notes**: NSString
 - **partialPortion**: NSString
+- **partialPortionIsAmount**: NSNumber
 - **payInterval**: NSNumber
 - **rate**: NSNumber
 - **recurring**: NSNumber
@@ -1981,6 +1985,7 @@ This document lists all entities with their attributes and relationships.
 - **name**: NSString
 - **notes**: NSString
 - **payInterval**: NSNumber
+- **progressBilling**: NSNumber
 - **rate**: NSNumber
 - **recurring**: NSNumber
 - **recurringInterval**: NSNumber
@@ -2047,6 +2052,7 @@ This document lists all entities with their attributes and relationships.
 - **name**: NSString
 - **notes**: NSString
 - **payInterval**: NSNumber
+- **progressBilling**: NSNumber
 - **rate**: NSNumber
 - **recurring**: NSNumber
 - **recurringInterval**: NSNumber

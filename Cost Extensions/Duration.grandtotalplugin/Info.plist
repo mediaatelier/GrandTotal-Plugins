@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.duration</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>copyright</key>
+	<string>© 2026 Stefan Fürst</string>
+	<key>FeatureIdentifier</key>
+	<string>GTFeatureCostPlugins</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>10</real>
+	<key>types</key>
+	<array>
+		<string>CostExtension</string>
+	</array>
+	<key>displayNames</key>
+	<dict>
+		<key>costextension</key>
+		<string>name</string>
+	</dict>
+	<key>CellNib</key>
+	<string>DurationCell</string>
+	<key>PlaceholdersPrefix</key>
+	<string>duration</string>
+	<key>Placeholders</key>
+	<dict>
+		<key>cost</key>
+		<dict>
+			<key>label</key>
+			<string>name</string>
+			<key>rows</key>
+			<array>
+				<dict>
+					<key>label</key>
+					<string>duration</string>
+					<key>items</key>
+					<array>
+						<dict><key>key</key><string>value</string><key>type</key><string>Number</string></dict>
+					</array>
+				</dict>
+				<dict>
+					<key>label</key>
+					<string>unit</string>
+					<key>items</key>
+					<array>
+						<dict><key>key</key><string>unit</string><key>type</key><string>String</string></dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>CostFields</key>
+	<dict>
+		<key>rows</key>
+		<array>
+			<dict><key>items</key><array>
+				<dict><key>key</key><string>value</string><key>label</key><string>duration</string><key>type</key><string>number</string><key>default</key><string>1</string></dict>
+				<dict><key>key</key><string>unit</string><key>label</key><string>unit</string><key>type</key><string>string</string><key>placeholder</key><string>days</string><key>width</key><integer>100</integer></dict>
+			</array></dict>
+		</array>
+	</dict>
+</dict>
+</plist>

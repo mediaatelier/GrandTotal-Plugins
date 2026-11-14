@@ -112,6 +112,20 @@ function command(options) {
 	         input: options.prompt };
 }
 
+/// The models pulled in Ollama, for the Model popup of the settings: its
+/// local API lists them (GET /api/tags). Not every one can call tools.
+function models(options) {
+	var aAnswer;
+	try {
+		aAnswer = JSON.parse(loadURL("GET", "http://localhost:11434/api/tags", {}));
+	} catch (e) {
+		return null;
+	}
+	return (aAnswer.models || []).map(function (model) {
+		return { id: model.name, name: model.name };
+	});
+}
+
 /// `grandtotal__get_records` → `get_records`.
 function toolName(name) {
 	var aParts = String(name || "").split("__");
