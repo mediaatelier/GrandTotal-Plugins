@@ -351,8 +351,11 @@ function timedEntries() {
 		return aChunks;
 	}
 
-	var aPeriodStart = new Date(aNow.getTime() - aPeriodDays * aDayMillis);
-	var aChunks = chunksBetween(aPeriodStart, aNow, aIsFreePlan ? aShortChunkDays : 365);
+	// The range ends a day after now: the report missed the entries of the
+	// current day with "now" as the end (Nov 2026, 3.4). Same as Clockodo.
+	var aPeriodEnd = new Date(aNow.getTime() + aDayMillis);
+	var aPeriodStart = new Date(aPeriodEnd.getTime() - aPeriodDays * aDayMillis);
+	var aChunks = chunksBetween(aPeriodStart, aPeriodEnd, aIsFreePlan ? aShortChunkDays : 365);
 
 	while (aChunks.length > 0) {
 		var aChunk = aChunks.shift();
